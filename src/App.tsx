@@ -1,34 +1,27 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import { useRef, useState } from 'react'
 import './App.css'
+import { useColorScheme } from '@mui/material'
+import {Parallax, ParallaxLayer} from '@react-spring/parallax';
+import Galaxy from './threeModels/Galaxy';
+import About from './pages/About';
+
 
 function App() {
-  const [count, setCount] = useState<number>(0)
+  const {mode, setMode} = useColorScheme();
+
+  const parallaxRef = useRef<any>(null);
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    <div style={{ width: '100%', height: '100%', background: '#15181a'}}>
+      <Parallax ref={parallaxRef} pages={3}>
+        <ParallaxLayer offset={0} speed={1} factor={1}>
+          <Galaxy scrollRef={parallaxRef} current={parallaxRef.current ? parallaxRef.current.current : 0}/>
+        </ParallaxLayer>
+        <ParallaxLayer offset={1} speed={0}>
+          <About />
+        </ParallaxLayer>
+      </Parallax>
+    </div>
   )
 }
 

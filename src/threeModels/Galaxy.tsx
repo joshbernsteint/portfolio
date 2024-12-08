@@ -122,7 +122,7 @@ function Content({periodTime=20, scrollRef, rotate=true,...props} : any){
 
     return (
         <a.group>
-            <a.group {...rotateProp}>
+            <a.group {...rotateProp as any}>
                 <group ref={starsRef as any}>
                 {
                     StarPoints.map(([_x,_y,radius,_c, brightness],i) => (
