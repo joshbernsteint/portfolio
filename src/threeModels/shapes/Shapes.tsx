@@ -5,7 +5,7 @@ import * as THREE from 'three';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { AnimatedRing } from "../basic/AnimatedLine";
 // import { rotateShape } from "../../utils/Math";
-// import { useCursor } from "../../utils/Hooks";
+import { useCursor } from "../../utils/Hooks";
 
 
 export type shapeArgs = Partial<{
@@ -65,11 +65,11 @@ export function BaseShape({
     }), [center, factor, points]);
 
 
-    // const [cursor, setCursor] = useCursor();
+    const [cursor, setCursor] = useCursor();
     
 
     return (
-        <group onClick={onClick} onPointerEnter={() => onClick} onPointerLeave={() => onClick}>
+        <group onClick={onClick} onPointerEnter={() => onClick && setCursor('pointer')} onPointerLeave={() => onClick && setCursor('default')}>
             <LinePath 
                 points={transformedPoints}
                 miscOptions={

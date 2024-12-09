@@ -20,6 +20,7 @@ export default function TextAndShapes({
     onClick=undefined,
     ...props
 } : textShapeArgs){
+    
 
     const [textSprings, textAPI] = useSprings(text.length, i => ({
         pause: true,
