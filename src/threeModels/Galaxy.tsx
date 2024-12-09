@@ -34,7 +34,7 @@ const STAR_COLORS : readonly string[] = [
     "#ffbb7b"
 ]; //Length of 21
 
-const TWO_PI = 2*Math.PI;
+const TWO_PI : number = 2*Math.PI;
 
 function Content({periodTime=20, scrollRef, rotate=true,...props} : any){
 
@@ -96,7 +96,7 @@ function Content({periodTime=20, scrollRef, rotate=true,...props} : any){
     console.log(newPoints);
 
     useFrame(({clock}) => {
-        const time = clock.getElapsedTime();    
+        const time = clock.getElapsedTime();  
         if(starsRef.current){
             const children = (starsRef.current as any).children;
             for (let i = 0; i < children.length; i++) {
@@ -105,6 +105,7 @@ function Content({periodTime=20, scrollRef, rotate=true,...props} : any){
                 children[i].position.y = position[1] + (Math.cos(time + modifier)*radius);
             }
         }
+
     })
 
     function addPoint({point} : any){
@@ -122,10 +123,10 @@ function Content({periodTime=20, scrollRef, rotate=true,...props} : any){
 
     return (
         <a.group>
-            <a.group {...rotateProp as any}>
+            <a.group {...(rotateProp as any)}>
                 <group ref={starsRef as any}>
                 {
-                    StarPoints.map(([_x,_y,radius,_c, brightness],i) => (
+                    StarPoints.map(([_x,_y,radius,_c, _b],i) => (
                         <a.mesh key={i} {...(springs[i] as any)}>
                             <sphereGeometry args={[radius]} attach={'geometry'}/>
                             <a.meshStandardMaterial attach={'material'} emissive={springs[i].color} {...springs[i]}/>
@@ -225,7 +226,7 @@ function Content({periodTime=20, scrollRef, rotate=true,...props} : any){
             <TextAndShapes
                 position={[-120, -130,0]}
                 text={[
-                    {content: "Education", textArgs: {depth: .2, size: 10}, centered: true, duration: 1500, delay: 0}
+                    {content: "Education", textArgs: {depth: .2, size: 10}, centered: true, duration: 1500, delay: 0},
                 ]}
                 shapes={[
                     {
@@ -309,9 +310,8 @@ function Content({periodTime=20, scrollRef, rotate=true,...props} : any){
                 ]}
             />
             </group>
-                )
+            )
             }
-
 
         </a.group>
         
@@ -325,11 +325,10 @@ export default function Galaxy({scrollRef, current, ...props} : any){
 
     return (
         <div style={{height: '100%', width: '100%'}}>
-            
-        <Canvas linear flat shadows dpr={[1,2]}>
+        <Canvas linear flat shadows dpr={[1,2]} style={{height: '100%'}}>
             <PerspectiveCamera makeDefault position={[0,-100,200]} fov={90}/>
             <ambientLight intensity={.85} />
-            <Content scrollRef={scrollRef} rotate={true} periodTime={60}/>
+            <Content scrollRef={scrollRef} rotate={true} periodTime={120}/>
         </Canvas>
         
     </div>

@@ -23,8 +23,8 @@ export default function TextAndShapes({
 
     const [textSprings, textAPI] = useSprings(text.length, i => ({
         pause: true,
-        from: {opacity: 0},
-        to: {opacity: 1},
+        from: {targetOpacity: 0},
+        to: {targetOpacity: 1},
         delay: text[i].delay || 0,
         config: { duration: text[i].duration || 1000}
     }));
