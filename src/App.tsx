@@ -4,8 +4,6 @@ import BasePage from './pages/Base';
 import { BrowserRouter, Routes, Route } from 'react-router';
 
 function App() {
-  // const {mode, setMode} = useColorScheme();
-
   return (
     <div style={{ width: '100vw', height: '100vh', background: '#15181a'}}>
       <BrowserRouter>
