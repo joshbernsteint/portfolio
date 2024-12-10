@@ -2,30 +2,17 @@ import { Avatar, Card, Pagination, Paper, Typography } from "@mui/material";
 import Grid from '@mui/material/Grid2';
 import { useWindow } from "../utils/Hooks";
 import { useState } from "react";
-import me from '../assets/images/me.jpg';
-import angel from '../assets/images/Angel.jpeg';
-import ethel from '../assets/images/Ethel.jpeg';
-import gigi from '../assets/images/gigi.jpg';
 
-const imageMap : readonly string[] = [
-    me, angel, ethel, gigi
-];
+// Image imports
+import imageMap from "../assets/images/about";
 
 export default function About({...props}){
 
     const {width} = useWindow();
-    const [activeImage, setActiveImage] = useState<string>(me);
+    const [activeImage, setActiveImage] = useState<number>(0);
+
     const profileVisible = width > 1200;
-    const isMiniVisible = !profileVisible && width > 875;
-
-
-    function handleImageChange(_event : any, page: number){
-        setActiveImage(imageMap[page - 1]);
-    }
-    
-
-    console.log(activeImage);
-    
+    const isMiniVisible = !profileVisible && width > 875;    
 
     return (
         <div style={{color: '#C0C0C0',  backgroundColor: '#15181a', paddingTop: '10rem', padding: '2rem'}} id="about">
@@ -53,7 +40,7 @@ export default function About({...props}){
                                         }}
                                         elevation={2}
                                     >
-                                        <Avatar src="./me.jpg" sx={{width: 100, height: 100}}/>
+                                        <Avatar {...imageMap[0]} sx={{width: 100, height: 100}}/>
                                     </Paper>
                                 </Grid>
                             </Grid>
@@ -91,8 +78,12 @@ export default function About({...props}){
                 {
                     profileVisible && (
                         <Grid size={6} sx={{justifyContent: 'center', textAlign: 'center', alignContent: 'center', display: 'flex', flexFlow: 'wrap'}}>
-                            <img src={activeImage} width={"80%"} style={{borderRadius: '10px'}} alt="Joshua Bernstein"/>
-                            <Pagination count={imageMap.length} sx={{marginTop: '.5rem'}} onChange={handleImageChange}/>
+                            <img {...imageMap[activeImage]} width={"80%"} style={{borderRadius: '10px'}}/>
+                            <Pagination 
+                                count={imageMap.length} 
+                                sx={{marginTop: '.5rem'}} 
+                                onChange={(_, page: number) => setActiveImage(page - 1)}
+                            />
                         </Grid>
                     )
                 }
