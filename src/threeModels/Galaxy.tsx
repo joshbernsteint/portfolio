@@ -36,7 +36,7 @@ const STAR_COLORS : readonly string[] = [
 
 const TWO_PI : number = 2*Math.PI;
 
-function Content({periodTime=20, scrollRef, rotate=true,...props} : any){
+function Content({periodTime=20, scrollRefs, rotate=true,...props} : any){
 
     const {viewport} = useThree();
     const {aspect} = viewport;
@@ -152,6 +152,9 @@ function Content({periodTime=20, scrollRef, rotate=true,...props} : any){
                 <TextAndShapes 
                     position={[0,0,0]}
                     groupTextArgs={{rotation: counterRotate.rotation}}
+                    onClick={() => {
+                        scrollRefs.about?.current.scrollIntoView();
+                    }}
                     text={[
                         {
                             content: "Joshua Bernstein",
@@ -321,14 +324,14 @@ function Content({periodTime=20, scrollRef, rotate=true,...props} : any){
 
 
 
-export default function Galaxy({scrollRef, current, ...props} : any){
+export default function Galaxy({scrollRefs, current, ...props} : any){
 
     return (
         <div style={{height: '100%', width: '100%'}}>
         <Canvas linear flat shadows dpr={[1,2]} style={{height: '100%'}}>
             <PerspectiveCamera makeDefault position={[0,-100,200]} fov={90}/>
             <ambientLight intensity={.85} />
-            <Content scrollRef={scrollRef} rotate={true} periodTime={120}/>
+            <Content scrollRefs={scrollRefs} rotate={true} periodTime={120}/>
         </Canvas>
         
     </div>

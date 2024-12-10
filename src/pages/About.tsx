@@ -6,7 +6,7 @@ import { useState } from "react";
 // Image imports
 import imageMap from "../assets/images/about";
 
-export default function About({...props}){
+export default function About({scrollRef, ...props} : any){
 
     const {width} = useWindow();
     const [activeImage, setActiveImage] = useState<number>(0);
@@ -15,7 +15,7 @@ export default function About({...props}){
     const isMiniVisible = !profileVisible && width > 875;    
 
     return (
-        <div style={{color: '#C0C0C0',  backgroundColor: '#15181a', paddingTop: '10rem', padding: '2rem'}} id="about">
+        <div style={{color: '#C0C0C0',  backgroundColor: '#15181a', paddingTop: '10rem', padding: '2rem'}} id="about" ref={scrollRef}>
             <Grid container spacing={4}>
                 <Grid size={profileVisible ? 6 : 12} >
                     <Paper elevation={2} style={{padding: '1rem', color: '#c0c0c0', borderRadius: '10px'}}>
