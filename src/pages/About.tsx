@@ -21,12 +21,12 @@ export default function About({scrollRef, ...props} : any){
                     <Paper elevation={2} style={{padding: '1rem', color: '#c0c0c0', borderRadius: '10px'}}>
                         <Paper elevation={3} sx={{padding: '1.5rem'}}>
                             <Grid container spacing={2}>
-                                <Grid size={4}>
+                                <Grid size={9}>
                                     <Typography variant="h1">
-                                        About   
+                                        About Me
                                     </Typography>
                                 </Grid>
-                                <Grid size={6}>
+                                <Grid size={3}>
                                     <Paper
                                         sx={{
                                             width: '120px', 
@@ -79,6 +79,7 @@ export default function About({scrollRef, ...props} : any){
                     profileVisible && (
                         <Grid size={6} sx={{justifyContent: 'center', textAlign: 'center', alignContent: 'center', display: 'flex', flexFlow: 'wrap'}}>
                             <img {...imageMap[activeImage]} width={"80%"} style={{borderRadius: '10px'}}/>
+                            <span style={{width: '100%'}}></span>
                             <Pagination 
                                 count={imageMap.length} 
                                 sx={{marginTop: '.5rem'}} 
