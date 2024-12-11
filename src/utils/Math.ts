@@ -35,8 +35,17 @@ function rotateShape(points: point[], angle: number) : point[]{
     ]));
 }
 
+function sumArray(arr: number[]){
+    let sum = 0;
+    for (const e of arr) {
+        sum += e;
+    }
+    return sum;
+}
+
 export {
     normalizePoint,
     unNormalizePoint,
-    rotateShape
+    rotateShape,
+    sumArray
 };

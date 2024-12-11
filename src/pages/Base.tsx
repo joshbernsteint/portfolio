@@ -19,7 +19,7 @@ function BasePage() {
             education: educationRef,
           }}
         />
-        <About scrollRef={aboutRef}/>
+        <About scrollRef={aboutRef} textWidth={0.6}/>
         <Education scrollRef={educationRef}/>
     </div>
   )

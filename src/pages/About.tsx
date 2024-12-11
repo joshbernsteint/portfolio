@@ -9,19 +9,26 @@ import githubImg from '../assets/images/about/gitHub.png';
 import linkedInImg from '../assets/images/about/linkedIn.png';
 import DoublePaper from "../components/DoublePaper";
 
+type AboutProps = {
+    scrollRef: any,
+    textWidth?: number,
+    [prop: string]: any,
+};
 
-export default function About({scrollRef, ...props} : any){
+export default function About({scrollRef, textWidth=0.6, ...props} : AboutProps){
 
     const {width} = useWindow();
     const [activeImage, setActiveImage] = useState<number>(0);
 
     const profileVisible = width > 1200;
-    const isMiniVisible = !profileVisible && width > 875;    
+    const isMiniVisible = !profileVisible && width > 875;
+    const textSize : number = textWidth * 12;  
+    const imageSize: number = 12 - textSize;
 
     return (
         <div style={{color: '#C0C0C0',  backgroundColor: '#15181a', paddingTop: '10rem', padding: '2rem'}} id="about" ref={scrollRef}>
-            <Grid container spacing={4}>
-                <Grid size={profileVisible ? 6 : 12} >
+            <Grid container spacing={2}>
+                <Grid size={profileVisible ? textSize : 12} >
                     <DoublePaper>
                         <Grid container spacing={2}>
                             <Grid size={9}>
@@ -87,7 +94,7 @@ export default function About({scrollRef, ...props} : any){
                 </Grid>
                 {
                     profileVisible && (
-                        <Grid size={6} sx={{justifyContent: 'center', textAlign: 'center', alignContent: 'center', display: 'flex', flexFlow: 'wrap'}}>
+                        <Grid size={imageSize} sx={{justifyContent: 'center', textAlign: 'center', alignContent: 'center', display: 'flex', flexFlow: 'wrap'}}>
                             <img {...imageMap[activeImage]} width={"80%"} style={{borderRadius: '10px'}}/>
                             <span style={{width: '100%'}}></span>
                             <Pagination 
