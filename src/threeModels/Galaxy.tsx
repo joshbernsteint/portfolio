@@ -201,6 +201,9 @@ function Content({periodTime=20, scrollRefs, rotate=true,...props} : any){
             {/* Skills */}
             <TextAndShapes
                 position={[200,0,0]}
+                onClick={() => {
+                    scrollRefs.skills?.current.scrollIntoView();
+                }}
                 text={[
                     {content: "Skills", textArgs: {depth: .2, size: 10}, centered: true, duration: 1500, delay: 0},
                 ]}
@@ -228,6 +231,9 @@ function Content({periodTime=20, scrollRefs, rotate=true,...props} : any){
             {/* Education */}
             <TextAndShapes
                 position={[-120, -130,0]}
+                onClick={() => {
+                    scrollRefs.education?.current.scrollIntoView();
+                }}
                 text={[
                     {content: "Education", textArgs: {depth: .2, size: 10}, centered: true, duration: 1500, delay: 0},
                 ]}
@@ -255,6 +261,9 @@ function Content({periodTime=20, scrollRefs, rotate=true,...props} : any){
             {/* Experience */}
             <TextAndShapes 
                 position={[120, -130,0]}
+                onClick={() => {
+                    scrollRefs.experience?.current.scrollIntoView();
+                }}
                 text={[
                     {
                         content: "Experience", 
@@ -285,6 +294,9 @@ function Content({periodTime=20, scrollRefs, rotate=true,...props} : any){
             {/* Projects */}
             <TextAndShapes 
                 position={[-200,0,0]}
+                onClick={() => {
+                    scrollRefs.projects?.current.scrollIntoView();
+                }}
                 text={[
                     {
                         content: "Projects", 
