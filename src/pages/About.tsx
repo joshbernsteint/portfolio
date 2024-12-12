@@ -8,6 +8,7 @@ import imageMap from "../assets/images/about";
 import githubImg from '../assets/images/about/gitHub.png';
 import linkedInImg from '../assets/images/about/linkedIn.png';
 import DoublePaper from "../components/DoublePaper";
+import SectionLabel from "../components/SectionLabel";
 
 type AboutProps = {
     scrollRef: any,
@@ -32,9 +33,7 @@ export default function About({scrollRef, textWidth=0.6, ...props} : AboutProps)
                     <DoublePaper>
                         <Grid container spacing={2}>
                             <Grid size={9}>
-                                <Typography variant="h1">
-                                    About Me
-                                </Typography>
+                                <SectionLabel label="About Me"/>
                             </Grid>
                             <Grid size={3}>
                                 <Paper
