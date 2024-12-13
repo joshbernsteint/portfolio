@@ -15,8 +15,7 @@ function getFillPercentage(pillIndex: number, value: number): number{
     else if(pillIndex > Math.ceil(value))
         return 0;
     else
-        return (1 - (pillIndex - value)) * 100
-    
+        return 0;
 }
 
 export default function SkillRating({
@@ -32,7 +31,7 @@ export default function SkillRating({
         <ButtonGroup variant="outlined">
             {
                 numPills.map((_,i) => (
-                    <Button key={i} sx={{background: linearGradient(getFillPercentage(i+1, value),fillColor)}}>
+                    <Button key={i} sx={{background: linearGradient(getFillPercentage(i+1, value),fillColor)}} style={{border: '2px solid #15181a'}} disabled>
                         &nbsp;
                     </Button>
                 ))

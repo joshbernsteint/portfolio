@@ -16,13 +16,15 @@ type EducationGridProps = {
     schoolIcon: {
         src: string,
         alt: string,
-    }
+    },
     schoolColor?: "primary" | "inherit" | "secondary" | "success" | "error" | "info" | "warning",
     startDate: string,
     endDate: string,
     gpa: string,
     inProgress?: boolean
+    iconHeight?: number,
     relevantCourses?: string[],
+    onMountImage?: (height: number, width: number) => void,
 }
 
 function EducationGrid(props: EducationGridProps){
@@ -37,6 +39,8 @@ function EducationGrid(props: EducationGridProps){
         schoolColor="primary",
         inProgress=false, 
         relevantCourses=[],
+        iconHeight=280,
+        onMountImage,
     } = props;
     
     return (
@@ -46,9 +50,10 @@ function EducationGrid(props: EducationGridProps){
             </Typography>
             <Typography variant="h6" fontStyle={"italic"}>
                 <Button target="_blank" href={schoolUrl} color={schoolColor}>{school}</Button>
-                <div style={{height: "215px"}}>
-                    <Image {...schoolIcon} width={"50%"} height={"auto"} center/>
+                <div style={{height: iconHeight}}>
+                    <Image {...schoolIcon} width={"50%"} height={"100%"} style={{objectFit: 'contain'}} center/>
                 </div>
+                <br/>
                 <List sx={{textAlign: 'left'}}>
 
                     {/* Start and End */}
@@ -102,7 +107,7 @@ function EducationGrid(props: EducationGridProps){
     );
 }
 
-const Seperator = () => <Grid size={0.5} sx={{borderLeft: '1px solid white', height: '650px', width: '0px'}}/>
+const Seperator = () => <Grid size={0.5} sx={{borderLeft: '1px solid white', minHeight: '100%', width: '0px'}}/>
 
 
 export default function Education({scrollRef, ...props}: any){
@@ -122,7 +127,7 @@ export default function Education({scrollRef, ...props}: any){
                     schoolColor="info"
                     schoolIcon={{
                         src: mahwahPNG,
-                        alt: "Mahwah HS Logo"
+                        alt: "Mahwah HS Logo",
                     }}
                     gpa="4.0"
                     relevantCourses={[

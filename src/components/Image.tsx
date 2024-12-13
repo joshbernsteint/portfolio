@@ -1,3 +1,4 @@
+import { useEffect, useLayoutEffect, useRef } from "react";
 
 export type imageProps = {
     src: string,
@@ -6,6 +7,8 @@ export type imageProps = {
     width?: number | string,
     height?: number | string,
     style?: React.CSSProperties,
+    onMount?: (height: number, width: number) => void,
+    onResetSize?: (minHeight: number) => void,
     [prop: string]: any,
 }
 
@@ -20,7 +23,6 @@ export default function Image(props: imageProps){
         height="100%",
         style={},
     } = props;
-
 
     return (
         <div style={{

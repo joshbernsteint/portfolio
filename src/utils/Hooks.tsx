@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export function useCursor() : [string, (newPointer: string) => void]{
     const [cursor, setCursor] = useState(document.getElementById('root')?.style.cursor || "default");
@@ -31,4 +31,19 @@ export function useWindow(){
     }, []);
 
     return dimensions;
+}
+
+export function useMeasure(){
+    const ref = useRef();
+    const [dimensions, setDimensions] = useState<{height: number, width: number}|undefined>(undefined);
+
+    useEffect(() => {
+        if(ref.current){
+            const current : {clientHeight: number, clientWidth: number} = ref.current;
+            setDimensions({height: current.clientHeight, width: current.clientWidth})
+        }
+    }, [ref.current]);
+
+
+    return {ref, dimensions};
 }
