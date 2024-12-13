@@ -27,7 +27,7 @@ export default function About({scrollRef, textWidth=0.6, ...props} : AboutProps)
     const imageSize: number = 12 - textSize;
 
     return (
-        <div style={{color: '#C0C0C0',  backgroundColor: '#15181a', paddingTop: '10rem', padding: '2rem'}} id="about" ref={scrollRef}>
+        <div style={{paddingTop: '10rem'}} className="sectionBlock" id="about" ref={scrollRef}>
             <Grid container spacing={2}>
                 <Grid size={profileVisible ? textSize : 12} >
                     <DoublePaper>

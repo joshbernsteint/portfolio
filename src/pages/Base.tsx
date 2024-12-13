@@ -2,6 +2,7 @@ import { useRef, useState } from 'react'
 import Galaxy from '../threeModels/Galaxy';
 import About from '../pages/About';
 import Education from './Education';
+import Skills from './Skills';
 
 function BasePage() {
 
@@ -21,6 +22,7 @@ function BasePage() {
         />
         <About scrollRef={aboutRef} textWidth={0.6}/>
         <Education scrollRef={educationRef}/>
+        <Skills scrollRef={skillsRef}/>
     </div>
   )
 }

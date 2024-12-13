@@ -1,4 +1,4 @@
-import { Button, Chip, Divider, Grid2 as Grid, List, ListItemIcon, ListItemText, Step, StepButton, Stepper, Typography } from "@mui/material";
+import { Button, Chip, Divider, Grid2 as Grid, List, ListItemIcon, ListItemText, Typography } from "@mui/material";
 import DoublePaper from "../components/DoublePaper";
 import Image from "../components/Image";
 import stevensPNG from '../assets/images/education/stevens.png';
@@ -7,7 +7,6 @@ import GradeIcon from '@mui/icons-material/Grade';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import EventIcon from '@mui/icons-material/EventAvailable';
 import SchoolIcon from '@mui/icons-material/School';
-import GridLayout from "../components/GridLayout";
 import SectionLabel from "../components/SectionLabel";
 
 type EducationGridProps = {
@@ -109,7 +108,7 @@ const Seperator = () => <Grid size={0.5} sx={{borderLeft: '1px solid white', hei
 export default function Education({scrollRef, ...props}: any){
 
     return (
-        <div style={{backgroundColor: '#15181a', padding: '2rem'}} ref={scrollRef}>
+        <div className="sectionBlock" ref={scrollRef} id="education">
             <DoublePaper>
             <SectionLabel label="Education"/>
             <br/>
@@ -127,7 +126,9 @@ export default function Education({scrollRef, ...props}: any){
                     }}
                     gpa="4.0"
                     relevantCourses={[
-                        "AP Computer Science A", "AP Computer Science Principles", "Data Structures"
+                        "AP Computer Science A", 
+                        "AP Computer Science Principles", 
+                        "Data Structures"
                     ]}
                 />
                 <Seperator />

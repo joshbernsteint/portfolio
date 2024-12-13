@@ -35,12 +35,8 @@ function rotateShape(points: point[], angle: number) : point[]{
     ]));
 }
 
-function sumArray(arr: number[]){
-    let sum = 0;
-    for (const e of arr) {
-        sum += e;
-    }
-    return sum;
+function sumArray(arr: number[]){    
+    return arr.reduce((prev, cur) => prev + cur, 0);
 }
 
 export {
