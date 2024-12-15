@@ -2,7 +2,7 @@
 export type StarPoint = [number, number, number, number, number];
 
 // \[[\n\s\r]*((?:(?:-|)\d)*\.\d+),[\s\n]*((?:(?:-|)\d)*\.\d+),[\s\n]*((?:(?:-|)\d)*\.\d+)[\s\n]*,[\s\n]*([0-9]+),[\s\n]*((?:(?:-|)\d)*\.\d+)[\s\n]*\]
-const StarPoints : StarPoint[] = [
+export const GalaxyRingPoints : StarPoint[] = [
     [0.30190677966102186,0.7717161016949086,0.28541374439910083,0,0.32201724331949444],
     [0.14088983050848322,0.6096398305084718,0.35064046604986854,6,1.1596701651608272],
     [0.5010593220338984,0.507944915254237,0.22104768943763065,18,0.5415365672409086],
@@ -257,4 +257,6 @@ const StarPoints : StarPoint[] = [
 
 ];
 
-export default StarPoints;
+export const backgroundGalaxyPoints : StarPoint[] = [
+
+];

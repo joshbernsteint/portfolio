@@ -1,4 +1,4 @@
-import { degToRad } from "three/src/math/MathUtils.js";
+import { degToRad, randInt } from "three/src/math/MathUtils.js";
 
 export type point = [x: number,y: number];
 
@@ -39,9 +39,17 @@ function sumArray(arr: number[]){
     return arr.reduce((prev, cur) => prev + cur, 0);
 }
 
+function randomArrayItem(arr: any[]){
+    if(arr.length === 0)
+        return undefined;
+
+    return arr[randInt(0, arr.length - 1)];
+}
+
 export {
     normalizePoint,
     unNormalizePoint,
     rotateShape,
-    sumArray
+    sumArray,
+    randomArrayItem
 };
