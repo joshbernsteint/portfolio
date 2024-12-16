@@ -1,4 +1,4 @@
-import { Avatar, Button, Card, Pagination, Paper, Typography } from "@mui/material";
+import { Avatar, Button, Pagination, Paper, Typography } from "@mui/material";
 import Grid from '@mui/material/Grid2';
 import { useWindow } from "../utils/Hooks";
 import { useState } from "react";
@@ -16,7 +16,7 @@ type AboutProps = {
     [prop: string]: any,
 };
 
-export default function About({scrollRef, textWidth=0.6, ...props} : AboutProps){
+export default function About({scrollRef, textWidth=0.6} : AboutProps){
 
     const {width} = useWindow();
     const [activeImage, setActiveImage] = useState<number>(0);

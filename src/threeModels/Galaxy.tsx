@@ -13,7 +13,7 @@ const TWO_PI : number = 2*Math.PI;
 const galaxyRadius = 300;
 
 
-function Content({periodTime=20, scrollRefs, rotate=true,...props} : any){
+function Content({periodTime=20, scrollRefs, rotate=true} : any){
 
     console.log(scrollRefs);
     
@@ -248,7 +248,7 @@ function Content({periodTime=20, scrollRefs, rotate=true,...props} : any){
 
 
 
-export default function Galaxy({scrollRefs, current, ...props} : any){    
+export default function Galaxy({scrollRefs} : any){    
 
     return (
         <>

@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react'
+import { useRef} from 'react'
 import Galaxy from '../threeModels/Galaxy';
 import About from '../pages/About';
 import Education from './Education';
