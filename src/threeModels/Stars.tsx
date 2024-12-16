@@ -1,4 +1,4 @@
-import { useFrame } from "@react-three/fiber";
+import { useFrame, useThree } from "@react-three/fiber";
 import React, { useMemo, useRef } from "react";
 import { StarPoint } from "../assets/StarPoints";
 import { randFloat, randInt } from "three/src/math/MathUtils.js";
@@ -41,8 +41,9 @@ function getBounds(viewport: {width: number, height: number}, boundMultiplier: [
     };
 }
 
-type StarProps = {
+type StarsProps = {
     numStars?: number
+    centerPosition?: [x: number, y: number, z: number],
     radiusRange?: [number,number],
     brightnessRange?: [number,number],
     brightnessOffsetRange?: [number, number],
@@ -65,10 +66,11 @@ type Star = {
 };
 
 
-const Stars = React.forwardRef<any, StarProps>((props: StarProps, ref) => {
+const Stars = React.forwardRef<any, StarsProps>((props: StarsProps, ref) => {
     const {
         numStars=100,
         points=[],
+        centerPosition=[0,0,0],
         radiusRange=[0.01, 1],
         brightnessRange=[0.25, 1.25],
         brightnessOffsetRange=[.05, 1], 
@@ -78,9 +80,7 @@ const Stars = React.forwardRef<any, StarProps>((props: StarProps, ref) => {
         pointTransform=undefined,
     } = props;
 
-
     const size = useViewport();
-    
 
     const stars = useMemo<Star[]>(() => {
         let parsedPoints: StarPoint[] = [];
@@ -139,7 +139,7 @@ const Stars = React.forwardRef<any, StarProps>((props: StarProps, ref) => {
 
     return (
         <group ref={ref}>
-            <group ref={internalRef}>
+            <group ref={internalRef} position={centerPosition}>
                 {
                     stars.map((e,i) => (
                         <mesh key={i} position={e.position}>

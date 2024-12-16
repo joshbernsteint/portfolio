@@ -1,23 +1,28 @@
 import { Canvas, useFrame } from '@react-three/fiber';
 import { useSprings, a, useSpring } from '@react-spring/three';
 import * as THREE from 'three';
-import {GradientTexture, GradientType, PerspectiveCamera} from '@react-three/drei'
-import { StarPoint, GalaxyRingPoints } from '../assets/StarPoints';
+import {GradientTexture, GradientType, PerspectiveCamera, View} from '@react-three/drei'
+import { StarPoint, GalaxyRingPoints, backgroundGalaxyPoints } from '../assets/StarPoints';
 import { normalizePoint, point, unNormalizePoint } from '../utils/Math';
 import { DodecagonPoints, HexagonPoints, OctagonPoints } from './shapes/defaultPoints';
 import { ShapeTypes } from './shapes/Shapes';
 import TextAndShapes from './shapes/TextAndShapes';
 import Stars, { STAR_COLORS } from './Stars';
-import { useViewport } from '../utils/Hooks';
+import { useViewport, useWindow } from '../utils/Hooks';
+import { useRef } from 'react';
 
 
 const TWO_PI : number = 2*Math.PI;
 const galaxyRadius = 300;
 
 
-function Content({periodTime=20, scrollRefs, rotate=true,...props} : any){
+export function Content({periodTime=20, scrollRefs, rotate=true,...props} : any){
 
-    const {aspect} = useViewport();
+    console.log(scrollRefs);
+    
+
+    const {aspect} = useWindow();
+    
     const [galaxyDiskSpring] = useSpring(() => ({
         args: [galaxyRadius, 120],
     }));
@@ -246,22 +251,22 @@ function Content({periodTime=20, scrollRefs, rotate=true,...props} : any){
 
 
 
-
-export default function Galaxy({scrollRefs, current, ...props} : any){
+export default function Galaxy({scrollRefs, current, ...props} : any){    
 
     return (
-        <div style={{height: '200%', width: '100%', position: 'absolute', zIndex: 2}}>
-            <Canvas linear flat shadows dpr={[1,2]} style={{height: '50%', width: '100%'}}>
-                <PerspectiveCamera makeDefault position={[0,-100,200]} fov={90}/>
-                <ambientLight intensity={.85} />
-                <Content scrollRefs={scrollRefs} rotate={true} periodTime={120}/>
-                <Stars zPos={-100} boundMultiplier={[1,1]} numStars={250} brightnessRange={[0.5, 1]}/>
-            </Canvas>
-            <Canvas linear flat shadows dpr={[1,2]} style={{height: '200%', width: '100%'}}>
-                <PerspectiveCamera makeDefault position={[0,0,200]} fov={90}/>
-                <ambientLight intensity={.85} />
-                <Stars zPos={-500} boundMultiplier={[2,2]} numStars={800} brightnessRange={[0.5, 1]}/>
-            </Canvas>
-        </div>  
+        <>
+            <PerspectiveCamera makeDefault position={[0,-100,200]} fov={90}/>
+            <ambientLight intensity={.85} />
+            <Content scrollRefs={scrollRefs} rotate={true} periodTime={120}/>
+            <Stars 
+                centerPosition={[0,-100,0]}
+                points={backgroundGalaxyPoints}
+                pointTransform={(e: any) => e}
+                zPos={-100} 
+                numStars={300} 
+                brightnessRange={[0.5, 1]} 
+                radiusRange={[.1, .5]} 
+            />
+        </>  
     );
 }

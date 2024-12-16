@@ -13,3 +13,8 @@ html {
 .sectionBlock{
   padding: 2rem;
 }
+
+.sectionSpace{
+  width: 100%;
+  height: 100vh;
+}

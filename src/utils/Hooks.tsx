@@ -14,10 +14,11 @@ export function useCursor() : [string, (newPointer: string) => void]{
 
 
 export function useWindow(){
-    function getDimensions() : {width: number, height: number}{
+    function getDimensions() : {width: number, height: number, aspect: number}{
         return {
             width: window.innerWidth,
-            height: window.innerHeight
+            height: window.innerHeight,
+            aspect: window.innerWidth/window.innerHeight,
         };
     }
 
@@ -50,20 +51,22 @@ export function useMeasure(){
 }
 
 export function useViewport(){
-    const get = useThree(state => state.get);
+    const viewport = useThree(state => state.viewport);
     const [size, setSize] = useState<{height: number, width: number, aspect: number}>({height: 0, width: 0, aspect: 0});
     
     useEffect(() => {
-        const resizeHandler = () => {
-            const {width, height, aspect} = get().viewport;
-            setSize((cur) => (width !== cur.width || height !== cur.height) ? {height: height, width: width, aspect: aspect} : cur)
-        }
-        resizeHandler();
+        const {width, height, aspect} = viewport;
+        setSize((cur) => (width !== cur.width || height !== cur.height) ? {height: height, width: width, aspect: aspect} : cur)
+        // const resizeHandler = () => {
+        //     const {width, height, aspect} = get().viewport;
+        //     setSize((cur) => (width !== cur.width || height !== cur.height) ? {height: height, width: width, aspect: aspect} : cur)
+        // }
+        // resizeHandler();
         
-        // Only check the dimensions when the window changes size
-        window.addEventListener('resize', resizeHandler);
-        return () => window.removeEventListener('resize', resizeHandler);
-     }, []);
+        // // Only check the dimensions when the window changes size
+        // window.addEventListener('resize', resizeHandler);
+        // return () => window.removeEventListener('resize', resizeHandler);
+     }, [viewport]);
 
      return size;
 }
