@@ -1,16 +1,14 @@
-import { LegacyRef, useRef, useState } from 'react'
-import Galaxy, { Content } from '../threeModels/Galaxy';
+import { useRef, useState } from 'react'
+import Galaxy from '../threeModels/Galaxy';
 import About from '../pages/About';
 import Education from './Education';
 import Skills from './Skills';
 import { Canvas } from '@react-three/fiber';
-import { OrthographicCamera, PerspectiveCamera, View } from '@react-three/drei';
+import { PerspectiveCamera, View } from '@react-three/drei';
 import Stars from '../threeModels/Stars';
-import { backgroundGalaxyPoints } from '../assets/StarPoints';
-import { useWindow } from '../utils/Hooks';
 
-function BasePage() {
 
+export default function BasePage(){
   const aboutRef = useRef<any>();
   const educationRef = useRef<any>();
   const skillsRef = useRef<any>();
@@ -63,7 +61,7 @@ function BasePage() {
                 numStars={500}
                 brightnessRange={[0.5, 1]} 
                 radiusRange={[.1, .5]} 
-            />  
+            /> 
           </View>
 
         </Canvas>
@@ -71,5 +69,3 @@ function BasePage() {
     </div>
   )
 }
-
-export default BasePage;

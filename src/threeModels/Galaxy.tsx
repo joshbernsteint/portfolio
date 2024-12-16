@@ -1,22 +1,19 @@
-import { Canvas, useFrame } from '@react-three/fiber';
-import { useSprings, a, useSpring } from '@react-spring/three';
-import * as THREE from 'three';
-import {GradientTexture, GradientType, PerspectiveCamera, View} from '@react-three/drei'
-import { StarPoint, GalaxyRingPoints, backgroundGalaxyPoints } from '../assets/StarPoints';
-import { normalizePoint, point, unNormalizePoint } from '../utils/Math';
-import { DodecagonPoints, HexagonPoints, OctagonPoints } from './shapes/defaultPoints';
+import { a, useSpring } from '@react-spring/three';
+import {GradientTexture, GradientType, PerspectiveCamera} from '@react-three/drei'
+import { GalaxyRingPoints, backgroundGalaxyPoints } from '../assets/StarPoints';
+import { unNormalizePoint } from '../utils/Math';
+import { DodecagonPoints } from './shapes/defaultPoints';
 import { ShapeTypes } from './shapes/Shapes';
 import TextAndShapes from './shapes/TextAndShapes';
-import Stars, { STAR_COLORS } from './Stars';
-import { useViewport, useWindow } from '../utils/Hooks';
-import { useRef } from 'react';
+import Stars from './Stars';
+import { useWindow } from '../utils/Hooks';
 
 
 const TWO_PI : number = 2*Math.PI;
 const galaxyRadius = 300;
 
 
-export function Content({periodTime=20, scrollRefs, rotate=true,...props} : any){
+function Content({periodTime=20, scrollRefs, rotate=true,...props} : any){
 
     console.log(scrollRefs);
     
