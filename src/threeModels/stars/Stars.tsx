@@ -1,8 +1,8 @@
 import { useFrame, useThree } from "@react-three/fiber";
 import React, { useMemo, useRef } from "react";
-import { StarPoint } from "../assets/StarPoints";
+import { StarPoint } from "../../assets/StarPoints";
 import { randFloat, randInt } from "three/src/math/MathUtils.js";
-import { useViewport } from "../utils/Hooks";
+import { useViewport } from "../../utils/Hooks";
 import { Mesh, MeshStandardMaterial } from "three";
 
 export const STAR_COLORS : string[] = [
@@ -41,7 +41,7 @@ function getBounds(viewport: {width: number, height: number}, boundMultiplier: [
     };
 }
 
-type StarsProps = {
+export type StarsProps = {
     numStars?: number
     centerPosition?: [x: number, y: number, z: number],
     radiusRange?: [number,number],
@@ -51,7 +51,8 @@ type StarsProps = {
     boundMultiplier?: [xBound: number, yBound: number],
     zPos?: number,
     useColors?: boolean,
-    pointTransform?:(element: number | number[] | StarPoint) => StarPoint
+    pointTransform?:(element: number | number[] | StarPoint) => StarPoint,
+    fixedSize?: {height: number, width: number, aspect: number} | undefined
 };
 
 type Star = {
@@ -62,7 +63,7 @@ type Star = {
         emissive: string | number,
         emissiveIntensity: number,
         emissiveTo: number
-    }
+    },
 };
 
 
@@ -78,9 +79,11 @@ const Stars = React.forwardRef<any, StarsProps>((props: StarsProps, ref) => {
         useColors=false,
         zPos=0,
         pointTransform=undefined,
+        fixedSize=undefined,
     } = props;
 
-    const size = useViewport();
+
+    const size = fixedSize || useViewport();
 
     const stars = useMemo<Star[]>(() => {
         let parsedPoints: StarPoint[] = [];

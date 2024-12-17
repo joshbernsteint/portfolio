@@ -1,12 +1,12 @@
 import { a, useSpring } from '@react-spring/three';
 import {GradientTexture, GradientType, PerspectiveCamera} from '@react-three/drei'
-import { GalaxyRingPoints, backgroundGalaxyPoints } from '../assets/StarPoints';
-import { unNormalizePoint } from '../utils/Math';
-import { DodecagonPoints } from './shapes/defaultPoints';
-import { ShapeTypes } from './shapes/Shapes';
-import TextAndShapes from './shapes/TextAndShapes';
+import { GalaxyRingPoints, backgroundGalaxyPoints } from '../../assets/StarPoints';
+import { unNormalizePoint } from '../../utils/Math';
+import { DodecagonPoints } from '../shapes/defaultPoints';
+import { ShapeTypes } from '../shapes/Shapes';
+import TextAndShapes from '../shapes/TextAndShapes';
 import Stars from './Stars';
-import { useWindow } from '../utils/Hooks';
+import { useWindow } from '../../utils/Hooks';
 
 
 const TWO_PI : number = 2*Math.PI;
@@ -14,10 +14,6 @@ const galaxyRadius = 300;
 
 
 function Content({periodTime=20, scrollRefs, rotate=true} : any){
-
-    console.log(scrollRefs);
-    
-
     const {aspect} = useWindow();
     
     const [galaxyDiskSpring] = useSpring(() => ({

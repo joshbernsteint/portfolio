@@ -1,5 +1,5 @@
 import { useThree } from "@react-three/fiber";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 export function useCursor() : [string, (newPointer: string) => void]{
     const [cursor, setCursor] = useState(document.getElementById('root')?.style.cursor || "default");
@@ -51,22 +51,15 @@ export function useMeasure(){
 }
 
 export function useViewport(){
-    const viewport = useThree(state => state.viewport);
+    const get = useThree(state => state.get);
+    const viewport = get().viewport;
     const [size, setSize] = useState<{height: number, width: number, aspect: number}>({height: 0, width: 0, aspect: 0});
     
     useEffect(() => {
         const {width, height, aspect} = viewport;
-        setSize((cur) => (width !== cur.width || height !== cur.height) ? {height: height, width: width, aspect: aspect} : cur)
-        // const resizeHandler = () => {
-        //     const {width, height, aspect} = get().viewport;
-        //     setSize((cur) => (width !== cur.width || height !== cur.height) ? {height: height, width: width, aspect: aspect} : cur)
-        // }
-        // resizeHandler();
         
-        // // Only check the dimensions when the window changes size
-        // window.addEventListener('resize', resizeHandler);
-        // return () => window.removeEventListener('resize', resizeHandler);
+        setSize((cur) => (width !== cur.width || height !== cur.height) ? {height: height, width: width, aspect: aspect} : cur);
      }, [viewport]);
 
-     return size;
+    return size;
 }

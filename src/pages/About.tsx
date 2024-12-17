@@ -1,7 +1,7 @@
 import { Avatar, Button, Pagination, Paper, Typography } from "@mui/material";
 import Grid from '@mui/material/Grid2';
 import { useWindow } from "../utils/Hooks";
-import { useState } from "react";
+import React, { useState } from "react";
 
 // Image imports
 import imageMap from "../assets/images/about";
@@ -13,10 +13,11 @@ import SectionLabel from "../components/SectionLabel";
 type AboutProps = {
     scrollRef: any,
     textWidth?: number,
+    style?: React.CSSProperties,
     [prop: string]: any,
 };
 
-export default function About({scrollRef, textWidth=0.6} : AboutProps){
+export default function About({scrollRef, textWidth=0.6, style={}} : AboutProps){
 
     const {width} = useWindow();
     const [activeImage, setActiveImage] = useState<number>(0);
@@ -27,7 +28,7 @@ export default function About({scrollRef, textWidth=0.6} : AboutProps){
     const imageSize: number = 12 - textSize;
 
     return (
-        <div style={{marginTop: '10rem'}} className="sectionBlock" id="about" ref={scrollRef}>
+        <div className="sectionBlock" id="about" ref={scrollRef} style={style}>
             <Grid container spacing={2}>
                 <Grid size={profileVisible ? textSize : 12} >
                     <DoublePaper>

@@ -110,10 +110,10 @@ function EducationGrid(props: EducationGridProps){
 const Seperator = () => <Grid size={0.5} sx={{borderLeft: '1px solid white', minHeight: '100%', width: '0px'}}/>
 
 
-export default function Education({scrollRef, ...props}: any){
+export default function Education({scrollRef, style={}, ...props}: {[p: string]: any, style?: React.CSSProperties}){
 
     return (
-        <div className="sectionBlock" ref={scrollRef} id="education">
+        <div className="sectionBlock" ref={scrollRef} id="education" style={style}>
             <DoublePaper>
             <SectionLabel label="Education"/>
             <br/>
