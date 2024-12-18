@@ -10,9 +10,9 @@ import { useCursor } from "../../utils/Hooks";
 
 export type shapeArgs = Partial<{
     fillConfig: {
-        color: number | string,
-        opacity: number, 
-        duration: number,
+        color?: number | string,
+        opacity?: number, 
+        duration?: number,
     },
     center: [number,number],
     factor: number,
@@ -21,13 +21,15 @@ export type shapeArgs = Partial<{
     delay: number,
     rotation: [number, number, number],
     onClick: () => void,
+    onRest?: () => void,
 } & {
     [key: string]: any,
 }>;
 
+const defaultFillConfig = {color: 'white', opacity: 0.5, duration: 1000}
 
 export function BaseShape({
-    fillConfig={color: 'white', opacity: 0.5, duration: 1000},
+    fillConfig=defaultFillConfig,
     center=[0,0],
     factor=100,
     points=OctagonPoints,
@@ -36,8 +38,11 @@ export function BaseShape({
     children,
     rotation=[0,0,0],
     onClick=undefined,
+    onRest=undefined,
     ...props
 } : shapeArgs){
+
+    fillConfig = {...defaultFillConfig, ...fillConfig};
     
     const numPoints = useRef(0);
     const [transformedPoints, polygonShape] = useMemo<[[number, number, number][], THREE.ShapeGeometry]>(() => {        
@@ -78,7 +83,7 @@ export function BaseShape({
                     if(numPoints.current === transformedPoints.length - 1)
                         springAPI.start({pause: false})
                     
-                    props.onRest();
+                    onRest && onRest();
                     },
                     pause: !animate,
                     delay: delay,
@@ -121,6 +126,7 @@ export type fullRingArgs = Partial<{
     duration: number,
     fillDuration: number,
     fillOpacity: number,
+    thetaStart: number,
     thetaEnd: number,
     pauseFill: boolean,
     delayFillDuration: number,
@@ -141,6 +147,7 @@ export function Ring({
     duration=1000,
     fillDuration=1000,
     fillOpacity=1,
+    thetaStart=0,
     thetaEnd=2*Math.PI,
     pauseFill=false,
     delayFillDuration=(duration + 100),
@@ -175,8 +182,10 @@ export function Ring({
             radius={radius}
             lineWidth={fillInSpring.lineThickness}
             segments={segments}
+            thetaStart={thetaStart}
             thetaEnd={perimeterSpring.thetaEnd}
             targetOpacity={fillOpacity}
+            
             {...props}
         />
     );

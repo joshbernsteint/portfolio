@@ -15,6 +15,7 @@ export type ringArgs = {
     radius: number,
     lineWidth: number,
     segments: number,
+    thetaStart?: number,
     thetaEnd: number,
     materialProps: THREE.MeshBasicMaterialParameters,
     targetOpacity: number,
@@ -40,6 +41,7 @@ function _AnimatedRing({
     radius=30, 
     lineWidth=2, 
     segments=60,
+    thetaStart=0,
     thetaEnd=0, 
     materialProps={color: 'white'},
     targetOpacity=1,
@@ -49,7 +51,7 @@ function _AnimatedRing({
 } : Partial<ringArgs>){
     return (
         <mesh position={position} {...props}>
-            <ringGeometry args={[radius, radius-lineWidth, segments, segments, 0, thetaEnd]} {...geometryProps}/>
+            <ringGeometry args={[radius, radius-lineWidth, segments, segments, thetaStart, thetaEnd]} {...geometryProps}/>
             <meshBasicMaterial transparent opacity={targetOpacity} {...materialProps} side={THREE.DoubleSide}/>
         </mesh>
     );

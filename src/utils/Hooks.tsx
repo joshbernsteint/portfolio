@@ -63,3 +63,11 @@ export function useViewport(){
 
     return size;
 }
+
+export function useHover(cursorType: string): {}{
+    const [_cursor, setCusor] = useCursor();
+    return {
+        onPointerEnter: () => setCusor(cursorType),
+        onPointerLeave: () => setCusor('default'),
+    };
+}

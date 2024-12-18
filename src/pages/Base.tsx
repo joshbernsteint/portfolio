@@ -6,6 +6,7 @@ import Skills from './Skills';
 import { Canvas } from '@react-three/fiber';
 import { View } from '@react-three/drei';
 import StarBackground from '../threeModels/stars/StarBackground';
+import EducationThree from '../threeModels/subpages/Education';
 
 
 
@@ -41,7 +42,8 @@ export default function BasePage(){
       {/* Text Content */}
       <div style={{position: 'absolute',top: '100vh', marginTop: '10rem'}}>
         <div style={{position: 'relative', width: '100vw', height: '100vh'}}>
-          <About scrollRef={aboutRef} style={{zIndex: 10}}/>
+          {/* <About scrollRef={aboutRef} style={{zIndex: 10}}/> */}
+          <Education style={{zIndex: 10}}/>
           <div ref={educationRef} className='sectionSpace' style={{top: '100vh'}}/>
         </div>
       </div>
@@ -67,7 +69,7 @@ export default function BasePage(){
 
           {/* Education */}
           <StarBackground track={educationView}>
-
+            <EducationThree />
           </StarBackground>
 
         </Canvas>
