@@ -64,10 +64,10 @@ export function useViewport(){
     return size;
 }
 
-export function useHover(cursorType: string): {}{
+export function useHover(cursorType: string, onHoverStart: () => void = ()=>{}, onHoverEnd: () => void = () => {}): {}{
     const [_cursor, setCusor] = useCursor();
     return {
-        onPointerEnter: () => setCusor(cursorType),
-        onPointerLeave: () => setCusor('default'),
+        onPointerEnter: () => {setCusor(cursorType); onHoverStart()},
+        onPointerLeave: () => {setCusor('default'); onHoverEnd()},
     };
 }

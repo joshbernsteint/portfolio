@@ -10,18 +10,18 @@ export type lineArgs = {
     opacity: number,
 };
 
-export type ringArgs = {
+export type ringArgs = Partial<{
     position: [number, number, number],
     radius: number,
     lineWidth: number,
     segments: number,
     thetaStart?: number,
     thetaEnd: number,
-    materialProps: THREE.MeshBasicMaterialParameters,
     targetOpacity: number,
     meshProps: any,
     geometryProps: any
-};
+    c?: string,
+}>;
 
 
 function _AnimatedLine({start=[0,0,0], end=[0,0,0], color="white", lineWidth=2, opacity=1,...props} : Partial<lineArgs>){
@@ -42,17 +42,17 @@ function _AnimatedRing({
     lineWidth=2, 
     segments=60,
     thetaStart=0,
+    c="white",
     thetaEnd=0, 
-    materialProps={color: 'white'},
     targetOpacity=1,
     meshProps={},
     geometryProps={},
     ...props
-} : Partial<ringArgs>){
+} : ringArgs){
     return (
         <mesh position={position} {...props}>
             <ringGeometry args={[radius, radius-lineWidth, segments, segments, thetaStart, thetaEnd]} {...geometryProps}/>
-            <meshBasicMaterial transparent opacity={targetOpacity} {...materialProps} side={THREE.DoubleSide}/>
+            <meshBasicMaterial transparent opacity={targetOpacity} color={c} side={THREE.DoubleSide}/>
         </mesh>
     );
 }

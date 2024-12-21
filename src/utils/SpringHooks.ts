@@ -12,7 +12,7 @@ export function useRotate(period: number, options: useRotateOptions = {}) : {rot
     const {clockwise=false, startPaused=false, startRotation=[0,0,0]} = options;
 
     const rotateSpring = useSpring(() => ({
-        from: {rotation: startRotation},
+        from: {rotation: [startRotation[0], startRotation[1], startRotation[2]]},
         to: {rotation: [0,0, clockwise ? -TWO_PI: TWO_PI]},
         config: {duration: period * 1000},
         loop: true,

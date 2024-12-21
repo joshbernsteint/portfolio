@@ -3,7 +3,7 @@ import { HexagonPoints, OctagonPoints, pointList, SquarePoints, TrianglePoints }
 import { a, useChain, useSpring, useSpringRef } from '@react-spring/three';
 import * as THREE from 'three';
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { AnimatedRing } from "../basic/AnimatedLine";
+import { AnimatedRing, ringArgs } from "../basic/AnimatedLine";
 // import { rotateShape } from "../../utils/Math";
 import { useCursor } from "../../utils/Hooks";
 
@@ -16,6 +16,7 @@ export type shapeArgs = Partial<{
     },
     center: [number,number],
     factor: number,
+    lineColor?: string,
     points: pointList,
     animate: boolean,
     delay: number,
@@ -34,6 +35,7 @@ export function BaseShape({
     factor=100,
     points=OctagonPoints,
     animate=true,
+    lineColor="white",
     delay=0,
     children,
     rotation=[0,0,0],
@@ -64,7 +66,7 @@ export function BaseShape({
 
     const [spring, springAPI] = useSpring(() => ({
         from: {opacity: 0},
-        to: {opacity: fillConfig.opacity || 1},
+        to: {opacity: fillConfig.opacity},
         config: {duration: fillConfig.duration || 2000},
         pause: true,
     }), [center, factor, points]);
@@ -88,6 +90,7 @@ export function BaseShape({
                     pause: !animate,
                     delay: delay,
                 }}
+                pathColor={lineColor}
                 rotation={rotation}
  
                 {...props}
@@ -122,6 +125,7 @@ export type fullRingArgs = Partial<{
     radius: number,
     lineWidth: number,
     fill: boolean,
+    lineColor?: string,
     segments: number,
     duration: number,
     fillDuration: number,
@@ -132,19 +136,18 @@ export type fullRingArgs = Partial<{
     delayFillDuration: number,
     delay: number,
     successive: boolean,
-} & {
-    [key: string]: any,
-}
+    
+} & ringArgs
 >;
 
 
 export function Ring({
-    position=[0,0,0],
     radius=30,
     lineWidth=2,
     fill=false,
     segments=60,
     duration=1000,
+    lineColor="white",
     fillDuration=1000,
     fillOpacity=1,
     thetaStart=0,
@@ -178,14 +181,12 @@ export function Ring({
 
     return (
         <AnimatedRing 
-            position={position}
             radius={radius}
             lineWidth={fillInSpring.lineThickness}
-            segments={segments}
             thetaStart={thetaStart}
             thetaEnd={perimeterSpring.thetaEnd}
             targetOpacity={fillOpacity}
-            
+            c={lineColor}
             {...props}
         />
     );

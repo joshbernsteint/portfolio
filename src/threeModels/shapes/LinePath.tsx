@@ -14,6 +14,7 @@ export type linePathArgs = {
     config: Partial<SpringConfig>,
     miscOptions: any,
     loop?: boolean,
+    pathColor?: string,
 } & {
     [key: string]: any,
 };
@@ -22,6 +23,7 @@ export type linePathArgs = {
 
 function LinePath({
     points=[], 
+    pathColor="white",
     lineDuration=1000, 
     lineOpacity=1.0,
     transitionDelay=0,
@@ -60,6 +62,7 @@ function LinePath({
                     key={idx} 
                     opacity={lineOpacity}
                     lineWidth={lineWidth}
+                    color={pathColor}
                     {...props}
                     {...e} 
                     />))

@@ -51,6 +51,7 @@ export type StarsProps = {
     boundMultiplier?: [xBound: number, yBound: number],
     zPos?: number,
     useColors?: boolean,
+    animate?: boolean,
     pointTransform?:(element: number | number[] | StarPoint) => StarPoint,
     fixedSize?: {height: number, width: number, aspect: number} | undefined
 };
@@ -77,6 +78,7 @@ const Stars = React.forwardRef<any, StarsProps>((props: StarsProps, ref) => {
         brightnessOffsetRange=[.05, 1], 
         boundMultiplier=[1,1],
         useColors=false,
+        animate=false,
         zPos=0,
         pointTransform=undefined,
         fixedSize=undefined,
@@ -120,24 +122,26 @@ const Stars = React.forwardRef<any, StarsProps>((props: StarsProps, ref) => {
     }, [size])
     
     const internalRef = useRef<any>();
-    useFrame(({clock}) => {
-        if(internalRef.current){
-            const time = clock.getElapsedTime();
-            const children: Mesh[] = internalRef.current?.children;
-            
-            
-            for (let i = 0; i < children.length; i++) {
-                const {position, radius, modifier, materialProps} = stars[i];
-                const addendum = (Math.sin(time + modifier)*radius);
-                children[i].position.x = position[0] + addendum;
-                children[i].position.y = position[1] + addendum;
+    if(animate){
+        useFrame(({clock}) => {
+            if(internalRef.current){
+                const time = clock.getElapsedTime();
+                const children: Mesh[] = internalRef.current?.children;
                 
-                // Adjust brightness
-                (children[i].material as MeshStandardMaterial).emissiveIntensity = Math.abs(materialProps.emissiveTo * Math.sin(time)) + materialProps.emissiveIntensity;
-                (children[i].material as MeshStandardMaterial).needsUpdate = true;
+                
+                for (let i = 0; i < children.length; i++) {
+                    const {position, radius, modifier, materialProps} = stars[i];
+                    const addendum = (Math.sin(time + modifier)*radius);
+                    children[i].position.x = position[0] + addendum;
+                    children[i].position.y = position[1] + addendum;
+                    
+                    // Adjust brightness
+                    (children[i].material as MeshStandardMaterial).emissiveIntensity = Math.abs(materialProps.emissiveTo * Math.sin(time)) + materialProps.emissiveIntensity;
+                    (children[i].material as MeshStandardMaterial).needsUpdate = true;
+                }
             }
-        }
-    })
+        })
+    }
 
 
     return (

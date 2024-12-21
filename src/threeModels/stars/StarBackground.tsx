@@ -3,15 +3,16 @@ import Stars, { StarsProps } from "./Stars";
 import { ReactElement } from "react";
 
 export type StarBackgroundProps = {
+    index: number,
     numStars?: number,
     track?: React.MutableRefObject<any> | undefined,
     children?: any,
     starProps?: StarsProps
 }
 
-export default function StarBackground({numStars=250, track=undefined, children=[], starProps={}} : StarBackgroundProps){
+export default function StarBackground({index, numStars=250, track=undefined, children=[], starProps={}} : StarBackgroundProps){
   return (
-    <View track={track}>
+    <View track={track} index={index}>
       <PerspectiveCamera makeDefault position={[0,0,200]} fov={90}/>
       <ambientLight intensity={.85} />
       <Stars 

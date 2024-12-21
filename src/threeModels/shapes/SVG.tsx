@@ -1,17 +1,23 @@
 import * as THREE from 'three';
 import { SVGLoader } from 'three/examples/jsm/Addons.js';
 import defaultSVG from '../../assets/svg/bookmark.svg';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 
 export type ThreeSVGProps = {
     src?: string,
     color?: string, 
+    scale?: number,
+    center?: boolean,
+    position?: [number, number, number],
 };
 
 export default function SVGThree(props: ThreeSVGProps){
     const {
         src = defaultSVG,
         color=undefined,
+        scale=1,
+        center=false,
+        position=[0,0,0],
     } = props;
 
     const [svgData, setSVGData] = useState<any[]>([]);
@@ -32,7 +38,7 @@ export default function SVGThree(props: ThreeSVGProps){
                 });
 
                 meshList.push(...shapes.map(e => 
-                    new THREE.Mesh(new THREE.ShapeGeometry(e), material)
+                    [new THREE.ShapeGeometry(e), material]
                 ));
             }
 
@@ -47,7 +53,7 @@ export default function SVGThree(props: ThreeSVGProps){
                 for (const subpath of path.subPaths) {
                     const geomentry = SVGLoader.pointsToStroke(subpath.getPoints(10), path.userData?.style);
                     if(geomentry){
-                        meshList.push(new THREE.Mesh(geomentry, material));
+                        meshList.push([geomentry, material]);
                     }
                 }
             }
@@ -62,14 +68,13 @@ export default function SVGThree(props: ThreeSVGProps){
         getData();
     }, [src]);
 
-    
-    
+
 
     return (
-        <group position={[0,0,0]} scale={5}>
+        <group scale={scale} position={position}>
             {
-                svgData.map((e,i) => (
-                    <primitive object={e} key={i}/>
+                svgData.map(([geo, mat],i) => (
+                    <mesh geometry={geo} material={mat} key={i}/>
                 ))
             }
         </group>

@@ -52,7 +52,7 @@ export default function BasePage(){
       <div id='canvas_container' style={{position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', zIndex: 0}}>
         <Canvas eventSource={containerRef} linear flat dpr={[1,2]}>
           {/* Centerpiece */}
-          <View track={galaxyView}>
+          <View track={galaxyView} index={0}>
             <Galaxy 
               scrollRefs={{
                 about: aboutRef,
@@ -65,10 +65,10 @@ export default function BasePage(){
           </View>
 
           {/* About background */}
-          <StarBackground track={aboutView}/>
+          <StarBackground track={aboutView} index={1}/>
 
           {/* Education */}
-          <StarBackground track={educationView}>
+          <StarBackground track={educationView} index={2}>
             <EducationThree />
           </StarBackground>
 
