@@ -10,13 +10,30 @@ import { useHover } from "../../utils/Hooks";
 import TextAndShapes from "../shapes/TextAndShapes";
 import * as THREE from 'three';
 import { useFrame } from "@react-three/fiber";
-
-// Icon imports
-import CodeIcon from '@mui/icons-material/Code';
-import CodeSVG from '../../assets/svg/code.svg';
 import SVGThree from "../shapes/SVG";
 import { AnimatedRing } from "../basic/AnimatedLine";
 import Text from "../basic/Text";
+
+// Icon imports
+import compSciSVG from '../../assets/svg/education/comp_sci.svg';
+import PrinciplesSVG from '../../assets/svg/education/principles.svg';
+import structSVG from '../../assets/svg/education/struct.svg';
+import StructureSVG from '../../assets/svg/education/data_structures.svg';
+import SystemsSVG from '../../assets/svg/education/systems.svg';
+import SystemsProgSVG from '../../assets/svg/education/systems_prog.svg';
+import OSSVG from '../../assets/svg/education/os.svg';
+import webSVG from '../../assets/svg/education/web.svg';
+import databaseSVG from '../../assets/svg/education/database.svg';
+import concurrentSVG from '../../assets/svg/education/concurrent.svg';
+import HCISVG from '../../assets/svg/education/hci.svg';
+import VisionSVG from '../../assets/svg/education/vision.svg';
+import AgileSVG from '../../assets/svg/education/agile.svg';
+import QuantumSVG from '../../assets/svg/education/quantum.svg';
+import MiningSVG from '../../assets/svg/education/mining.svg';
+import CloudSVG from '../../assets/svg/education/cloud.svg';
+import CodeSVG from '../../assets/svg/education/code.svg';
+import { OpenInNewTab } from "../../utils/window";
+
 
 type formattedDate = [month: string, year: string] | [];
 
@@ -48,13 +65,14 @@ const DateCircle = (props: {position: [number, number, number], date: formattedD
 
 
 type CourseBubbleProps = {
-    name: string,
+    course: course,
     position: [number, number, number] | THREE.Vector3 | [x: number, y: number, z: number],
     radius?: number,
 };
 
 function CourseBubble(props: CourseBubbleProps){
-    const {name, position, radius=25,} = props;
+    const {course, position, radius=25,} = props;
+    const {name, icon, iconRotation=[0,0,0]} = course;
     const [isHovering, setHovering] = useState(false);
     const hover = useHover('pointer', () => {
         setHovering(true);
@@ -77,7 +95,7 @@ function CourseBubble(props: CourseBubbleProps){
             <mesh visible={false}>
                 <circleGeometry args={[10]} />
             </mesh>
-            {!isHovering && <SVGThree src={CodeSVG} color="white" scale={0.01} position={[-4.5, 4.5, 0]}/>}
+            {!isHovering && <SVGThree src={icon} color="white" scale={0.01} position={[0,0,0]} rotation={iconRotation}/>}
             {
                 isHovering && (
                     <Text content={name} textArgs={{depth: .1, size: 5}} centered charactersPerLine={12} lineSpacing={1.75}/>
@@ -87,12 +105,17 @@ function CourseBubble(props: CourseBubbleProps){
     );
 }
 
+type course = {
+    name: string,
+    icon: string,
+    iconRotation?: [number, number, number],
+}
+
 type EducationBulbProps = {
     position: [x: number, y: number, z: number],
     spinClockwise?: boolean,
     startRotation?: [number,number,number],
     level: string,
-    school: string,
     schoolUrl: string,
     schoolIcon?: {
         src: string,
@@ -105,7 +128,7 @@ type EducationBulbProps = {
     numArrows?: number,
     multiplier?: number,
     progressSpeed?: number,
-    relevantCourses?: string[],
+    relevantCourses?: course[],
 };
 
 const AnimatedImage = animated(Image);
@@ -259,13 +282,13 @@ function EducationBulb(props: EducationBulbProps){
                     <group>
                         {
                             coursePoints.map((p,i) => (
-                                <CourseBubble position={[p.x, p.y, .1]} key={i} name={relevantCourses[i]}/>
+                                <CourseBubble position={[p.x, p.y, .1]} key={i} course={relevantCourses[i]}/>
                             ))
                         }
                     </group>
                 </group>
             </group>
-            <group  {...centerHover} rotation={startRotation}>
+            <group  rotation={startRotation}>
                 <a.group {...rotateProps}>
                     <Hexagon factor={75} fillConfig={{color: 'black'}}/>
                     <Hexagon rotation={[0,0,-Math.PI/2]} factor={75} onRest={() => {
@@ -273,7 +296,7 @@ function EducationBulb(props: EducationBulbProps){
                     }}
                 />
                 </a.group>
-                <group rotation={[0,0,-startRotation[2]]}>
+                <group rotation={[0,0,-startRotation[2]]} {...centerHover} onClick={() => OpenInNewTab(schoolUrl)}>
                     <AnimatedImage 
                         url={schoolIcon.src}
                         scale={schoolIcon.scale}
@@ -292,53 +315,81 @@ export default function EducationThree(props: any){
     return (
         <>
             <EducationBulb
-                position={[-275, 20,0]}
+                position={[-270, 20,0]}
                 level="High School"
                 startDate={["September", "2017"]}
                 endDate={["June", "2021"]}
+                gpa="4.0"
                 schoolIcon={{
                     src: mahwahPNG,
                     scale: 90
                 }}
                 schoolUrl="https://hs.mahwah.k12.nj.us/"
                 relevantCourses={[
-                    "AP Computer Science A", 
-                    "AP Computer Science Principles", 
-                    "Data Structures"
+                    {name: "AP Computer Science A", icon: compSciSVG, iconRotation: [0,0,Math.PI]},
+                    {name: "AP Computer Science Principles", icon: PrinciplesSVG},
+                    {name: "Data Structures", icon: structSVG},
                 ]}
             />
             <EducationBulb 
                 position={[30,-50,0]}
                 startDate={["September", "2021"]}
                 endDate={["May", "2024"]}
+                gpa="3.96"
                 level="Bachelor's"
                 startRotation={[0,0,-Math.PI/4]} 
                 schoolUrl="https://www.stevens.edu/"
                 spinClockwise
                 relevantCourses={[
-                    "Algorithms", "Computer Organization & Systems", 
-                    "Systems Programming", 
-                    "Web Development", 
-                    "Database Management Systems", 
-                    "Concurrent Programming", 
-                    "Operating Systems",
-                    "Human Computer Interaction"
+                    {
+                        name: "Algorithms",
+                        icon: StructureSVG
+                    },
+                    {
+                        name: "Computer Organization & Systems",
+                        icon: SystemsSVG
+                    },
+                    {
+                        name: "Systems Programming",
+                        icon: SystemsProgSVG
+                    },
+                    {
+                        name: "Web Development 1 & 2",
+                        icon: webSVG
+                    },
+                    {
+                        name: "Database Systems     1 & 2",
+                        icon: databaseSVG, iconRotation: [0,0,Math.PI]
+                    },
+                    {
+                        name: "Concurrent Programming",
+                        icon: concurrentSVG, iconRotation: [0,0,Math.PI]
+                    },
+                    {
+                        name: "Operating Systems",
+                        icon: OSSVG
+                    },
+                    {
+                        name: "Human Computer Interaction",
+                        icon: HCISVG, iconRotation: [0,0,Math.PI]
+                    }
                 ]}
                 />
             <EducationBulb 
-                position={[275,20,0]} 
+                position={[270,20,0]}
                 startDate={["September", "2024"]}
                 endDate={["May", "2025"]}
+                gpa="4.0"
                 startRotation={[0,0,Math.PI/3]}
                 level="Master's"
                 schoolUrl="https://www.stevens.edu/"
                 inProgress
                 relevantCourses={[
-                    "Quantum Information and Quantum Computation", 
-                    "Agile Methodology", 
-                    "Data Mining", 
-                    "Enterprise and Cloud Computing", 
-                    "Computer Vision",
+                    {name: "Quantum Computation", icon: QuantumSVG, iconRotation: [0,0,Math.PI]},
+                    {name: "Agile Methodology", icon: AgileSVG, iconRotation: [0,0,Math.PI]},
+                    {name: "Data Mining", icon: MiningSVG, iconRotation: [0,0,Math.PI]},
+                    {name: "Cloud Computing", icon: CloudSVG, iconRotation: [0,0,Math.PI]},
+                    {name: "Computer Vision", icon: VisionSVG, iconRotation: [0,0,Math.PI]},
                 ]}
                 />
             {/* <LinePath 

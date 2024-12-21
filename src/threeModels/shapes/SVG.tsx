@@ -9,6 +9,7 @@ export type ThreeSVGProps = {
     scale?: number,
     center?: boolean,
     position?: [number, number, number],
+    rotation?: [number, number, number],
 };
 
 export default function SVGThree(props: ThreeSVGProps){
@@ -18,65 +19,49 @@ export default function SVGThree(props: ThreeSVGProps){
         scale=1,
         center=false,
         position=[0,0,0],
+        rotation=[0,0,0],
     } = props;
 
-    const [svgData, setSVGData] = useState<any[]>([]);
-
-    const getData = async () => {
-        const loader = new SVGLoader();
-        const meshList = [];
-        const {paths} = await loader.loadAsync(src);
-        
-        for (const path of paths) {
-            const fillColor = path.userData?.style.fill;
-            if(fillColor && fillColor !== 'none'){
-                const shapes = SVGLoader.createShapes(path);
-                const material = new THREE.MeshBasicMaterial({
-                    color: new THREE.Color().setStyle(color || fillColor),
-                    transparent: true,
-                    opacity: path.userData?.style.fillOpacity,
-                });
-
-                meshList.push(...shapes.map(e => 
-                    [new THREE.ShapeGeometry(e), material]
-                ));
-            }
-
-            const strokeColor = path.userData?.style.stroke;
-            if(strokeColor && strokeColor !== 'none'){
-                const material = new THREE.MeshBasicMaterial({
-                    color: new THREE.Color().setStyle(color || strokeColor),
-                    transparent: true,
-                    opacity: path.userData?.style.strokeOpacity,
-                });
-
-                for (const subpath of path.subPaths) {
-                    const geomentry = SVGLoader.pointsToStroke(subpath.getPoints(10), path.userData?.style);
-                    if(geomentry){
-                        meshList.push([geomentry, material]);
-                    }
-                }
-            }
-
-        }
-        
-
-        setSVGData(meshList);
-    };
+    const [svgData, setSVGData] = useState<any>(undefined);
 
     useEffect(() => {
-        getData();
+        async function loadSVG(){
+            const loader = new SVGLoader();
+            const group = new THREE.Group();
+
+            group.position.set(...position);
+            group.scale.set(scale, scale, scale);
+            group.rotation.set(...rotation);
+
+            const material = new THREE.MeshBasicMaterial({ color: color, side: THREE.DoubleSide });
+            const {paths} = await loader.loadAsync(src);
+
+            for (const path of paths) {
+                path.toShapes(true).map((shape) => 
+                    group.add(new THREE.Mesh(new THREE.ShapeGeometry(shape), material)));
+            }
+
+            const box = new THREE.Box3().setFromObject(group);
+            const center = box.getCenter(new THREE.Vector3());
+
+            group.position.x = -center.x;
+            group.position.y = -center.y;
+
+            setSVGData(group);
+        }
+        loadSVG();
     }, [src]);
 
 
 
     return (
-        <group scale={scale} position={position}>
-            {
-                svgData.map(([geo, mat],i) => (
-                    <mesh geometry={geo} material={mat} key={i}/>
-                ))
-            }
-        </group>
+        // <group scale={scale} position={position}>
+        //     {
+        //         svgData.map(([geo, mat],i) => (
+        //             <mesh geometry={geo} material={mat} key={i}/>
+        //         ))
+        //     }
+        // </group>
+        svgData && <primitive object={svgData} />
     )
 }
