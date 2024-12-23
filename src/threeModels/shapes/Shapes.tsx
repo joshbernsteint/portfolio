@@ -1,6 +1,6 @@
 import LinePath from "./LinePath";
 import { HexagonPoints, OctagonPoints, pointList, SquarePoints, TrianglePoints } from "./defaultPoints";
-import { a, useChain, useSpring, useSpringRef } from '@react-spring/three';
+import { a, animated, AnimatedComponent, ComponentPropsWithRef, useChain, useSpring, useSpringRef } from '@react-spring/three';
 import * as THREE from 'three';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { AnimatedRing, ringArgs } from "../basic/AnimatedLine";
@@ -11,8 +11,6 @@ import { useCursor } from "../../utils/Hooks";
 export type shapeArgs = Partial<{
     fillConfig: {
         color?: number | string,
-        opacity?: number, 
-        duration?: number,
     },
     center: [number,number],
     factor: number,
@@ -21,6 +19,9 @@ export type shapeArgs = Partial<{
     animate: boolean,
     delay: number,
     rotation: [number, number, number],
+    fillDuration?: number,
+    fillOpacity?: number,
+    springs?: boolean,
     onClick: () => void,
     onRest?: () => void,
 } & {
@@ -31,6 +32,8 @@ const defaultFillConfig = {color: 'white', opacity: 0.5, duration: 1000}
 
 export function BaseShape({
     fillConfig=defaultFillConfig,
+    fillDuration=1000,
+    fillOpacity=0.5,
     center=[0,0],
     factor=100,
     points=OctagonPoints,
@@ -39,6 +42,7 @@ export function BaseShape({
     delay=0,
     children,
     rotation=[0,0,0],
+    springs=true,
     onClick=undefined,
     onRest=undefined,
     ...props
@@ -64,10 +68,12 @@ export function BaseShape({
 
     }, [center, factor, points]);
 
+
+    
     const [spring, springAPI] = useSpring(() => ({
         from: {opacity: 0},
-        to: {opacity: fillConfig.opacity},
-        config: {duration: fillConfig.duration || 2000},
+        to: {opacity: fillOpacity},
+        config: {duration: fillDuration},
         pause: true,
     }), [center, factor, points]);
 
@@ -82,7 +88,7 @@ export function BaseShape({
                 miscOptions={
                     {onRest: () => {
                     numPoints.current++;                
-                    if(numPoints.current === transformedPoints.length - 1)
+                    if(numPoints.current === transformedPoints.length - 1 && springs)
                         springAPI.start({pause: false})
                     
                     onRest && onRest();
@@ -96,7 +102,7 @@ export function BaseShape({
                 {...props}
             />
             <mesh geometry={polygonShape} onClick={onClick} rotation={rotation}>
-                <a.meshStandardMaterial {...fillConfig} transparent opacity={spring.opacity}/>
+                <a.meshStandardMaterial {...fillConfig} transparent opacity={springs ? spring.opacity : fillOpacity}/>
             </mesh>
             {children}
         </group>
@@ -199,6 +205,15 @@ export enum ShapeTypes {
     HEXAGON,
     OCTAGON,
     RING,
+};
+
+export const AnimatedShapes : any = {
+    Base: animated(BaseShape),
+    Triangle: animated(Triangle),
+    Square: animated(Square),
+    Hexagon: animated(Hexagon),
+    Octagon: animated(Octagon),
+    Ring: animated(Ring),
 };
 
 

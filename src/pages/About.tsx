@@ -11,13 +11,13 @@ import DoublePaper from "../components/DoublePaper";
 import SectionLabel from "../components/SectionLabel";
 
 type AboutProps = {
-    scrollRef: any,
+    // scrollRef: any,
     textWidth?: number,
     style?: React.CSSProperties,
     [prop: string]: any,
 };
 
-export default function About({scrollRef, textWidth=0.6, style={}} : AboutProps){
+export default function About({textWidth=0.6, style={}} : AboutProps){
 
     const {width} = useWindow();
     const [activeImage, setActiveImage] = useState<number>(0);
@@ -28,7 +28,7 @@ export default function About({scrollRef, textWidth=0.6, style={}} : AboutProps)
     const imageSize: number = 12 - textSize;
 
     return (
-        <div className="sectionBlock" id="about" ref={scrollRef} style={style}>
+        <div className="sectionBlock" id="about" style={style}>
             <Grid container spacing={2}>
                 <Grid size={profileVisible ? textSize : 12} >
                     <DoublePaper>
@@ -84,10 +84,10 @@ export default function About({scrollRef, textWidth=0.6, style={}} : AboutProps)
                         </Typography> <br/>
                         
                         <hr/><br/>
-                        <Button variant="contained" color="primary" sx={{height: '42px'}} href="https://github.com/joshbernsteint" target="_blank">
+                        <Button variant="contained" color="primary" sx={{height: '42px', margin: '.1rem'}} href="https://github.com/joshbernsteint" target="_blank">
                             Check me out on <img src={githubImg} width={50}/>
                         </Button>{' '}
-                        <Button variant="contained" color="primary" sx={{height: '42px'}} href="https://www.linkedin.com/in/joshua-bernstein-9700261b0/" target="_blank">
+                        <Button variant="contained" color="primary" sx={{height: '42px', margin: '.1rem'}} href="https://www.linkedin.com/in/joshua-bernstein-9700261b0/" target="_blank">
                             Connect with me on <img src={linkedInImg} width={80} style={{marginLeft: '.5rem'}}/>
                         </Button>
                     </DoublePaper>

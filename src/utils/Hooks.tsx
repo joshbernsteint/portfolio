@@ -66,6 +66,9 @@ export function useViewport(){
 
 export function useHover(cursorType: string, onHoverStart: () => void = ()=>{}, onHoverEnd: () => void = () => {}): {}{
     const [_cursor, setCusor] = useCursor();
+    if(cursorType === "disabled"){
+        return {};
+    }
     return {
         onPointerEnter: () => {setCusor(cursorType); onHoverStart()},
         onPointerLeave: () => {setCusor('default'); onHoverEnd()},

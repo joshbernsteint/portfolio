@@ -61,7 +61,7 @@ function Content({periodTime=20, scrollRefs, rotate=true} : any){
                 <TextAndShapes 
                     position={[0,0,0]}
                     groupTextArgs={{rotation: counterRotate.rotation}}
-                    onClick={() => {
+                    onClick={() => {       
                         scrollRefs.about?.current.scrollIntoView();
                     }}
                     text={[
@@ -87,7 +87,9 @@ function Content({periodTime=20, scrollRefs, rotate=true} : any){
                                 transitionDelay: 0,
                                 transitionDelayModifier: 0,
                                 lineDuration: titleDuration,
-                                fillConfig: {color: 'white', opacity: 0.5, duration: 3000}
+                                fillOpacity: 0.5,
+                                fillDuration: 3000,
+                                fillConfig: {color: 'white'}
                             }
                         },
                         {
@@ -97,7 +99,9 @@ function Content({periodTime=20, scrollRefs, rotate=true} : any){
                                 transitionDelay: 0,
                                 transitionDelayModifier: 0,
                                 lineDuration: titleDuration,
-                                fillConfig: {color: 'white', opacity: 0.5, duration: 3000}
+                                fillOpacity: 0.5,
+                                fillDuration: 3000,
+                                fillConfig: {color: 'white'}
                             }
                         }
                     ]}
@@ -204,7 +208,7 @@ function Content({periodTime=20, scrollRefs, rotate=true} : any){
             <TextAndShapes 
                 position={[-200,0,0]}
                 onClick={() => {
-                    scrollRefs.projects?.current.scrollIntoView();
+                    scrollRefs.projects?.current.scrollIntoView();                    
                 }}
                 text={[
                     {
@@ -228,7 +232,6 @@ function Content({periodTime=20, scrollRefs, rotate=true} : any){
                         args: {
                             factor: 48,
                             delay: titleDuration + 500,
-                            onClick: () => console.log('educatioN!'),
                         }
                     }
                 ]}

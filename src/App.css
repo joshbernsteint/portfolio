@@ -19,7 +19,7 @@ html {
 }
 
 .sectionSpace{
-  padding: 2rem;
+  margin: 2rem;
   position: absolute;
   width: 100%;
   min-height: 100vh;
@@ -28,4 +28,6 @@ html {
 
 #about{
   opacity: 0.85;
+  height: 700px;
+  overflow-y: scroll;
 }

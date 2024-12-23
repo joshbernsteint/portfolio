@@ -1,6 +1,8 @@
 import { fullRingArgs, shapeArgs, shapeMap, ShapeTypes } from "./Shapes";
 import { AnimatedText, textArgs } from "../basic/Text";
 import { a, useSprings } from "@react-spring/three";
+import { useHover } from "../../utils/Hooks";
+import { ThreeEvent } from "@react-three/fiber";
 
 export type textShapeArgs = Partial<{
     text: textArgs[],
@@ -9,7 +11,7 @@ export type textShapeArgs = Partial<{
     groupTextArgs: any,
     rotation?: [number, number, number],
     startPaused?: boolean,
-    onClick: () => void,
+    onClick: (e: ThreeEvent<MouseEvent>) => void,
 }> & {
     [key: string] : any,
 };
@@ -34,8 +36,10 @@ export default function TextAndShapes({
         config: { duration: text[i].duration || 1000}
     }));
 
+    const hover = useHover(onClick ? "pointer" : "disabled");
+
     return (
-        <a.group position={position} rotation={rotation} {...props}>
+        <a.group position={position} rotation={rotation} {...props} onClick={onClick} {...hover}>
             <a.group {...groupTextArgs}>
             {
                 textSprings.map((e,i) => (
@@ -51,12 +55,10 @@ export default function TextAndShapes({
                 shapes.map((e,i) => {
                     const Shape = shapeMap[e.type];
                     return (
-                        <Shape {...e.args} key={i} onRest={() => textAPI.start({pause: false})} onClick={onClick}/>
+                        <Shape {...e.args} key={i} onRest={() => textAPI.start({pause: false})}/>
                     );
                 })
             }
-
-
         </a.group>
     )
 }

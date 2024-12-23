@@ -7,6 +7,7 @@ import { Canvas } from '@react-three/fiber';
 import { View } from '@react-three/drei';
 import StarBackground from '../threeModels/stars/StarBackground';
 import EducationThree from '../threeModels/subpages/Education';
+import { useWindow } from '../utils/Hooks';
 
 
 
@@ -28,23 +29,29 @@ export default function BasePage(){
   const educationView = useRef<any>();
 
 
-  const size = { height: 447.2135954999579, width: 897.2309624335192, aspect: 2.0062694235189094 };
+  const windowSize = useWindow();
+  const smallVersion = windowSize.width < 1798;
+  const superSmall = windowSize.aspect < 0.8
+  
 
   return (
     <div style={{width: "100%", height: "100%", backgroundColor: "#15181a", position: 'relative'}} ref={containerRef}>
       {/* Background Viewports */}
       <div id='viewports' style={{width: '100%', height: '100%', position: 'absolute', zIndex: 5, padding: 0, margin: 0}}>
         <div ref={galaxyView} style={{width: '100%', height: '100%'}}/>
-        <div ref={aboutView} style={{width: '100%', height: '110%'}}/>
-        <div ref={educationView} style={{width: '100%', height: '100%'}}/>
+        <div ref={aboutRef} style={{width: '100%', height: '110%'}}/>
+        <div ref={educationRef} style={{width: '100%', height: '100%'}}/>
       </div>
 
       {/* Text Content */}
       <div style={{position: 'absolute',top: '100vh', marginTop: '10rem'}}>
         <div style={{position: 'relative', width: '100vw', height: '100vh'}}>
-          {/* <About scrollRef={aboutRef} style={{zIndex: 10}}/> */}
-          <Education style={{zIndex: 10}}/>
-          <div ref={educationRef} className='sectionSpace' style={{top: '100vh'}}/>
+          <About style={{zIndex: 10, height: (superSmall ? '700px': '100vh')}}/>
+          {smallVersion ? (
+            <Education style={{zIndex: 10, top: '100vh', marginTop: '2rem'}}/>
+          ) : (
+            <div className='sectionSpace' style={{top: '100vh'}} id='about_space'/>
+          )}
         </div>
       </div>
 
@@ -65,11 +72,11 @@ export default function BasePage(){
           </View>
 
           {/* About background */}
-          <StarBackground track={aboutView} index={1}/>
+          <StarBackground track={aboutRef} index={1}/>
 
           {/* Education */}
-          <StarBackground track={educationView} index={2}>
-            <EducationThree />
+          <StarBackground track={educationRef} index={2}>
+            {!smallVersion && <EducationThree />}
           </StarBackground>
 
         </Canvas>

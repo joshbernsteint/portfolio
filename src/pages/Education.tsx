@@ -8,6 +8,7 @@ import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import EventIcon from '@mui/icons-material/EventAvailable';
 import SchoolIcon from '@mui/icons-material/School';
 import SectionLabel from "../components/SectionLabel";
+import { useWindow } from "../utils/Hooks";
 
 type EducationGridProps = {
     level: string,
@@ -24,6 +25,7 @@ type EducationGridProps = {
     inProgress?: boolean
     iconHeight?: number,
     relevantCourses?: string[],
+    gridSize?: number,
     onMountImage?: (height: number, width: number) => void,
 }
 
@@ -40,12 +42,13 @@ function EducationGrid(props: EducationGridProps){
         inProgress=false, 
         relevantCourses=[],
         iconHeight=280,
+        gridSize=3.5,
         onMountImage,
     } = props;
     
     return (
-        <Grid size={3.5} textAlign={'center'}>
-            <Typography variant="h3">
+        <Grid size={gridSize} textAlign={'center'}>
+            <Typography variant="h3" fontSize={"30pt"}>
                 {level}
             </Typography>
             <Typography variant="h6" fontStyle={"italic"}>
@@ -112,10 +115,14 @@ const Seperator = () => <Grid size={0.5} sx={{borderLeft: '1px solid white', min
 
 export default function Education({scrollRef, style={}, ...props}: {[p: string]: any, style?: React.CSSProperties}){
 
+    const {aspect} = useWindow();
+    const stackVersion = aspect < 0.8;
+    
+
     return (
         <div className="sectionBlock" ref={scrollRef} id="education" style={style}>
             <DoublePaper>
-            <SectionLabel label="Education"/>
+            <SectionLabel label="Education" fontSize={stackVersion ? "30pt" : "60pt"}/>
             <br/>
             <Grid container spacing={2} sx={{justifyContent: 'center', justifyItems: 'center'}}>
                 <EducationGrid 
@@ -125,6 +132,7 @@ export default function Education({scrollRef, style={}, ...props}: {[p: string]:
                     endDate="June 2021"
                     schoolUrl="https://hs.mahwah.k12.nj.us/"
                     schoolColor="info"
+                    gridSize={stackVersion ? 12 : 3.5}
                     schoolIcon={{
                         src: mahwahPNG,
                         alt: "Mahwah HS Logo",
@@ -136,7 +144,7 @@ export default function Education({scrollRef, style={}, ...props}: {[p: string]:
                         "Data Structures"
                     ]}
                 />
-                <Seperator />
+                {stackVersion ? <hr style={{width: '100%'}}/> : <Seperator />}
                 <EducationGrid 
                     level="Bachelor's Degree"
                     school="Stevens Institute of Technology"
@@ -144,6 +152,7 @@ export default function Education({scrollRef, style={}, ...props}: {[p: string]:
                     endDate="May 2024"
                     gpa={"3.96"}
                     schoolUrl="https://www.stevens.edu/"
+                    gridSize={stackVersion ? 12 : 3.5}
                     schoolColor="error"
                     schoolIcon={{
                         src: stevensPNG,
@@ -159,7 +168,7 @@ export default function Education({scrollRef, style={}, ...props}: {[p: string]:
                         "Human-Computer Interaction"
                     ]}
                 />
-                <Seperator />
+                {stackVersion ? <hr style={{width: '100%'}}/> : <Seperator />}
                 <EducationGrid 
                     level="Master's Degree"
                     school="Stevens Institute of Technology"
@@ -168,6 +177,7 @@ export default function Education({scrollRef, style={}, ...props}: {[p: string]:
                     inProgress
                     gpa={"4.0"}
                     schoolUrl="https://www.stevens.edu/"
+                    gridSize={stackVersion ? 12 : 3.5}
                     schoolColor="error"
                     schoolIcon={{
                         src: stevensPNG,

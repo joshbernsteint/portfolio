@@ -36,7 +36,7 @@ function _AnimatedLine({start=[0,0,0], end=[0,0,0], color="white", lineWidth=2, 
     );
 }
 
-function _AnimatedRing({
+export function NRing({
     position=[0,0,0], 
     radius=30, 
     lineWidth=2, 
@@ -58,5 +58,5 @@ function _AnimatedRing({
 }
 
 const AnimatedLine = animated(_AnimatedLine);
-export const AnimatedRing = animated(_AnimatedRing);
+export const AnimatedRing = animated(NRing);
 export default AnimatedLine;

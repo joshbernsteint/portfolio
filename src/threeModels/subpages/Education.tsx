@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useRotate } from "../../utils/SpringHooks";
 import LinePath from "../shapes/LinePath";
-import { Hexagon, Octagon, Ring, ShapeTypes, Square } from "../shapes/Shapes";
+import { AnimatedShapes, Hexagon, Octagon, Ring, ShapeTypes, Square } from "../shapes/Shapes";
 import {a, animated, config, useSpring} from '@react-spring/three';
 import { Image, Line, Svg } from "@react-three/drei";
 import stevensPNG from '../../assets/images/education/stevens.png';
@@ -11,7 +11,6 @@ import TextAndShapes from "../shapes/TextAndShapes";
 import * as THREE from 'three';
 import { useFrame } from "@react-three/fiber";
 import SVGThree from "../shapes/SVG";
-import { AnimatedRing } from "../basic/AnimatedLine";
 import Text from "../basic/Text";
 
 // Icon imports
@@ -33,34 +32,40 @@ import MiningSVG from '../../assets/svg/education/mining.svg';
 import CloudSVG from '../../assets/svg/education/cloud.svg';
 import CodeSVG from '../../assets/svg/education/code.svg';
 import { OpenInNewTab } from "../../utils/window";
+import { AnimatedBaseShape, BaseShape } from "../shapes/NShapes";
+import { HexagonPoints, OctagonPoints, TrianglePoints } from "../shapes/defaultPoints";
+import { position } from "../../utils/types";
+import { NRing } from "../basic/AnimatedLine";
 
 
-type formattedDate = [month: string, year: string] | [];
+type formattedDate = [month: string, year: string, day?: string] | [];
 
 const greenColor = '#0BDA51';
 const TWO_PI = 2*Math.PI;
 
 
-const DateCircle = (props: {position: [number, number, number], date: formattedDate, inProgress: boolean}) => (
-    <TextAndShapes 
-        position={props.position}
-        shapes={[{type: ShapeTypes.RING, args: {
-                radius: 20,
-                lineWidth: 1,
-                lineColor: props.inProgress ? 'white' : greenColor
-            }},
-            {type: ShapeTypes.OCTAGON, args: {
-                factor: 20,
-                rotation: [0,0,-Math.PI/8],
-                lineColor: props.inProgress ? 'white' : greenColor
-            }},
-        ]}
-        startPaused={false}
-        text={[
-            {centered: true, content: props.date[0], position: [0,4,0], textArgs: {depth: .1, size: 4}},
-            {centered: true, content: props.date[1], position: [0,-5,0],  textArgs: {depth: .1, size: 4}},
-        ]}
-    />
+const DateCircle = (props: {position: position, date: formattedDate, inProgress: boolean}) => (
+    <group position={props.position}>
+        <NRing 
+            radius={20}
+            lineWidth={1}
+            c={props.inProgress ? 'white' : greenColor}
+            thetaEnd={TWO_PI}
+        />
+        <BaseShape 
+            points={OctagonPoints}
+            factor={20}
+            lineColor={props.inProgress ? 'white' : greenColor}
+            fill
+            fillOpacity={.5}
+        />
+        <Text 
+            textArgs={{depth: .1, size: 4.5}} 
+            centered 
+            charactersPerLine={5} 
+            content={props.date[0] + " " + props.date[1]}
+        />
+    </group>
 );
 
 
@@ -68,34 +73,36 @@ type CourseBubbleProps = {
     course: course,
     position: [number, number, number] | THREE.Vector3 | [x: number, y: number, z: number],
     radius?: number,
+    Shape?: JSX.Element,
 };
 
 function CourseBubble(props: CourseBubbleProps){
-    const {course, position, radius=25,} = props;
-    const {name, icon, iconRotation=[0,0,0]} = course;
+    const {course, position, radius=25, Shape=undefined,} = props;
+    const {name, icon, iconRotation=[0,0,0], fullSize=20} = course;
     const [isHovering, setHovering] = useState(false);
     const hover = useHover('pointer', () => {
         setHovering(true);
     }, () => {
         setHovering(false);
     });
-    const hoverSpring = useSpring({
-        radius: isHovering ? radius : 10,
-        lineWidth: isHovering ? radius : .5,
-        c: isHovering ? 'gray' : 'white',
-        targetOpacity: isHovering ? .95 : 1,
+
+    const factorSpring = useSpring({
+        factor: isHovering ? fullSize : 8,
+        fillOpacity: isHovering ? .75 : .5,
+        config: {
+            ...config.slow,
+            duration: 250,
+        }
     })
 
     return (
         <group position={position} {...hover}>
-            <AnimatedRing 
-                {...hoverSpring}
-                thetaEnd={TWO_PI}
+            <AnimatedBaseShape 
+                rotation={[0,0,-Math.PI/4]} 
+                {...factorSpring}
+                fill
             />
-            <mesh visible={false}>
-                <circleGeometry args={[10]} />
-            </mesh>
-            {!isHovering && <SVGThree src={icon} color="white" scale={0.01} position={[0,0,0]} rotation={iconRotation}/>}
+            {!isHovering && <SVGThree src={icon} color="white" scale={0.01} position={[0,0,0.1]} rotation={iconRotation}/>}
             {
                 isHovering && (
                     <Text content={name} textArgs={{depth: .1, size: 5}} centered charactersPerLine={12} lineSpacing={1.75}/>
@@ -109,6 +116,7 @@ type course = {
     name: string,
     icon: string,
     iconRotation?: [number, number, number],
+    fullSize?: number,
 }
 
 type EducationBulbProps = {
@@ -121,24 +129,21 @@ type EducationBulbProps = {
         src: string,
         scale: [number,number] | number
     },
-    startDate: [month: string, year: string],
-    endDate: [month: string, year: string],
+    startDate: formattedDate,
+    endDate: formattedDate,
     gpa: string,
-    inProgress?: boolean
+    gpaColor?: string,
     numArrows?: number,
     multiplier?: number,
     progressSpeed?: number,
     relevantCourses?: course[],
 };
 
-const AnimatedImage = animated(Image);
-
 
 function EducationBulb(props: EducationBulbProps){
     const {
         position,
         spinClockwise=false,
-        inProgress=false,
         startDate=[], 
         endDate=[],
         startRotation=[0,0,0],
@@ -146,6 +151,8 @@ function EducationBulb(props: EducationBulbProps){
         progressSpeed=0.001,
         multiplier=15,
         relevantCourses=[],
+        gpa='4.0',
+        gpaColor="red",
         level,
         schoolUrl="https://www.stevens.edu/",
         schoolIcon={
@@ -154,8 +161,8 @@ function EducationBulb(props: EducationBulbProps){
         },
     } = props;
 
-    const {rotate} = useRotate(60, {clockwise: spinClockwise, startPaused: true, startRotation: [0,0,0]});
-    const [rotateProps, rotateAPI] = rotate;
+    const {rotate} = useRotate(60, {clockwise: spinClockwise, startPaused: false, startRotation: [0,0,0]});
+    const [rotateProps] = rotate;
     const centerHover = useHover('pointer');
 
 
@@ -165,7 +172,7 @@ function EducationBulb(props: EducationBulbProps){
             105,105,
             1.064*Math.PI, 1.935*Math.PI,
             false, 0
-        )
+        );
 
         // Points for arrow
         const arrow: [x: number, y: number][] = [[0,3], [3,0], [0, -3]];
@@ -188,7 +195,35 @@ function EducationBulb(props: EducationBulbProps){
 
 
         return [curve, curve.getPoints(50), arrow, coursePoints];
-    }, []);    
+    }, []);
+
+
+    const [green, white, progressing] = useMemo<[[number, number], [number, number], [boolean, boolean]]>(() => {
+        function getTimestamp(date: formattedDate){
+            const [month, year, day="1"] = date;
+            return Date.parse(`${month} ${day} ${year}`);
+        }
+        const start = 1.064*Math.PI;
+        const end = start + 0.874*Math.PI;
+        const allGreen: [[number, number], [number, number], [boolean, boolean]] = [[start, end - start], [0,0], [false, false]];
+        const endTime = getTimestamp(endDate);
+        const startTime = getTimestamp(startDate);
+        const now = Date.now();
+    
+        if(now > endTime)
+            return allGreen;
+
+        const wayThrough = (now - startTime) / (endTime - startTime);
+        const greenTheta = (end - start) * wayThrough;
+        const secondStart = start + greenTheta;
+        
+        return [
+            [start, greenTheta],
+            [secondStart, end - secondStart],
+            [false, true],
+        ];
+    }, [startDate, endDate]);
+
     const ref = useRef<any>();
     const tList = useRef<number[]>(new Array(numArrows).fill(0).map((_,i) => i/numArrows));
     function animate(){
@@ -207,11 +242,11 @@ function EducationBulb(props: EducationBulbProps){
             }
         }
     }
-    if(inProgress){
+    if(progressing[1]){
         useFrame(animate);
     }
     useEffect(() => {
-        if(ref.current && !inProgress){
+        if(ref.current && !progressing[1]){
             animate();
             ref.current.children[0].visible = false;
         }
@@ -221,83 +256,97 @@ function EducationBulb(props: EducationBulbProps){
 
     return (
         <group position={position}>
-            <group>
-                <TextAndShapes
-                    position={[0,90,0]}
-                    text={[
-                        {
-                            content: level,
-                            centered: true,
-                            textArgs: {depth: .01, size: 10}
-                        }
+            {/* Title and GPA */}
+            <group position={[0,90,0]}>
+                <BaseShape 
+                    points={[
+                        [-.5,-.1],
+                        [.5,-.1],
+                        [.5, .1],
+                        [-.5, .1],
+                        [-.5, -.1]
                     ]}
-                    // Rectangle
-                    shapes={[
-                        {
-                            type: ShapeTypes.BASE,
-                            args: {
-                                points: [
-                                    [-.5,-.1],
-                                    [.5,-.1],
-                                    [.5, .1],
-                                    [-.5, .1],
-                                    [-.5, -.1]
-                                ]
-                            }
-                        }
-                    ]}            
+                    fill
+                    fillOpacity={.5}
                 />
+                <Text content={level} centered position={[0,0,.1]} textArgs={{depth: .1, size: 10}} color={gpaColor}/>
 
-                {/* Start - End part */}
-                <group>
-                    <DateCircle position={[-105, 0, 0]} date={startDate} inProgress={inProgress}/>
-                    <DateCircle position={[105, 0, 0]} date={endDate} inProgress={inProgress}/>
-                    <Line 
+                {/* GPA */}
+                <group position={[70,0,0]}>
+                        <BaseShape 
+                            points={HexagonPoints}
+                            factor={12}
+                            fill
+                            fillOpacity={.5}
+                            lineColor={'gold'}
+                        />
+                        <BaseShape 
+                            points={HexagonPoints}
+                            factor={12}
+                            rotation={[0,0,-Math.PI/2]}
+                            lineColor={'gold'}
+                        />
+                        <Text centered content={gpa} textArgs={{depth: .1, size: 5}}/>
+                    </group>
+            </group>
+
+            {/* Start - End part */}
+            <group>
+                <DateCircle position={[-105, 0, 0]} date={startDate} inProgress={progressing[0]}/>
+                <DateCircle position={[105, 0, 0]} date={endDate} inProgress={progressing[1]}/>
+                <Line 
+                    position={[0,0,-.1]}
+                    points={linePoints}
+                    color={'white'}
+                    lineWidth={2}
+                    visible={false}
+                />
+                <NRing 
+                    position={[0,0,-.1]}
+                    radius={105}
+                    lineWidth={1}
+                    thetaStart={green[0]}
+                    thetaEnd={green[1]}
+                    c={greenColor}
+                />
+                <NRing
                         position={[0,0,-.1]}
-                        points={linePoints}
-                        color={'white'}
-                        lineWidth={2}
-                        visible={false}
-                    />
-                    <Ring 
                         radius={105}
                         lineWidth={1}
-                        thetaStart={1.064*Math.PI}
-                        thetaEnd={0.874*Math.PI}
-                        lineColor={inProgress ? 'white' : greenColor}
-                    />
-                    <group ref={ref}>
+                        thetaStart={white[0]}
+                        thetaEnd={white[1]}
+                        c={'white'}
+                />
+                <group ref={ref}>
+                {
+                    tList.current.map((_,i) => (
+                        <Line
+                            key={i}
+                            position={[100, 0, 0]}
+                            points={arrowPoints}
+                            linewidth={3}
+                            color={greenColor}
+                        />
+                    ))
+                }
+                </group>
+                <group>
                     {
-                        tList.current.map((_,i) => (
-                            <Line
-                                key={i}
-                                position={[100, 0, 0]}
-                                points={arrowPoints}
-                                linewidth={3}
-                                color={greenColor}
-                            />
+                        coursePoints.map((p,i) => (
+                            <CourseBubble position={[p.x, p.y, .1]} key={i} course={relevantCourses[i]}/>
                         ))
                     }
-                    </group>
-                    <group>
-                        {
-                            coursePoints.map((p,i) => (
-                                <CourseBubble position={[p.x, p.y, .1]} key={i} course={relevantCourses[i]}/>
-                            ))
-                        }
-                    </group>
                 </group>
             </group>
+
+            {/* Center Bulb */}
             <group  rotation={startRotation}>
                 <a.group {...rotateProps}>
-                    <Hexagon factor={75} fillConfig={{color: 'black'}}/>
-                    <Hexagon rotation={[0,0,-Math.PI/2]} factor={75} onRest={() => {
-                        rotateAPI.start({pause: false});
-                    }}
-                />
+                    <BaseShape points={HexagonPoints} factor={75} fillColor="black" fill fillOpacity={0.5}/>
+                    <BaseShape points={HexagonPoints} factor={75} rotation={[0,0,-Math.PI/2]} fill fillOpacity={0.5}/>
                 </a.group>
                 <group rotation={[0,0,-startRotation[2]]} {...centerHover} onClick={() => OpenInNewTab(schoolUrl)}>
-                    <AnimatedImage 
+                    <Image 
                         url={schoolIcon.src}
                         scale={schoolIcon.scale}
                         radius={0}
@@ -320,6 +369,7 @@ export default function EducationThree(props: any){
                 startDate={["September", "2017"]}
                 endDate={["June", "2021"]}
                 gpa="4.0"
+                gpaColor="lightblue"
                 schoolIcon={{
                     src: mahwahPNG,
                     scale: 90
@@ -327,75 +377,46 @@ export default function EducationThree(props: any){
                 schoolUrl="https://hs.mahwah.k12.nj.us/"
                 relevantCourses={[
                     {name: "AP Computer Science A", icon: compSciSVG, iconRotation: [0,0,Math.PI]},
-                    {name: "AP Computer Science Principles", icon: PrinciplesSVG},
-                    {name: "Data Structures", icon: structSVG},
+                    {name: "AP Computer Science Principles", icon: PrinciplesSVG, fullSize: 24},
+                    {name: "Data Structures", icon: structSVG, fullSize: 18},
                 ]}
             />
             <EducationBulb 
                 position={[30,-50,0]}
                 startDate={["September", "2021"]}
-                endDate={["May", "2024"]}
+                endDate={["May", "2024", "22"]}
                 gpa="3.96"
                 level="Bachelor's"
                 startRotation={[0,0,-Math.PI/4]} 
                 schoolUrl="https://www.stevens.edu/"
                 spinClockwise
                 relevantCourses={[
-                    {
-                        name: "Algorithms",
-                        icon: StructureSVG
-                    },
-                    {
-                        name: "Computer Organization & Systems",
-                        icon: SystemsSVG
-                    },
-                    {
-                        name: "Systems Programming",
-                        icon: SystemsProgSVG
-                    },
-                    {
-                        name: "Web Development 1 & 2",
-                        icon: webSVG
-                    },
-                    {
-                        name: "Database Systems     1 & 2",
-                        icon: databaseSVG, iconRotation: [0,0,Math.PI]
-                    },
-                    {
-                        name: "Concurrent Programming",
-                        icon: concurrentSVG, iconRotation: [0,0,Math.PI]
-                    },
-                    {
-                        name: "Operating Systems",
-                        icon: OSSVG
-                    },
-                    {
-                        name: "Human Computer Interaction",
-                        icon: HCISVG, iconRotation: [0,0,Math.PI]
-                    }
+                    {name: "Algorithms", icon: StructureSVG, fullSize: 15},
+                    {name: "Computer Organization & Systems",icon: SystemsSVG, fullSize: 21},
+                    {name: "Systems Programming",icon: SystemsProgSVG, fullSize: 21},
+                    {name: "Web Development 1 & 2",icon: webSVG, fullSize: 18},
+                    {name: "Database Systems     1 & 2",icon: databaseSVG, iconRotation: [0,0,Math.PI], fullSize: 19},
+                    {name: "Concurrent Programming",icon: concurrentSVG, iconRotation: [0,0,Math.PI], fullSize: 21},
+                    {name: "Operating Systems", icon: OSSVG, fullSize: 18,},
+                    {name: "Human Computer Interaction",icon: HCISVG, iconRotation: [0,0,Math.PI], fullSize: 21}
                 ]}
                 />
             <EducationBulb 
                 position={[270,20,0]}
-                startDate={["September", "2024"]}
-                endDate={["May", "2025"]}
+                startDate={["September", "2024", "1"]}
+                endDate={["May", "2025", "22"]}
                 gpa="4.0"
                 startRotation={[0,0,Math.PI/3]}
                 level="Master's"
                 schoolUrl="https://www.stevens.edu/"
-                inProgress
                 relevantCourses={[
                     {name: "Quantum Computation", icon: QuantumSVG, iconRotation: [0,0,Math.PI]},
                     {name: "Agile Methodology", icon: AgileSVG, iconRotation: [0,0,Math.PI]},
-                    {name: "Data Mining", icon: MiningSVG, iconRotation: [0,0,Math.PI]},
-                    {name: "Cloud Computing", icon: CloudSVG, iconRotation: [0,0,Math.PI]},
-                    {name: "Computer Vision", icon: VisionSVG, iconRotation: [0,0,Math.PI]},
+                    {name: "Data      Mining", icon: MiningSVG, iconRotation: [0,0,Math.PI], fullSize: 15},
+                    {name: "Cloud Computing", icon: CloudSVG, iconRotation: [0,0,Math.PI], fullSize: 18},
+                    {name: "Computer Vision", icon: VisionSVG, iconRotation: [0,0,Math.PI], fullSize: 18},
                 ]}
                 />
-            {/* <LinePath 
-                points={[[-250,-10,0], [50,-100,0], [275,20,0]]}
-                
-            /> */}
         </>
     );
 }
