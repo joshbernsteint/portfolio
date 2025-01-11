@@ -1,5 +1,5 @@
 import { useFrame, useThree } from "@react-three/fiber";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export function useCursor() : [string, (newPointer: string) => void]{
     const [cursor, setCursor] = useState(document.getElementById('root')?.style.cursor || "default");
@@ -108,23 +108,38 @@ export function useFPS(options: Partial<useFPSArgs> = useFPSDefaults){
 
 
 
-export function useScroll(targetPercent: number, onFire: (scrollPos?: number) => void = (() => {})) : boolean {
-    const [fired, setFired] = useState(false);
+
+
+export function useVisible(oneShot: boolean = true, checkPast : boolean = true) : [visible: boolean, ref: any]{
+    const [visible, setVisible] = useState<boolean>(false);
+    const objectRef = useRef();
 
     useEffect(() => {
-        const trueHeight = document.getElementById('root')?.scrollHeight || window.innerHeight;
-        function handler(this: Window, _e?: Event){
-            const percentage = this.scrollY / trueHeight;
-            if(!fired && percentage >= targetPercent){
-                setFired(true);
-                onFire(percentage);
-                this.window.removeEventListener('scroll', handler);
-            }
-        }
-        handler.call(window);
-        window.addEventListener('scroll', handler);
-        return () => window.removeEventListener('scroll', handler);
-    }, []);
+        if(oneShot && visible) return;
+        else if(objectRef.current){
+            function handler(this: Window){
+                if(objectRef.current){
+                    const element : Element = objectRef.current;
+                    const rect : DOMRect = element.getBoundingClientRect();
+                    const isVisible : boolean = (
+                        rect.top >= 0 &&
+                        rect.left >= 0 &&
+                        rect.bottom <= (this.innerHeight || document.documentElement.clientHeight) &&
+                        rect.right <= (this.innerWidth || document.documentElement.clientWidth)
+                    ) || (checkPast && rect.top < 0);
 
-    return fired;
+                    setVisible(isVisible);
+
+                    if(isVisible && oneShot){
+                        this.removeEventListener('scrollend', handler);
+                    }
+                }
+            }
+            handler.call(window);
+            window.addEventListener('scrollend', handler);
+            return () => window.removeEventListener('scrollend', handler);
+        }
+    }, [objectRef, visible]);
+
+    return [visible, objectRef];
 }

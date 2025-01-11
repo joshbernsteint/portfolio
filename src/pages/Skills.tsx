@@ -1,15 +1,16 @@
-import DoublePaper from "../components/DoublePaper";
-import SectionLabel from "../components/SectionLabel";
-import SkillRating from "../components/SkillRating";
+import { useVisible } from "../utils/Hooks";
 
 
-export default function Skills({scrollRef, ...props}: {scrollRef: any, [prop: string]: any}){
+export default function Skills({scrollRef}: {scrollRef: any, [prop: string]: any}){
+
+
+    const [inView, visRef] = useVisible(true);
 
     return (
         <div id="skills" className="sectionBlock" ref={scrollRef} style={{marginTop: '2rem'}}>
-            <DoublePaper>
-                <SectionLabel label="Skills"/>
-            </DoublePaper>            
+            <div ref={visRef}>
+                {inView ? 'yo' : 'nah'}
+            </div>
         </div>
     );
 }

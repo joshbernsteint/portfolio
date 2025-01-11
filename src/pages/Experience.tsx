@@ -1,13 +1,12 @@
 import { Timeline, TimelineItem, TimelineDot, TimelineContent, TimelineSeparator, TimelineConnector, TimelineOppositeContent } from '@mui/lab';
-import { useTrail, animated, config, useSprings, useSpring } from '@react-spring/web';
+import { animated, config, useSprings, useSpring } from '@react-spring/web';
 import { ReactElement } from 'react';
-import { useScroll } from '../utils/Hooks';
+import { useVisible } from '../utils/Hooks';
 
 import ImageSearchIcon from '@mui/icons-material/ImageSearch';
-import SchoolIcon from '@mui/icons-material/School';
+import ClassIcon from '@mui/icons-material/Class';
 import DashboardCustomizeIcon from '@mui/icons-material/DashboardCustomize';
-import { duration, Typography } from '@mui/material';
-import SectionLabel from '../components/SectionLabel';
+import { Button, Typography } from '@mui/material';
 
 
 
@@ -20,6 +19,7 @@ type experience = {
     current?: boolean,
     desc: (ReactElement | string)[],
     icon: ReactElement,
+    iconColor?: string,
 }
 
 // This should be in order of most recent first
@@ -36,7 +36,8 @@ const myExperience : experience[] = [
             "Created interfaces between the dashboard and highly-complex existing scripts written in Python.",
             "Communicated with team members to incorporate additional dashboard contributions."
         ],
-        icon: <DashboardCustomizeIcon fontSize='large'/>
+        icon: <DashboardCustomizeIcon fontSize='large'/>,
+        iconColor: 'secondary',
     },
     {
         title: "Course Assistant",
@@ -50,7 +51,8 @@ const myExperience : experience[] = [
             "Ran lab sessions to demonstrate examples and explain course material in greater detail than can be covered in a lecture.",
             "Graded students' homeworks, labs, and exams.",
         ],
-        icon: <SchoolIcon fontSize='large'/>
+        icon: <ClassIcon fontSize='large'/>,
+        iconColor: 'error',
     },
     {
         title: "Research Assistant",
@@ -62,18 +64,19 @@ const myExperience : experience[] = [
             "Wrote scripts in Python to manage large amounts of image data. These handling tasks included downloading, converting, analyzing, and storing image data.",
             "Performed weekly presentations on my progress.",
             "Collaborated with other assistants to ensure everyone had proper knowledge of the codebase.",
-            <span>Coauthor of <a href='https://ui.adsabs.harvard.edu/abs/2023LPICo2806.2937R/abstract' target='_blank'>this paper</a>.</span>,
+            <span>Coauthor of <Button href='https://ui.adsabs.harvard.edu/abs/2023LPICo2806.2937R/abstract' target='_blank' sx={{padding: '0rem .25rem' ,fontSize: 'inherit', textTransform: 'none'}}>this paper</Button>.</span>,
         ],
         icon: <ImageSearchIcon fontSize='large'/>
     }
 ]
 
 const AnimatedConnector = animated(({maxHeight}) => <TimelineConnector sx={{maxHeight, width: '5px', borderRadius: '5px'}}/>);
-const AnimatedDot = animated(({opacity, color="error",children, ...props}) => <TimelineDot color={color} sx={{opacity, ...props}}>{children}</TimelineDot>);
+const AnimatedDot = animated(({opacity, color="info",children, ...props}) => <TimelineDot color={color} sx={{opacity, ...props}}>{children}</TimelineDot>);
 
 export default function Experience({scrollRef} : any){
-    const inView = useScroll(.7);
 
+    const [inView, visRef] = useVisible(true);
+    
     
     const title = useSpring({
         config: {duration: 500, ...config.molasses},
@@ -94,23 +97,23 @@ export default function Experience({scrollRef} : any){
                 <animated.div style={{overflow: 'hidden', ...title}}>
                     <Typography variant='h1'>Experience</Typography>
                 </animated.div>
-                <Timeline position='right'>
+                <Timeline position='right' ref={visRef}>
                     {
                         myExperience.map((e,i) => (
                             <TimelineItem key={i} >
                                 <TimelineOppositeContent>
                                     <animated.div style={{opacity: trail[i].opacity}}>
-                                    <b style={{fontSize: '22pt'}}>{e.company}</b><br/>
-                                    <span style={{fontSize: '18pt'}}>
-                                    <i>
-                                        {e.from.month} {e.from.year}{e.current ? (<> &mdash; Present</>) : (e.to && <> &mdash; {e.to.month} {e.to.year}</>)}
-                                        <br/>{e.location}
-                                    </i>
-                                    </span>
+                                        <b style={{fontSize: '22pt'}}>{e.company}</b><br/>
+                                        <span style={{fontSize: '18pt'}}>
+                                        <i>
+                                            {e.from.month} {e.from.year}{e.current ? (<> &mdash; Present</>) : (e.to && <> &mdash; {e.to.month} {e.to.year}</>)}
+                                            <br/>{e.location}
+                                        </i>
+                                        </span>
                                     </animated.div>
                                 </TimelineOppositeContent>
                                 <TimelineSeparator>
-                                <AnimatedDot {...trail[i]}>
+                                <AnimatedDot {...trail[i]} color={e.iconColor}>
                                     {e.icon}
                                 </AnimatedDot>
                                 {i < (myExperience.length - 1) && <AnimatedConnector {...trail[i]}/>}

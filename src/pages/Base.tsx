@@ -1,23 +1,17 @@
-import { useEffect, useRef, useState} from 'react'
+import { useRef, useState} from 'react'
 import Galaxy from '../threeModels/stars/Galaxy';
 import About from '../pages/About';
-import Education from './Education';
 import Skills from './Skills';
 import { Canvas } from '@react-three/fiber';
 import { View } from '@react-three/drei';
 import StarBackground from '../threeModels/stars/StarBackground';
-import EducationThree from '../threeModels/subpages/Education';
-import { useFPS, useScroll, useWindow } from '../utils/Hooks';
+import { useFPS } from '../utils/Hooks';
 import { Button, Typography } from '@mui/material';
 import GridLayout from '../components/GridLayout';
-import { Parallax, ParallaxLayer } from '@react-spring/parallax';
-import MyView from '../threeModels/MyView';
-import DoublePaper from '../components/DoublePaper';
-import SectionLabel from '../components/SectionLabel';
 import Experience from './Experience';
-import Education2 from './Education2';
+import Education from './Education';
 
-function FPSCounter({onFail=() => {}, ...props}){
+function FPSCounter({onFail=() => {}}){
   useFPS({onFail});
   return <></>;
 }
@@ -55,7 +49,7 @@ export default function BasePage(){
   const skillsRef = useRef<any>();
   const projectsRef = useRef<any>();
   const experienceRef = useRef<any>();
-
+  
 
   // For tracking viewport
   const containerRef = useRef<any>();
@@ -64,21 +58,7 @@ export default function BasePage(){
 
 
   const [version, setVersion] = useState<pageVersion>(pageVersion.default);
-  const windowSize = useWindow(({width}) => {
-    if(width < 1798){
-      setVersion(pageVersion.small);
-    }
-    else{
-      setVersion(pageVersion.default);
-    }
-  });
-
   const noThree = (version === pageVersion.noThree);
-  const smallVersion = (version === pageVersion.small) || noThree;
-  const superSmall = windowSize.aspect < 0.8;
-
-
-
 
   return (
     <div style={{width: "100%", height: "100%", backgroundColor: "#15181a", position: 'relative'}} ref={containerRef}>
@@ -86,7 +66,6 @@ export default function BasePage(){
       
       <div id='viewports' style={{width: '100%', height: '100%', position: 'absolute', zIndex: 11, padding: 0, margin: 0}}>
         <div ref={galaxyView} style={{width: '100%', height: '100%'}}/>
-        {/* <div ref={experienceRef} style={{width: '100%', height: '100%'}}/> */}
       </div>
 
         <div id='viewports_bg' style={{width: '100%', height: '100%', position: 'absolute', zIndex: 4, padding: 0, margin: 0, top: 0}}>
@@ -122,9 +101,9 @@ export default function BasePage(){
       <div style={{position: 'absolute', zIndex: 10, height: '100%', width: '100%', top: 0, left: 0}}>
         <div style={{height: '100vh'}}/>
         <About scrollRef={aboutRef}/>
-        {/* <div style={{height: '100vh'}} ref={educationRef}/> */}
-        <Education2 scrollRef={educationRef} />
+        <Education scrollRef={educationRef} />
         <Experience scrollRef={experienceRef}/>
+        <Skills scrollRef={skillsRef}/>
       </div>
 
 
