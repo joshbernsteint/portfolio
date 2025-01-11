@@ -1,4 +1,4 @@
-import { useThree } from "@react-three/fiber";
+import { useFrame, useThree } from "@react-three/fiber";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 export function useCursor() : [string, (newPointer: string) => void]{
@@ -13,8 +13,9 @@ export function useCursor() : [string, (newPointer: string) => void]{
 }
 
 
-export function useWindow(){
-    function getDimensions() : {width: number, height: number, aspect: number}{
+type windowDimensions = {width: number, height: number, aspect: number};
+export function useWindow(onChange?: (dimensions: windowDimensions) => void){
+    function getDimensions() : windowDimensions{
         return {
             width: window.innerWidth,
             height: window.innerHeight,
@@ -26,7 +27,9 @@ export function useWindow(){
 
     useEffect(() => {
         function handleResize(){
-            setDimensions(getDimensions());
+            const dim = getDimensions();
+            setDimensions(dim);
+            onChange && onChange(dim);
         }
         window.addEventListener('resize', handleResize);
         return () => window.removeEventListener('resize', handleResize);
@@ -64,7 +67,10 @@ export function useViewport(){
     return size;
 }
 
-export function useHover(cursorType: string, onHoverStart: () => void = ()=>{}, onHoverEnd: () => void = () => {}): {}{
+export function useHover(cursorType: string, onHoverStart: () => void = ()=>{}, onHoverEnd: () => void = () => {}): {
+    onPointerEnter?: () => void,
+    onPointerLeave?: () => void,
+}{
     const [_cursor, setCusor] = useCursor();
     if(cursorType === "disabled"){
         return {};
@@ -73,4 +79,52 @@ export function useHover(cursorType: string, onHoverStart: () => void = ()=>{}, 
         onPointerEnter: () => {setCusor(cursorType); onHoverStart()},
         onPointerLeave: () => {setCusor('default'); onHoverEnd()},
     };
+}
+
+type useFPSArgs = {
+    target: number,
+    failTries: number,
+    onFail: (fps?: number) => void,
+};
+
+const useFPSDefaults : useFPSArgs = {target: 30, failTries: 5, onFail: () => {}};
+
+export function useFPS(options: Partial<useFPSArgs> = useFPSDefaults){
+    const {target, failTries, onFail} = {...useFPSDefaults, ...options};
+    const failed = useRef<number>(0);
+
+    useFrame(({clock}) => {
+        if(failed.current < failTries){
+            const fps = 1/clock.getDelta();
+            if(fps < target){
+                failed.current++;
+            }
+            if(failed.current >= failTries){
+                onFail(fps);
+            }
+        }
+    })
+}
+
+
+
+export function useScroll(targetPercent: number, onFire: (scrollPos?: number) => void = (() => {})) : boolean {
+    const [fired, setFired] = useState(false);
+
+    useEffect(() => {
+        const trueHeight = document.getElementById('root')?.scrollHeight || window.innerHeight;
+        function handler(this: Window, _e?: Event){
+            const percentage = this.scrollY / trueHeight;
+            if(!fired && percentage >= targetPercent){
+                setFired(true);
+                onFire(percentage);
+                this.window.removeEventListener('scroll', handler);
+            }
+        }
+        handler.call(window);
+        window.addEventListener('scroll', handler);
+        return () => window.removeEventListener('scroll', handler);
+    }, []);
+
+    return fired;
 }

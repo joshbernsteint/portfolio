@@ -1,6 +1,5 @@
 import { PerspectiveCamera, View } from "@react-three/drei";
 import Stars, { StarsProps } from "./Stars";
-import { ReactElement } from "react";
 
 export type StarBackgroundProps = {
     index: number,
@@ -10,7 +9,10 @@ export type StarBackgroundProps = {
     starProps?: StarsProps
 }
 
-export default function StarBackground({index, numStars=250, track=undefined, children=[], starProps={}} : StarBackgroundProps){
+export default function StarBackground({
+  index, numStars=250, track=undefined, children=[], starProps={}
+} : StarBackgroundProps){
+
   return (
     <View track={track} index={index}>
       <PerspectiveCamera makeDefault position={[0,0,200]} fov={90}/>
@@ -18,7 +20,8 @@ export default function StarBackground({index, numStars=250, track=undefined, ch
       <Stars 
           zPos={-100} 
           numStars={numStars}
-          brightnessRange={[0.5, 1]} 
+          brightnessRange={[0.5, 1]}
+          animate
           radiusRange={[.1, .5]}
           {...starProps}
       />

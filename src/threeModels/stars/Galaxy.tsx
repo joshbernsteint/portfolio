@@ -254,15 +254,15 @@ export default function Galaxy({scrollRefs} : any){
             <PerspectiveCamera makeDefault position={[0,-100,200]} fov={90}/>
             <ambientLight intensity={.85} />
             <Content scrollRefs={scrollRefs} rotate={true} periodTime={120}/>
-            <Stars 
-                centerPosition={[0,-100,0]}
+            {/* <Stars 
+                centerPosition={[0,-100,-.1]}
                 points={backgroundGalaxyPoints}
                 pointTransform={(e: any) => e}
                 zPos={-100} 
                 numStars={300} 
                 brightnessRange={[0.5, 1]} 
                 radiusRange={[.1, .5]} 
-            />
+            /> */}
         </>  
     );
 }

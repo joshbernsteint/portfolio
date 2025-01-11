@@ -13,9 +13,8 @@ html {
 
 .sectionBlock{
   padding: 2rem;
-  position: absolute;
   width: 100vw;
-  height: 100vh;
+  height: max-content;
 }
 
 .sectionSpace{
@@ -23,11 +22,9 @@ html {
   position: absolute;
   width: 100%;
   min-height: 100vh;
-  z-index: 0;
+  z-index: 3;
 }
 
 #about{
-  opacity: 0.85;
-  height: 700px;
-  overflow-y: scroll;
+  opacity: .85;
 }

@@ -2,7 +2,7 @@ import { extend } from '@react-three/fiber';
 import { FontLoader } from 'three/examples/jsm/loaders/FontLoader';
 import { TextGeometry } from 'three/examples/jsm/geometries/TextGeometry';
 import { useMemo } from 'react';
-import font from '../../assets/fonts/roboto/Roboto Black_Regular.json';
+import font from '../../assets/fonts/roboto/Roboto_Regular.json';
 import { animated } from '@react-spring/three';
 import wrap from 'word-wrap';
 import { Box3 } from 'three';

@@ -13,11 +13,12 @@ import SectionLabel from "../components/SectionLabel";
 type AboutProps = {
     // scrollRef: any,
     textWidth?: number,
+    scrollRef: any,
     style?: React.CSSProperties,
     [prop: string]: any,
 };
 
-export default function About({textWidth=0.6, style={}} : AboutProps){
+export default function About({textWidth=0.6, scrollRef, style={}} : AboutProps){
 
     const {width} = useWindow();
     const [activeImage, setActiveImage] = useState<number>(0);
@@ -28,7 +29,7 @@ export default function About({textWidth=0.6, style={}} : AboutProps){
     const imageSize: number = 12 - textSize;
 
     return (
-        <div className="sectionBlock" id="about" style={style}>
+        <div className="sectionBlock" id="about" style={style} ref={scrollRef}>
             <Grid container spacing={2}>
                 <Grid size={profileVisible ? textSize : 12} >
                     <DoublePaper>

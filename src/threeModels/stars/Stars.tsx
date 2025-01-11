@@ -150,7 +150,7 @@ const Stars = React.forwardRef<any, StarsProps>((props: StarsProps, ref) => {
                 {
                     stars.map((e,i) => (
                         <mesh key={i} position={e.position}>
-                            <sphereGeometry args={[e.radius]}/>
+                            <circleGeometry args={[e.radius]}/>
                             <meshStandardMaterial {...e.materialProps}/>
                         </mesh>
                     ))
