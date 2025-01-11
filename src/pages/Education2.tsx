@@ -154,10 +154,18 @@ function EducationRow({level, where, date, gpa, courses, timeCalcs, delay=0, inV
         }
     });
 
+    const hrSpring = useSpring({
+        width: inView ? '30%' : '0%',
+        config: {duration: courses.length * 100},
+        delay: delay + 100,
+    })
+
     const courseTrails = useTrail(courses.length, {
         opacity: inView ? 1 : 0,
+        config: {clamp: true},
         delay: delay,
     })
+
 
 
     return (
@@ -191,7 +199,7 @@ function EducationRow({level, where, date, gpa, courses, timeCalcs, delay=0, inV
                 icon={<SchoolIcon fontSize="inherit"/>}
                 text={<span style={{marginLeft: '1rem'}}>Relevant Coursework</span>}
             />
-            <hr style={{width: '30%'}} align="left"/>
+            <animated.hr style={{width: hrSpring.width}} align="left"/>
             <div style={{width: 'auto', padding: '0rem'}}>
                 <Grid container sx={{textAlign: 'center'}} gap={0}>
                     {
@@ -268,6 +276,20 @@ const myEducation : EducationRowProps[] = [
     }
 ];
 
+const EducationBlurb : (string | ReactNode)[] = [
+    "Over the last 8 years, I've been very fortunate in that I've been able to attend classes to richen and broaden my horizons in the field of computer science.",
+    <>
+        Starting my freshman year of High School, I was able to take the introduction to Programming course and simply fell in love. I then went on to take AP Computer Science
+        my Sophomore year, and then then AP Computer Science Principles and Data Structures my Junior year. 
+    </>,
+    <>
+        Due to my high amount of AP credits and dual-enrollments, I was able to graduate college with my Bachelors' one year early. However, I wasn't done with school there. Because Stevens has a 5 year Masters' program, track, I applied to it with the hope of getting my Bachelors' and Masters' degree in 4 years, which is what I'm currently on track to do!
+    </>,
+    <>
+        My eternal gratitude goes to all my teachers, professors, and advisors who have helped me on my education journey. It simply wouldn't have been possible without their amazing support and guidance.
+    </>
+]
+
 export default function Education2({scrollRef} : any){
 
     const inView = useScroll(.4);
@@ -284,13 +306,30 @@ export default function Education2({scrollRef} : any){
         delay: (i+2)*250,
     }), [inView]);
 
+    const blurbTrail = useTrail(EducationBlurb.length, ({
+        opacity: inView ? 1 : 0,
+        config: {clamp: true},
+        delay: 500,
+    }))
+
     return (
         <div id="education" className="sectionBlock" ref={scrollRef} style={{position: 'relative'}}>
             <Grid container>
                 <Grid size={5}>
-                    <animated.div style={{textAlign: 'center', ...titleSpring}}>
-                        <Typography variant="h1">Education</Typography>
-                    </animated.div>
+                    <div>
+                        <animated.div style={{textAlign: 'center', ...titleSpring}}>
+                            <Typography variant="h1">Education</Typography>
+                        </animated.div>
+                        <animated.div style={{width: '50%', margin: 'auto'}}>
+                            {
+                                EducationBlurb.map((e,i) => (
+                                    <animated.div key={i} style={{opacity: blurbTrail[i].opacity}}>
+                                        <Typography variant="body1">{e}</Typography><br/>
+                                    </animated.div>
+                                ))
+                            }
+                        </animated.div>
+                    </div>
                 </Grid>
                 <Grid size={7}>
                     {
