@@ -197,7 +197,7 @@ function EducationRow({level, where, date, gpa, courses, timeCalcs, delay=0, inV
                 icon={<SchoolIcon fontSize="inherit"/>}
                 text={<span style={{marginLeft: '1rem'}}>Relevant Coursework</span>}
             />
-            <animated.hr style={{width: hrSpring.width}} align="left"/>
+            <animated.hr style={{width: hrSpring.width, marginLeft: 0}}/>
             <div style={{width: 'auto', padding: '0rem'}}>
                 <Grid container sx={{textAlign: 'center'}} gap={0}>
                     {
