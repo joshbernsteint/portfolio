@@ -8,7 +8,8 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "compile": "tsc"
+    "compile": "tsc",
+    "buildd": "tsc && vite build"
   },
   "dependencies": {
     "@emotion/react": "^11.13.5",

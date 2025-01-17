@@ -22,7 +22,6 @@ export default function SkillRating({
     value=0,
     max=0,
     fillColor="blue",
-    ...props
 }: SkillRatingProps){
 
     const numPills: number[] = useMemo(() => new Array(max).fill(0), [max]);
