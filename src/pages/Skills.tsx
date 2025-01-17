@@ -87,26 +87,23 @@ function Spoke({rectParams, children=[], contentRadius = 40, absCenter=[0,0], ed
 
     return (
         <g>
-            <AnimatedLine 
-                x1={center[0]}
-                y1={center[1]}
-
-                {...mainLineSpring}
-            />
-
-            <AnimatedLine 
-                x1={startPoint[0]} 
-                y1={startPoint[1]} 
-            
-                {...leftLineSpring}
-            />
-
-            <AnimatedLine 
-                x1={startPoint[0]} 
-                y1={startPoint[1]} 
-                
-                {...rightLineSpring}
-            />
+            <g fillOpacity={.85} strokeOpacity={.75}>
+                <AnimatedLine 
+                    x1={center[0]}
+                    y1={center[1]}
+                    {...mainLineSpring}
+                />
+                <AnimatedLine 
+                    x1={startPoint[0]} 
+                    y1={startPoint[1]} 
+                    {...leftLineSpring}
+                />
+                <AnimatedLine 
+                    x1={startPoint[0]} 
+                    y1={startPoint[1]} 
+                    {...rightLineSpring}
+                />
+            </g>
             {/* <circle r={1} cx={contentPoint[0]} cy={contentPoint[1]}/> */}
             <SvgHTML x={contentPoint[0]} y={contentPoint[1] - 7.5} styles={{transformBox: 'fill-box', transformOrigin: 'center', transform: 'translateX(-50%)'}} height={25} width={30}>
                 {children}
