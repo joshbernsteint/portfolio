@@ -1,10 +1,11 @@
 import { ReactNode, useMemo, useState } from "react";
 import { useVisible } from "../utils/Hooks";
 import SvgHTML from "../components/SvgHTML.tsx";
-import { Typography } from "@mui/material";
+import { Palette, Typography, useTheme } from "@mui/material";
 import { useSpring, animated, useSprings, config } from "@react-spring/three";
 import { generateCirclePoints, Point2D } from "../utils/Math.ts";
 import Chip, { AnimatedChip } from "../components/Chip.tsx";
+import { Opacity } from "@mui/icons-material";
 
 
 
@@ -12,7 +13,7 @@ const rectWidth = 1;
 const rectHeight = 10;
 const endLength = 46.75;
 
-const AnimatedLine = animated((props: React.SVGLineElementAttributes<SVGLineElement>) => <line {...props} stroke="white" strokeLinecap="round" />);
+const AnimatedLine = animated((props: React.SVGLineElementAttributes<SVGLineElement>) => <line stroke="white" strokeLinecap="round" {...props} />);
 const ADiv = animated(({children, props, opacity=1} : {children?: ReactNode, props?: React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement>, opacity?: number}) => <div {...props} style={{...props?.style, opacity: opacity}}>{children}</div>);
 const targetStrokeWidth = .75;
 
@@ -26,13 +27,14 @@ type SpokeArgs = {
     },
     absCenter?: Point2D
     animate?: boolean,
+    color?: string,
     contentRadius?: number,
     children?: ReactNode,
     delay?: number,
     edges : [p1: Point2D, p2: Point2D]
 };
 
-function Spoke({rectParams, children=[], contentRadius = 40, absCenter=[0,0], edges, animate=false, delay = 0} : SpokeArgs){
+function Spoke({rectParams, children=[], contentRadius = 40, absCenter=[0,0], edges, animate=false, delay = 0, color="white"} : SpokeArgs){
     const beginRadius : number = 12 + rectHeight;
     const {center, rotation} = rectParams;
 
@@ -91,16 +93,19 @@ function Spoke({rectParams, children=[], contentRadius = 40, absCenter=[0,0], ed
                 <AnimatedLine 
                     x1={center[0]}
                     y1={center[1]}
+                    stroke={color}
                     {...mainLineSpring}
                 />
                 <AnimatedLine 
                     x1={startPoint[0]} 
                     y1={startPoint[1]} 
+                    stroke={color}
                     {...leftLineSpring}
                 />
                 <AnimatedLine 
                     x1={startPoint[0]} 
-                    y1={startPoint[1]} 
+                    y1={startPoint[1]}
+                    stroke={color}
                     {...rightLineSpring}
                 />
             </g>
@@ -112,31 +117,67 @@ function Spoke({rectParams, children=[], contentRadius = 40, absCenter=[0,0], ed
     );
 }
 
-
+type PaletteColor = "primary" | "secondary" | "success" | "error" | "info" | "warning";
 
 type SkillSpoke = {
-    title: string,
+    title: string | ReactNode,
     element: string | ReactNode | ((idx: number, isVisible: boolean) => JSX.Element),
+    color?: PaletteColor | string,
 };
 
 const spokes : SkillSpoke[] = [
     {
         title: 'Git & Version Control',
-        element: () => {
+        element: (idx, visible) => {
+            const spring = useSpring({
+                opacity: visible ? 1 : 0,
+                delay: idx*500 + 750,
+            });
+
             return (
-                <ADiv>
-                    yoo
+                <ADiv props={{style: {textAlign: 'center'}}} opacity={spring.opacity}>
+                    <br/>
+                    Adept at Git-based software. Including managing GitHub/GitLab repositories, creating automations, and running tests.
                 </ADiv>
             )
         },
+        color: '#c0c0c0',
     },
     {
         title: 'Cloud Computing',
-        element: 'cloud',
+        element: (idx, visible) => {
+            const spring = useSpring({
+                opacity: visible ? 1 : 0,
+                delay: idx*500 + 750,
+            });
+
+            return (
+                <ADiv opacity={spring.opacity} props={{style: {textAlign: 'center', marginRight: '.1rem'}}}>
+                    <br/>
+                    Well-versed with different cloud computing platforms. Such as Microsoft Azure, Oracle Cloud, Google Cloud, and Amazon Web Services.
+                </ADiv>
+            )
+        },
+        color: 'info',
     },
     {
-        title: "Database Management",
-        element: "NO SQL rulesss"
+        title: <span style={{marginRight: '.1rem'}}>Database Management</span>,
+        element: (idx, visible) => {
+            const spring = useSpring({
+                opacity: visible ? 1 : 0,
+                delay: idx*500 + 750,
+            });
+
+            return (
+                <ADiv opacity={spring.opacity} props={{style: {textAlign: 'center', marginRight: '.1rem'}}}>
+                        <br/>
+                        Experienced with both SQL and NoSQL databases, with particular expertise in PostgreSQL and MongoDB.
+                        <br/><br/>
+                        Capable with caching technologies such as Redis.
+                </ADiv>
+            )
+        },
+        color: 'success',
     },
     {
         title: 'Programming Languages',
@@ -181,30 +222,67 @@ const spokes : SkillSpoke[] = [
                     </p>
                 </ADiv>
             )
-        }
+        },
+        color: 'primary',
     },
     {
-        title: "Containerization software",
-        element: 'docker go brrr',
+        title: <span style={{marginLeft: '.1rem'}}>Containerization software</span>,
+        element: (idx, visible) => {
+            const spring = useSpring({
+                opacity: visible ? 1 : 0,
+                delay: idx*500 + 500,
+            });
+
+            return (
+                <ADiv props={{style: {marginLeft: '.1rem', textAlign: 'center'}}} opacity={spring.opacity}>
+                    <br/>
+                    Proficient with containerization and virtualization technologies such as Docker, VirtualBox, and WSL.
+                </ADiv>
+            )
+        },
+        color: 'warning'
     },
     {
         title: "Full-stack web development",
-        element: "merrrn"
+        element: (idx, visible) => {
+            const spring = useSpring({
+                opacity: visible ? 1 : 0,
+                delay: idx*500 + 500,
+            });
+
+            return (
+                <ADiv props={{style: {textAlign: 'center'}}} opacity={spring.opacity}>
+                    <br/>
+                    Highly accustomed and skilled at working in full-stack environments, principally in the MERN (Mongo, Express, React, Node) stack.
+                </ADiv>
+            )
+        },
+        color: 'secondary',
     }
 ];
 
 export default function Skills({scrollRef}: {scrollRef: any, [prop: string]: any}){
 
+    const theme = useTheme();
 
-
-    const [[circleLines, circleRotations]] = useState(generateCirclePoints(14, 6, undefined, [50,50]))
-    const [[outerCircle, outerRotations]] = useState(generateCirclePoints(40,6, Math.PI/3, [50,50]));
+    const [circleLines, circleRotations, outerCircle] = useMemo(() => {
+        return [
+            ...generateCirclePoints(14, 6, undefined, [50,50]),
+            generateCirclePoints(40,6, Math.PI/3, [50,50])[0]
+        ]
+    }, []);
     const [inView, visRef] = useVisible(true);
 
-    const [titleSprings] = useSprings(6, i => ({
+    const [titleSprings, titleAPI] = useSprings(6, i => ({
         opacity: inView ? 1 : 0,
-        delay: i * 500
+        delay: (i === 0) ? 350 : (i * 500) + 150
     }), [inView]);
+
+    const mainSpring = useSpring({
+        x: inView ? 0 : 30,
+        opacity: inView ? 1 : 0,
+        delay: 0,
+    });
     
 
     return (
@@ -214,9 +292,11 @@ export default function Skills({scrollRef}: {scrollRef: any, [prop: string]: any
                 {/* <circle cx={50} cy={50} r={11} fill="transparent" stroke="white" strokeWidth={.5}/> */}
                 <SvgHTML x={50} y={50} center height={50} width={50}>
                     <div style={{lineHeight: '100%', height: '50%'}} ref={visRef}>
-                    <Typography sx={{textAlign: 'center', fontSize: '6pt', verticalAlign: 'baseline', lineHeight: '50px'}} variant="h1">
-                        Skills
-                    </Typography>
+                        <ADiv opacity={mainSpring.opacity}>
+                            <Typography sx={{textAlign: 'center', fontSize: '6pt', verticalAlign: 'baseline', lineHeight: '50px'}} variant="h1">
+                                Skills
+                            </Typography>
+                        </ADiv>
                     </div>
                 </SvgHTML>
                 {
@@ -232,6 +312,7 @@ export default function Skills({scrollRef}: {scrollRef: any, [prop: string]: any
                             animate={inView}
                             absCenter={[50,50]}
                             edges={[outerCircle[i], outerCircle[(i+1) % 6]]}
+                            color={spokes[i].color && theme.palette[spokes[i].color as PaletteColor] ? theme.palette[spokes[i].color as PaletteColor].main : spokes[i].color}
                         >
                             <div style={{height: '100%', width: '100%'}}>
                                 <ADiv opacity={titleSprings[i].opacity}>

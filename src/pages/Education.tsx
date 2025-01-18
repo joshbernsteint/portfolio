@@ -181,7 +181,7 @@ function EducationRow({level, where, date, gpa, courses, timeCalcs, delay=0, inV
                 <span style={{ fontStyle: 'italic', verticalAlign: 'middle', marginLeft: '1rem'}}>{date}</span>
             }/>
             <IconWithText 
-                icon={<GradeIcon fontSize="inherit" color="warning"/>}
+                icon={<GradeIcon fontSize="inherit" color="inherit"/>}
                 fontSize="14pt"
                 text={
                     <Tooltip 
