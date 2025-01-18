@@ -183,7 +183,7 @@ const spokes : SkillSpoke[] = [
         title: 'Programming Languages',
         element: (i, visible) => {
             
-            const langs : string[] = ["C", "C++", "Python", "Javascript", "Java", "Typescript", "Bash", "Assembly", "Erlang", "Ocaml", "C#"];
+            const langs : string[] = ["C", "C++", "Python", "Javascript", "Java", "Typescript", "C#", "Assembly", "Erlang", "Ocaml", "Bash"];
             const baseDelay = useMemo(() => i*500, [i]);
             const mainSpring = useSpring({
                 opacity: visible ? 1 : 0,

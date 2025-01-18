@@ -94,10 +94,10 @@ export default function Experience({scrollRef} : any){
 
     return (
         <div id='experience' className='sectionBlock' style={{textAlign: 'center'}} ref={scrollRef}>
-                <animated.div style={{overflow: 'hidden', ...title}}>
+                <animated.div style={{overflow: 'hidden', ...title}} ref={visRef}>
                     <Typography variant='h1'>Experience</Typography>
                 </animated.div>
-                <Timeline position='right' ref={visRef}>
+                <Timeline position='right' >
                     {
                         myExperience.map((e,i) => (
                             <TimelineItem key={i} >

@@ -1,14 +1,14 @@
-import { Avatar, Button, Pagination, Paper, Typography } from "@mui/material";
+import { Avatar, Button, Pagination, Paper, Tooltip, Typography } from "@mui/material";
 import Grid from '@mui/material/Grid2';
-import { useWindow } from "../utils/Hooks";
-import React, { useState } from "react";
+import { useVisible, useWindow } from "../utils/Hooks";
+import React, { ReactNode, useState } from "react";
+import {a, config, useSpring, useTrail} from '@react-spring/web';
 
 // Image imports
 import imageMap from "../assets/images/about";
 import githubImg from '../assets/images/about/gitHub.png';
 import linkedInImg from '../assets/images/about/linkedIn.png';
-import DoublePaper from "../components/DoublePaper";
-import SectionLabel from "../components/SectionLabel";
+import { animated } from "@react-spring/three";
 
 type AboutProps = {
     // scrollRef: any,
@@ -18,24 +18,55 @@ type AboutProps = {
     [prop: string]: any,
 };
 
+const AType = animated(({children, style={}, opacity=1} : {children: ReactNode, style?: React.CSSProperties, opacity?: number}) => (
+    <Typography sx={{...style, opacity: opacity}}>
+        {children}
+    </Typography>
+))
+
+
 export default function About({textWidth=0.6, scrollRef, style={}} : AboutProps){
 
     const {width} = useWindow();
     const [activeImage, setActiveImage] = useState<number>(0);
+    const [inView, visRef] = useVisible(true, true);
 
     const profileVisible = width > 1200;
     const isMiniVisible = !profileVisible && width > 875;
     const textSize : number = textWidth * 12;  
     const imageSize: number = 12 - textSize;
 
+    const [textSprings] = useTrail(7, i => ({
+        opacity: inView ? 1 : 0,
+        delay: i*500 + 500,
+        width: inView ? '100%' : '0%',
+    }), [inView]);
+
+    const titleSpring = useSpring({
+        opacity: inView ? 1 : 0,
+        x: inView ? 0 : 40,
+        y: inView ? 0 : -15,
+        config: {clamp: true, ...config.gentle}
+    });
+
+    const imageSpring = useSpring({
+        opacity: inView ? 1 : 0,
+        y: inView ? 0 : 20,
+        x: inView ? 0 : -30,
+        delay: 1000,
+    })
+
     return (
-        <div className="sectionBlock" id="about" style={style} ref={scrollRef}>
-            <Grid container spacing={2}>
-                <Grid size={profileVisible ? textSize : 12} >
-                    <DoublePaper>
+        <a.div className="sectionBlock" id="about" style={style} ref={scrollRef}>
+            <Grid container spacing={2} sx={{padding: '2rem'}}>
+                <Grid size={profileVisible ? textSize : 12}>
                         <Grid container spacing={2}>
                             <Grid size={9}>
-                                <SectionLabel label="About Me"/>
+                                <a.div style={{...titleSpring}}>
+                                    <Typography variant="h1">
+                                        About Me
+                                    </Typography>
+                                </a.div>
                             </Grid>
                             <Grid size={3}>
                                 <Paper
@@ -56,57 +87,62 @@ export default function About({textWidth=0.6, scrollRef, style={}} : AboutProps)
                             </Grid>
                         </Grid>
                         <br/>
-                        <Typography variant="h2" sx={{display: 'inline-block'}}>
-                            Hello!
-                        </Typography>{' '}
-                        <Typography sx={{display: 'inline'}}>
+
+                        <AType opacity={textSprings[0].opacity}>
+                            <span style={{fontSize: '24pt'}}>Hello! </span> 
                             I'm Josh, currently a 21-year-old 4th year Computer Science major at Stevens Institute of Technology in Hoboken, NJ. 
                             I will be graduating with my Master's degree in May with a Master's in Computer Science. I have a particular interest in web development
                             with tools like React and Node.js,
                             and low-level programming in C/C++. I've been programming for over 7 years now, in a variety of languages (most notably: C, C++, Python, Java, and Javascrpt)
-                            , and yet it never stops getting any less interesting!
-                        </Typography> <br/><br/>
-                        <Typography>
+                            , and yet it never stops getting any less interesting!  
+                        </AType><br/>
+                        <AType opacity={textSprings[1].opacity}>
                             I describe myself as a nerd, being a huge fan of franchises like Lord of the Rings and Star Wars. 
                             I enjoy playing video games in my spare time, as well as working on whatever my current programming project happens to be.
                             Also, I love spending time with my pets. I have two dogs, Ethel and Angel (the name is very ironic), 
                             and a cat, Gigi. Is that too many you ask? What an absurd thing to say!
-                        </Typography> <br/>
-                        <Typography>
+                        </AType> <br/>
+                        <AType opacity={textSprings[2].opacity}>
                             Over the last 5 years, I've worked as a volunteer for The Seeing Eye, working to raise guide dogs for the blind. 
                             My two dogs are actually retired Seeing Eye dogs, and are now licensed as therapy dogs to continue helping people.
                             In terms of technical experience, I've worked as a student developer since Summer 2021, where I worked on a data anaylsis project. 
                             As of now, I'm working both as a course assistant for the Assembly and introductory C course (CS 382 if you're interested), and as a javascript developer
                             on a research project. 
-                        </Typography> <br/> <br/>
+                        </AType> <br/><br/>
 
-                        <Typography>
+                        <AType opacity={textSprings[3].opacity}>
                             Currently, I am looking for a software developer or engineer full-time position starting Summer 2025.
-                        </Typography> <br/>
+                        </AType> <br/>
                         
-                        <hr/><br/>
-                        <Button variant="contained" color="primary" sx={{height: '42px', margin: '.1rem'}} href="https://github.com/joshbernsteint" target="_blank">
-                            Check me out on <img src={githubImg} width={50}/>
-                        </Button>{' '}
-                        <Button variant="contained" color="primary" sx={{height: '42px', margin: '.1rem'}} href="https://www.linkedin.com/in/joshua-bernstein-9700261b0/" target="_blank">
-                            Connect with me on <img src={linkedInImg} width={80} style={{marginLeft: '.5rem'}}/>
-                        </Button>
-                    </DoublePaper>
+                        <a.hr style={{marginLeft: 0, ...textSprings[4]}}/><br/>
+                        <a.span style={{opacity: textSprings[5].opacity}} ref={visRef}>
+                            <Button variant="contained" color="primary" sx={{height: '42px', margin: '.1rem'}} href="https://github.com/joshbernsteint" target="_blank">
+                                Check me out on <img src={githubImg} width={50}/>
+                            </Button>
+                        </a.span>{' '}
+                        <a.span style={{opacity: textSprings[6].opacity}}>
+                            <Button variant="contained" color="primary" sx={{height: '42px', margin: '.1rem'}} href="https://www.linkedin.com/in/joshua-bernstein-9700261b0/" target="_blank">
+                                Connect with me on <img src={linkedInImg} width={80} style={{marginLeft: '.5rem'}}/>
+                            </Button>
+                        </a.span>
                 </Grid>
                 {
                     profileVisible && (
-                        <Grid size={imageSize} sx={{justifyContent: 'center', textAlign: 'center', alignContent: 'center', display: 'flex', flexFlow: 'wrap'}}>
-                            <img {...imageMap[activeImage]} width={"80%"} style={{borderRadius: '10px'}}/>
-                            <span style={{width: '100%'}}></span>
-                            <Pagination 
-                                count={imageMap.length} 
-                                sx={{marginTop: '.5rem'}} 
-                                onChange={(_, page: number) => setActiveImage(page - 1)}
-                            />
+                        <Grid size={imageSize}>
+                            <a.div style={{marginTop: '5%', justifyContent: 'center', textAlign: 'center', alignContent: 'center', display: 'flex', flexFlow: 'wrap', ...imageSpring}}>
+                                <Tooltip title={<span style={{fontSize: '10pt'}}>{imageMap[activeImage].alt}</span>} followCursor>
+                                    <img {...imageMap[activeImage]} width={"80%"} style={{borderRadius: '10px', border: '.5px solid white'}}/>
+                                </Tooltip>
+                                <Pagination 
+                                    count={imageMap.length} 
+                                    sx={{marginTop: '.5rem'}} 
+                                    onChange={(_, page: number) => setActiveImage(page - 1)}
+                                />
+                            </a.div>
                         </Grid>
                     )
                 }
             </Grid>
-        </div>
+        </a.div>
     );
 }
