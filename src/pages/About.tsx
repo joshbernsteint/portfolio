@@ -130,8 +130,8 @@ export default function About({textWidth=0.6, scrollRef, style={}} : AboutProps)
                     profileVisible && (
                         <Grid size={imageSize}>
                             <a.div style={{marginTop: '5%', justifyContent: 'center', textAlign: 'center', alignContent: 'center', display: 'flex', flexFlow: 'wrap', ...imageSpring}}>
-                                <Tooltip title={<span style={{fontSize: '10pt'}}>{imageMap[activeImage].alt}</span>} followCursor>
-                                    <img {...imageMap[activeImage]} width={"80%"} style={{borderRadius: '10px', border: '.5px solid white'}}/>
+                                <Tooltip title={<span style={{fontSize: '12pt'}}>{imageMap[activeImage].alt}</span>} followCursor>
+                                    <img {...imageMap[activeImage]} width={"80%"} style={{borderRadius: '10px', border: '.5px solid white', padding: '.25rem'}}/>
                                 </Tooltip>
                                 <Pagination 
                                     count={imageMap.length} 

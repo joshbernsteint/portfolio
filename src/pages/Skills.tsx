@@ -1,17 +1,16 @@
-import { ReactNode, useMemo, useState } from "react";
+import { ReactNode, useMemo } from "react";
 import { useVisible } from "../utils/Hooks";
 import SvgHTML from "../components/SvgHTML.tsx";
-import { Palette, Typography, useTheme } from "@mui/material";
+import { Typography, useTheme } from "@mui/material";
 import { useSpring, animated, useSprings, config } from "@react-spring/three";
 import { generateCirclePoints, Point2D } from "../utils/Math.ts";
-import Chip, { AnimatedChip } from "../components/Chip.tsx";
-import { Opacity } from "@mui/icons-material";
+import { AnimatedChip } from "../components/Chip.tsx";
 
 
 
 const rectWidth = 1;
 const rectHeight = 10;
-const endLength = 46.75;
+// const endLength = 46.75;
 
 const AnimatedLine = animated((props: React.SVGLineElementAttributes<SVGLineElement>) => <line stroke="white" strokeLinecap="round" {...props} />);
 const ADiv = animated(({children, props, opacity=1} : {children?: ReactNode, props?: React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement>, opacity?: number}) => <div {...props} style={{...props?.style, opacity: opacity}}>{children}</div>);
@@ -273,7 +272,7 @@ export default function Skills({scrollRef}: {scrollRef: any, [prop: string]: any
     }, []);
     const [inView, visRef] = useVisible(true);
 
-    const [titleSprings, titleAPI] = useSprings(6, i => ({
+    const [titleSprings] = useSprings(6, i => ({
         opacity: inView ? 1 : 0,
         delay: (i === 0) ? 350 : (i * 500) + 150
     }), [inView]);
