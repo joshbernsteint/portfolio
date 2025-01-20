@@ -10,6 +10,7 @@ import { Button, Typography } from '@mui/material';
 import GridLayout from '../components/GridLayout';
 import Experience from './Experience';
 import Education from './Education';
+import Projects from './Projects.tsx';
 
 function FPSCounter({onFail=() => {}}){
   useFPS({onFail});
@@ -47,7 +48,7 @@ export default function BasePage(){
   const aboutRef = useRef<any>();
   const educationRef = useRef<any>();
   const skillsRef = useRef<any>();
-  const projectsRef = useRef<any>();
+  const projectsRef = useRef<HTMLDivElement>();
   const experienceRef = useRef<any>();
   
 
@@ -104,10 +105,9 @@ export default function BasePage(){
         <Education scrollRef={educationRef} />
         <Experience scrollRef={experienceRef}/>
         <Skills scrollRef={skillsRef}/>
+        <Projects scrollRef={projectsRef}/>
       </div>
 
-
-      
         {
           !noThree && (
             <div id='canvas_container' style={{top: 0, left: 0, width: '100%', height: '100%', position: 'fixed', zIndex: 0}}>
@@ -127,14 +127,7 @@ export default function BasePage(){
                   }}
                 />
               </View>
-    
-              {/* Education */}
-              {/* <MyView track={educationRef} index={1}>
-                {!smallVersion && <EducationThree />}
-              </MyView> */}
-
-
-
+              
               <StarBackground track={starView} index={1} numStars={400} 
                 starProps={{
                   // radiusRange: [.05,.2],

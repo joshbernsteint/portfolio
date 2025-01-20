@@ -2,9 +2,11 @@ import { ReactNode, useMemo } from "react";
 import { useVisible } from "../utils/Hooks";
 import SvgHTML from "../components/SvgHTML.tsx";
 import { Typography, useTheme } from "@mui/material";
-import { useSpring, animated, useSprings, config } from "@react-spring/three";
+import { useSpring, useSprings, config } from "@react-spring/three";
 import { generateCirclePoints, Point2D } from "../utils/Math.ts";
 import { AnimatedChip } from "../components/Chip.tsx";
+import AnimatedLine from "../components/animated/AnimatedLine.tsx";
+import ADiv from "../components/animated/AnimatedDiv.tsx";
 
 
 
@@ -12,8 +14,6 @@ const rectWidth = 1;
 const rectHeight = 10;
 // const endLength = 46.75;
 
-const AnimatedLine = animated((props: React.SVGLineElementAttributes<SVGLineElement>) => <line stroke="white" strokeLinecap="round" {...props} />);
-const ADiv = animated(({children, props, opacity=1} : {children?: ReactNode, props?: React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement>, opacity?: number}) => <div {...props} style={{...props?.style, opacity: opacity}}>{children}</div>);
 const targetStrokeWidth = .75;
 
 
@@ -285,14 +285,12 @@ export default function Skills({scrollRef}: {scrollRef: any, [prop: string]: any
     
 
     return (
-        <div id="skills" className="sectionBlock" ref={scrollRef} style={{marginTop: '2rem', height: '100%'}}>
-            <div style={{maxHeight: '100vh'}}>
+        <div id="skills" className="sectionBlock" ref={scrollRef} style={{marginTop: '2rem', height: '100vh'}}>
             <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" height={'100vh'} width={'100%'}>
-                {/* <circle cx={50} cy={50} r={11} fill="transparent" stroke="white" strokeWidth={.5}/> */}
                 <SvgHTML x={50} y={50} center height={50} width={50}>
                     <div style={{lineHeight: '100%', height: '50%'}} ref={visRef}>
                         <ADiv opacity={mainSpring.opacity}>
-                            <Typography sx={{textAlign: 'center', fontSize: '6pt', verticalAlign: 'baseline', lineHeight: '50px'}} variant="h1">
+                            <Typography sx={{textAlign: 'center', fontSize: '8pt', verticalAlign: 'baseline', lineHeight: '50px'}} variant="h1">
                                 Skills
                             </Typography>
                         </ADiv>
@@ -331,7 +329,6 @@ export default function Skills({scrollRef}: {scrollRef: any, [prop: string]: any
                     ))
                 }
             </svg>
-            </div>
         </div>
     );
 }

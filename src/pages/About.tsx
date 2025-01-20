@@ -8,7 +8,7 @@ import {a, config, useSpring, useTrail} from '@react-spring/web';
 import imageMap from "../assets/images/about";
 import githubImg from '../assets/images/about/gitHub.png';
 import linkedInImg from '../assets/images/about/linkedIn.png';
-import { animated } from "@react-spring/three";
+import AType from "../components/animated/AnimatedTypography.tsx";
 
 type AboutProps = {
     // scrollRef: any,
@@ -17,12 +17,6 @@ type AboutProps = {
     style?: React.CSSProperties,
     [prop: string]: any,
 };
-
-const AType = animated(({children, style={}, opacity=1} : {children: ReactNode, style?: React.CSSProperties, opacity?: number}) => (
-    <Typography sx={{...style, opacity: opacity}}>
-        {children}
-    </Typography>
-))
 
 
 export default function About({textWidth=0.6, scrollRef, style={}} : AboutProps){
