@@ -1,4 +1,5 @@
 import './App.css'
+import resume from './assets/JoshuaBernstein_Resume.pdf';
 import BasePage from './pages/Base';
 import { BrowserRouter, Routes, Route } from 'react-router';
 
@@ -8,7 +9,13 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path='/' element={<BasePage />}/>
-          <Route path='/t' element={<>yo</>}/>
+          <Route path='/resume' element={
+            <embed src={resume}
+              type='application/pdf'
+              height={'100%'}
+              width={'100%'}
+            />
+          }/>
         </Routes>
       </BrowserRouter>
     </div>
