@@ -515,9 +515,7 @@ export default function Projects({scrollRef} : {scrollRef: React.MutableRefObjec
                                 <hr/><br/>
 
                                 <Subheader>Description</Subheader>
-                                <p>
-                                    {selectedProject.desc}
-                                </p>
+                                {selectedProject.desc}
 
                                 <Subheader>Features</Subheader>
                                 {selectedProject.features}
