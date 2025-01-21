@@ -78,6 +78,7 @@ type Project = {
 }
 
 const projects : Project[] = [
+    // coverai
     {
         name: "coverai",
         title: "CoverAI",
@@ -107,6 +108,7 @@ const projects : Project[] = [
             image: url(coverAIImage)
         }
     },
+    // algoracer
     {
         name: "algoracer",
         title: "AlgoRacer",
@@ -131,6 +133,7 @@ const projects : Project[] = [
             }
         }
     },
+    // rhythm
     {
         name: "rhythm_game",
         type: displayTypes.GROUP,
@@ -155,6 +158,7 @@ const projects : Project[] = [
             }
         },
     },
+    // website v1
     {
         name: "website_v1",
         type: displayTypes.SOLO,
@@ -178,6 +182,7 @@ const projects : Project[] = [
             }
         }
     },
+    // angel
     {
         name: "angel",
         type: displayTypes.SOLO,
@@ -200,6 +205,7 @@ const projects : Project[] = [
             }
         }
     },
+    // solar
     {
         name: "solar",
         type: displayTypes.GROUP,
@@ -223,6 +229,7 @@ const projects : Project[] = [
             }
         }
     },
+    // ethel
     {
         name: 'ethel',
         type: displayTypes.SOLO,
@@ -246,6 +253,7 @@ const projects : Project[] = [
             }
         }
     },
+    //arm
     {
         name: 'arm_helpers',
         type: displayTypes.SOLO,
@@ -265,6 +273,7 @@ const projects : Project[] = [
             children: "ARMv8 Helpers"
         }
     },
+    // this
     {
         name: 'this',
         type: displayTypes.SOLO,
@@ -287,6 +296,7 @@ const projects : Project[] = [
             }
         },
     },
+    // cs games
     {
         name: 'cs_games',
         type: displayTypes.SOLO,
@@ -310,6 +320,7 @@ const projects : Project[] = [
             }
         }
     },
+    // Algebropiler
     {
         name: 'algebropiler',
         type: displayTypes.GROUP,
@@ -476,31 +487,7 @@ export default function Projects({scrollRef} : {scrollRef: React.MutableRefObjec
                 <Grid size={8}>
                     {
                         selectedProject && (
-                            <div style={{padding: '5rem', paddingTop: '8rem', paddingBottom: 0, height: '100%'}}>
-
-                                {/* <Typography variant="h2" sx={{display: 'inline'}}>
-                                    {selectedProject.title}
-                                </Typography>
-
-                                <div style={{display: 'inline', float: 'right', marginTop: '.5rem', textAlign: 'right'}}>
-                                    <Button 
-                                        sx={{fontSize: '20pt', padding: '0rem 1rem'}} 
-                                        variant="outlined" 
-                                        color="primary"
-                                        endIcon={<span style={{fontSize: '20pt', lineHeight: '10pt'}}><OpenInNewIcon fontSize="inherit"/></span>}
-                                        target="_blank"
-                                        href={selectedProject.link}
-                                    >
-                                        GitHub
-                                    </Button>
-                                    <Typography sx={{marginTop: '.5rem', fontWeight: '300'}} variant="h4">
-                                        {selectedProject.date}
-                                    </Typography>
-                                </div>
-                                <Typography variant='h5' sx={{fontStyle: 'italic'}}>
-                                    {selectedProject.subtitle}
-                                </Typography><hr/><br/> */}
-                                
+                            <div style={{padding: '5rem', paddingTop: '8rem', paddingBottom: 0, height: '100%'}}>                                
                                 {/* Top Half of title*/}
                                 <div>
                                     <Typography variant="h2" sx={{display: 'inline'}}>
