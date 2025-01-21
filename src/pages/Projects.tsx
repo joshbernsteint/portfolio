@@ -1,4 +1,4 @@
-import { Button, Grid2 as Grid, Stack, SvgIcon, ToggleButton, ToggleButtonGroup, Tooltip, Typography } from "@mui/material";
+import { Button, Grid2 as Grid, SvgIcon, ToggleButton, ToggleButtonGroup, Tooltip, Typography } from "@mui/material";
 import React, { ReactNode, useMemo, useState } from "react";
 
 
@@ -16,7 +16,6 @@ import csGamesImage from '../assets/images/projects/cs_games.png';
 import algebropilerImage from '../assets/images/projects/algebropiler.png';
 
 import svgs from '../assets/svg/projects';
-import GitHubIcon from '@mui/icons-material/GitHub';
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 
 import ImageButton, { ImageButtonProps } from "../components/ImageButton.tsx";
@@ -25,7 +24,6 @@ import SouthIcon from '@mui/icons-material/South';
 import NorthIcon from '@mui/icons-material/North';
 import { getMonthYear } from "../utils/Date.ts";
 import ESet from "../utils/ESet.ts";
-import GridLayout from "../components/GridLayout.tsx";
 
 
 const stackMap : {[key: string]: {name: string, link: string}} = {
