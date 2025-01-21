@@ -1,7 +1,9 @@
 import './App.css'
-import resume from './assets/JoshuaBernstein_Resume.pdf';
 import BasePage from './pages/Base';
 import { BrowserRouter, Routes, Route } from 'react-router';
+
+// Resume
+import resume from './assets/JoshuaBernstein_Resume.pdf';
 
 function App() {
   return (
