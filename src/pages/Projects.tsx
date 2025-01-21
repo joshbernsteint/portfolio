@@ -398,9 +398,8 @@ export default function Projects({scrollRef} : {scrollRef: React.MutableRefObjec
         })
 
         return result;
-    }, [ascendingOrder])
-
-    // console.log(currentProject, projectMap[currentProject]);
+    }, [ascendingOrder]);
+    
     
     const selectedProject = useMemo(() => {
         const p = projectMap[currentProject];
@@ -433,7 +432,8 @@ export default function Projects({scrollRef} : {scrollRef: React.MutableRefObjec
                                     value={displayType}
                                     exclusive
                                     onChange={(_, val) => {
-                                        setDisplayType(val as displayTypes);
+                                        if(val != null)
+                                            setDisplayType(val as displayTypes);
                                     }}
                                 >
                                     <ToggleButton value={displayTypes.ALL}>
@@ -453,7 +453,7 @@ export default function Projects({scrollRef} : {scrollRef: React.MutableRefObjec
                                     value={ascendingOrder}
                                     sx={{float: 'right'}}
                                     exclusive
-                                    onChange={(_, val) => setAscendingOrder(val as boolean)}
+                                    onChange={(_, val) => setAscendingOrder(v => typeof val === "boolean" ? val : v)}
                                 >
                                     <Tooltip title={<span style={{fontSize: '12pt'}}>Sort Ascending (Earliest &rarr; latest)</span>} arrow enterDelay={250}>
                                         <ToggleButton value={true}>
