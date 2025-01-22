@@ -58,6 +58,6 @@ app.post('/github', async (req,res) => {
 });
 
 app.listen(PORT, () => {
-    runServer();
+    // runServer();
     console.log("Server Online!");
 });
