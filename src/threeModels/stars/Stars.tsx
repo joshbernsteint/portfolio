@@ -1,4 +1,4 @@
-import { useFrame, useThree } from "@react-three/fiber";
+import { useFrame } from "@react-three/fiber";
 import React, { useMemo, useRef } from "react";
 import { StarPoint } from "../../assets/StarPoints";
 import { randFloat, randInt } from "three/src/math/MathUtils.js";
