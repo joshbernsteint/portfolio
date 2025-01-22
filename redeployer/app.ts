@@ -44,6 +44,8 @@ app.post('/github', async (req,res) => {
     else if(rePull()){
         //Restart the servers
         const body = req.body;
+        console.log(body);
+        
         const branchName = body.ref.split('/')[2];
         if(branchName === "main"){
             console.log(`${new Date().toString()}: Reloading Server`);
