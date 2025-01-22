@@ -9,6 +9,7 @@ import imageMap from "../assets/images/about";
 import githubImg from '../assets/images/about/gitHub.png';
 import linkedInImg from '../assets/images/about/linkedIn.png';
 import AType from "../components/animated/AnimatedTypography.tsx";
+import LinkButton from "../components/LinkButton.tsx";
 
 const activeImageList = imageMap.map(i => <img {...i} width={"80%"} style={{borderRadius: '10px', border: '.5px solid white', padding: '.25rem'}}/>);
 
@@ -106,7 +107,7 @@ export default function About({textWidth=0.6, scrollRef, style={}} : AboutProps)
                         </AType> <br/><br/>
 
                         <AType opacity={textSprings[3].opacity}>
-                            Currently, I am looking for a software developer or engineer full-time position starting Summer 2025.
+                            Currently, I am looking for a software developer or software engineer full-time position starting Summer 2025 or later. If you'd like to view my resume, you can check it out <LinkButton link="/resume">here</LinkButton>.
                         </AType> <br/>
                         
                         <a.hr style={{marginLeft: 0, ...textSprings[4]}}/>
