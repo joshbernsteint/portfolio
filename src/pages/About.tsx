@@ -110,17 +110,19 @@ export default function About({textWidth=0.6, scrollRef, style={}} : AboutProps)
                             Currently, I am looking for a software developer or engineer full-time position starting Summer 2025.
                         </AType> <br/>
                         
-                        <a.hr style={{marginLeft: 0, ...textSprings[4]}}/><br/>
-                        <a.span style={{opacity: textSprings[5].opacity}} ref={visRef}>
-                            <Button variant="contained" color="primary" sx={{height: '42px', margin: '.1rem'}} href="https://github.com/joshbernsteint" target="_blank">
-                                Check me out on <img src={githubImg} width={50}/>
-                            </Button>
-                        </a.span>{' '}
-                        <a.span style={{opacity: textSprings[6].opacity}}>
-                            <Button variant="contained" color="primary" sx={{height: '42px', margin: '.1rem'}} href="https://www.linkedin.com/in/joshua-bernstein-9700261b0/" target="_blank">
-                                Connect with me on <img src={linkedInImg} width={80} style={{marginLeft: '.5rem'}}/>
-                            </Button>
-                        </a.span>
+                        <a.hr style={{marginLeft: 0, ...textSprings[4]}}/>
+                        <div style={{marginTop: '1rem'}}>
+                            <a.span style={{opacity: textSprings[5].opacity}} ref={visRef}>
+                                <Button variant="contained" color="primary" sx={{height: '42px', margin: '.1rem'}} href="https://github.com/joshbernsteint" target="_blank">
+                                    Check me out on <img src={githubImg} width={50}/>
+                                </Button>
+                            </a.span>{' '}
+                            <a.span style={{opacity: textSprings[6].opacity}}>
+                                <Button variant="contained" color="primary" sx={{height: '42px', margin: '.1rem'}} href="https://www.linkedin.com/in/joshua-bernstein-9700261b0/" target="_blank">
+                                    Connect with me on <img src={linkedInImg} width={80} style={{marginLeft: '.5rem'}}/>
+                                </Button>
+                            </a.span>
+                        </div>
                 </Grid>
                 {
                     profileVisible && (
