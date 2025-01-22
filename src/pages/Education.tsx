@@ -167,9 +167,9 @@ function EducationRow({level, where, date, gpa, courses, timeCalcs, delay=0, inV
 
 
     return (
-        <div style={{marginBottom: '20px'}}>
+        <div>
             <Typography variant="h3" sx={{display: 'inline', verticalAlign: 'middle'}}>{level}</Typography>{' '}
-            <span style={{fontSize: '20pt', verticalAlign: 'middle', fontStyle: 'italic'}}>
+            <span style={{fontSize: '16pt', verticalAlign: 'middle', fontStyle: 'italic'}}>
                 &mdash; <Button href={where.link} color={where.color} target="_blank" sx={{fontSize: 'inherit'}}>{where.name}</Button>
             </span><br/>
 

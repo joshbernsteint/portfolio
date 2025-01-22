@@ -1,5 +1,5 @@
 import { Button, Grid2 as Grid, SvgIcon, ToggleButton, ToggleButtonGroup, Tooltip, Typography } from "@mui/material";
-import React, { ReactNode, useMemo, useState } from "react";
+import React, { ReactNode, useEffect, useMemo, useRef, useState } from "react";
 
 
 // Image Imports
@@ -249,7 +249,7 @@ const projects : Project[] = [
     {
         name: "solar",
         type: displayTypes.GROUP,
-        title: "Scrumptious Solar Services",
+        title: "Scrumptious Solar",
         subtitle: "Solar panel Management Portal",
         desc: <>
             A web platform for the management of solar panel installation. 
@@ -472,6 +472,7 @@ export default function Projects({scrollRef} : {scrollRef: React.MutableRefObjec
     const [displayType, setDisplayType] = useState<displayTypes>(displayTypes.ALL);
     const [ascendingOrder, setAscendingOrder] = useState<boolean>(false);
     const [currentProject, setCurrentProject] = useState<string>('');
+    const projectRef = useRef<any>();
 
     const projectButtons = useMemo(() => projects.map((p,i) => (
         <ImageButton key={i} {...p.buttonProps} otherProps={{onClick: () => setCurrentProject(p.name)}}/>
@@ -496,11 +497,19 @@ export default function Projects({scrollRef} : {scrollRef: React.MutableRefObjec
     const selectedProject = useMemo(() => {
         const p = projectMap[currentProject];
         if(!p) return null;
+
         return {
             ...p,
             date: getMonthYear(p.completedDate),
         };
     }, [currentProject]);
+
+    useEffect(() => {
+        if(projectRef.current){
+            const r = projectRef.current as HTMLDivElement;
+            r.scrollTo({top: 0, behavior: 'instant'});
+        }
+    }, [selectedProject]);
 
     const titleSpring = useSpring({
         opacity: inView ? 1 : 0,
@@ -594,22 +603,23 @@ export default function Projects({scrollRef} : {scrollRef: React.MutableRefObjec
                 <Grid size={8}>
                     {
                         selectedProject ? (
-                            <div style={{padding: '5rem', paddingTop: '8rem', paddingBottom: 0, height: '100%'}}>                                
-                                {/* Top Half of title*/}
+                            <div style={{padding: '5rem', paddingTop: '8rem', paddingBottom: 0, display: 'flex', flexDirection: 'column', height: '100vh'}}>                                
                                 <div>
-                                    <Typography variant="h2" sx={{display: 'inline'}}>
-                                        {selectedProject.title}
-                                    </Typography>
-                                    <Button 
-                                        sx={{fontSize: '20pt', padding: '0rem 1rem', float: 'right', marginTop: '1rem'}} 
-                                        variant="outlined" 
-                                        color="primary"
-                                        endIcon={<span style={{fontSize: '20pt', lineHeight: '10pt'}}><OpenInNewIcon fontSize="inherit"/></span>}
-                                        target="_blank"
-                                        href={selectedProject.link}
-                                    >
-                                        GitHub
-                                    </Button>
+                                    {/* Top Half of title*/}
+                                    <div>
+                                        <Typography variant="h2" sx={{display: 'inline'}}>
+                                            {selectedProject.title}
+                                        </Typography>
+                                        <Button 
+                                            sx={{fontSize: '20pt', padding: '0rem 1rem', float: 'right', marginTop: '1rem'}} 
+                                            variant="outlined" 
+                                            color="primary"
+                                            endIcon={<span style={{fontSize: '20pt', lineHeight: '10pt'}}><OpenInNewIcon fontSize="inherit"/></span>}
+                                            target="_blank"
+                                            href={selectedProject.link}
+                                        >
+                                            GitHub
+                                        </Button>
                                 </div>
 
                                 {/* Bottom half of title*/}
@@ -622,24 +632,27 @@ export default function Projects({scrollRef} : {scrollRef: React.MutableRefObjec
                                     </Typography>
                                 </div>
                                 <hr/><br/>
+                                </div>
 
-                                <Subheader>Description</Subheader>
-                                <p />
-                                {selectedProject.desc}
+                                <div style={{flexGrow: 1, overflowY: 'auto'}} ref={projectRef}>
+                                    <Subheader>Description</Subheader>
+                                    <p />
+                                    {selectedProject.desc}
 
-                                <Subheader>Features</Subheader>
-                                {selectedProject.features}
+                                    <Subheader>Features</Subheader>
+                                    {selectedProject.features}
 
 
-                                <Subheader>Technologies</Subheader> <br/>
-                                <div style={{padding: '0rem'}}>
-                                    {selectedProject.stack?.map((e: string, i: number) => (
-                                        <Tooltip title={<span style={{fontSize: '14pt'}}>{stackMap[e].name}</span>} key={i}>
-                                            <Button href={stackMap[e].link} target="_blank">
-                                                {svgMap[e]}
-                                            </Button>
-                                        </Tooltip>
-                                    ))}
+                                    <Subheader>Technologies</Subheader> <br/>
+                                    <div style={{padding: '0rem'}}>
+                                        {selectedProject.stack?.map((e: string, i: number) => (
+                                            <Tooltip title={<span style={{fontSize: '14pt'}}>{stackMap[e].name}</span>} key={i}>
+                                                <Button href={stackMap[e].link} target="_blank">
+                                                    {svgMap[e]}
+                                                </Button>
+                                            </Tooltip>
+                                        ))}
+                                    </div>
                                 </div>
                             </div>
                         ) : (
