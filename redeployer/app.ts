@@ -44,7 +44,6 @@ app.post('/github', async (req,res) => {
     else if(rePull()){
         //Restart the servers
         const body = req.body;
-        console.log(body);
         
         const branchName = body.ref.split('/')[2];
         if(branchName === "main"){
@@ -58,7 +57,6 @@ app.post('/github', async (req,res) => {
 });
 
 app.listen(PORT, () => {
-    // runServer();
-    // h
+    runServer();
     console.log("Server Online!");
 });
