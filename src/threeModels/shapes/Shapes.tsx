@@ -1,8 +1,8 @@
 import LinePath from "./LinePath";
 import { HexagonPoints, OctagonPoints, pointList, SquarePoints, TrianglePoints } from "./defaultPoints";
-import { a, animated, AnimatedComponent, ComponentPropsWithRef, useChain, useSpring, useSpringRef } from '@react-spring/three';
+import { a, animated, useSpring } from '@react-spring/three';
 import * as THREE from 'three';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useMemo, useRef } from 'react';
 import { AnimatedRing, ringArgs } from "../basic/AnimatedLine";
 // import { rotateShape } from "../../utils/Math";
 import { useCursor } from "../../utils/Hooks";
@@ -78,7 +78,7 @@ export function BaseShape({
     }), [center, factor, points]);
 
 
-    const [cursor, setCursor] = useCursor();
+    const [_cursor, setCursor] = useCursor();
     
 
     return (

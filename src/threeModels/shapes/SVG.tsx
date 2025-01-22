@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import { SVGLoader } from 'three/examples/jsm/Addons.js';
 import defaultSVG from '../../assets/svg/bookmark.svg';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 export type ThreeSVGProps = {
     src?: string,
@@ -17,7 +17,6 @@ export default function SVGThree(props: ThreeSVGProps){
         src = defaultSVG,
         color=undefined,
         scale=1,
-        center=false,
         position=[0,0,0],
         rotation=[0,0,0],
     } = props;

@@ -9,7 +9,7 @@ type GridLayoutProps = {
     otherProps?: Grid2Props
 };
 
-export default function GridLayout({children, sizeMap=undefined, spacing=0, otherProps={},...props}: GridLayoutProps){
+export default function GridLayout({children, sizeMap=undefined, spacing=0, otherProps={}}: GridLayoutProps){
 
     const gridSizes = useMemo<number[]>(() => {
         const childrenLength = children.length;

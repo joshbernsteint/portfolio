@@ -1,4 +1,3 @@
-import { useEffect, useLayoutEffect, useRef } from "react";
 
 export type imageProps = {
     src: string,

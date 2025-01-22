@@ -43,7 +43,6 @@ function EducationGrid(props: EducationGridProps){
         relevantCourses=[],
         iconHeight=280,
         gridSize=3.5,
-        onMountImage,
     } = props;
     
     return (
@@ -113,7 +112,7 @@ function EducationGrid(props: EducationGridProps){
 const Seperator = () => <Grid size={0.5} sx={{borderLeft: '1px solid white', minHeight: '100%', width: '0px'}}/>
 
 
-export default function Education({scrollRef, style={}, ...props}: {[p: string]: any, style?: React.CSSProperties}){
+export default function Education({scrollRef, style={}}: {[p: string]: any, style?: React.CSSProperties}){
 
     const {aspect} = useWindow();
     const stackVersion = aspect < 0.8;

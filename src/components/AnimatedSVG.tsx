@@ -1,5 +1,5 @@
-import React, { useEffect, useImperativeHandle, useMemo, useRef, useState } from 'react';
-import { useSpring, a, useSprings } from '@react-spring/web';
+import React, { useEffect, useMemo, useRef } from 'react';
+import { a, useSprings } from '@react-spring/web';
 
 const defaultPathArg = {
     strokeWidth: 1,
