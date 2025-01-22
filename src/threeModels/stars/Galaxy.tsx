@@ -1,6 +1,6 @@
 import { a, useSpring } from '@react-spring/three';
 import {GradientTexture, GradientType, PerspectiveCamera} from '@react-three/drei'
-import { GalaxyRingPoints, backgroundGalaxyPoints } from '../../assets/StarPoints';
+import { GalaxyRingPoints } from '../../assets/StarPoints';
 import { unNormalizePoint } from '../../utils/Math';
 import { DodecagonPoints } from '../shapes/defaultPoints';
 import { ShapeTypes } from '../shapes/Shapes';
@@ -20,14 +20,14 @@ function Content({periodTime=20, scrollRefs, rotate=true} : any){
         args: [galaxyRadius, 120],
     }));
 
-    const [rotateProp, rotateApi] = useSpring(() => ({
+    const [rotateProp] = useSpring(() => ({
         from: {rotation: [0,0,0]},
         to: {rotation: [0,0,rotate ? TWO_PI : 0]},
         config: {duration: periodTime * 1000},
         loop: true
     }), [rotate]);
 
-    const [counterRotate, counterRotateAPI] = useSpring(() => ({
+    const [counterRotate] = useSpring(() => ({
         from: {rotation: [0,0,0]},
         to: {rotation: [0,0,rotate ?  -TWO_PI : 0]},
         config: {duration: periodTime * 1000},
@@ -113,7 +113,7 @@ function Content({periodTime=20, scrollRefs, rotate=true} : any){
         <group>
             {/* Skills */}
             <TextAndShapes
-                position={[200,0,0]}
+                position={[120, -130,0]}
                 onClick={() => {
                     scrollRefs.skills?.current.scrollIntoView();
                 }}
@@ -126,7 +126,7 @@ function Content({periodTime=20, scrollRefs, rotate=true} : any){
                         args: {
                             factor: 85, 
                             rotation: [0,0,Math.PI/3], 
-                            delay: titleDuration + 500
+                            delay: titleDuration + 1000
                         }
                     },
                     {
@@ -135,7 +135,7 @@ function Content({periodTime=20, scrollRefs, rotate=true} : any){
                             position: [0,0,-.1],
                             radius: 40,
                             lineThickness: 1,
-                            delay: titleDuration + 500,
+                            delay: titleDuration + 1000,
                         }
                     }
                 ]}
@@ -143,7 +143,7 @@ function Content({periodTime=20, scrollRefs, rotate=true} : any){
 
             {/* Education */}
             <TextAndShapes
-                position={[-120, -130,0]}
+                position={[-200,0,0]}
                 onClick={() => {
                     scrollRefs.education?.current.scrollIntoView();
                 }}
@@ -156,7 +156,7 @@ function Content({periodTime=20, scrollRefs, rotate=true} : any){
                         args: {
                             factor: 38, 
                             rotation: [0,0,0], 
-                            delay: titleDuration + 1000,
+                            delay: titleDuration + 500,
                         }
                     },
                     {
@@ -164,7 +164,7 @@ function Content({periodTime=20, scrollRefs, rotate=true} : any){
                         args: {
                             points: DodecagonPoints,
                             factor: 45,
-                            delay: titleDuration + 1000,
+                            delay: titleDuration + 500,
                         }
                     }
                 ]}
@@ -173,7 +173,7 @@ function Content({periodTime=20, scrollRefs, rotate=true} : any){
 
             {/* Experience */}
             <TextAndShapes 
-                position={[120, -130,0]}
+                position={[-120, -130,0]}
                 onClick={() => {
                     scrollRefs.experience?.current.scrollIntoView();
                 }}
@@ -206,7 +206,7 @@ function Content({periodTime=20, scrollRefs, rotate=true} : any){
 
             {/* Projects */}
             <TextAndShapes 
-                position={[-200,0,0]}
+                position={[200,0,0]}
                 onClick={() => {
                     scrollRefs.projects?.current.scrollIntoView();                    
                 }}

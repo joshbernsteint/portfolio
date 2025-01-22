@@ -104,8 +104,6 @@ const Stars = React.forwardRef<any, StarsProps>((props: StarsProps, ref) => {
                 randFloat(...brightnessRange)
             ]));
         }
-
-        console.log(parsedPoints);
         
 
         return parsedPoints.map(([x,y, radius, colorIndex, bright]) => ({
