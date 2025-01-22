@@ -112,12 +112,25 @@ const projects : Project[] = [
         title: "AlgoRacer",
         subtitle: "Algorithm Learning Game",
         desc: <>
+            Learn fundamental computer science algorithms by playing a fun game! Race against a computer to complete the steps of a sorting algorithm. Only by completing the steps of the algorithm correctly can you score points.
+            There are two primary gamemodes: Race and Endless. 
 
+            <p>
+                In Race, you and the computer race to sort a certain number of arrays before the other. This mode is considerably easier than Endless.
+            </p>
+
+            <p>
+            In Endless, the game ends when the computer overtakes you, which can either be after 5 arrays or 50. The caveat is that everytime you complete an array, the computer speeds up.
+            When you inevitably lose, you can compare with other users on our leaderboard system to see how you did.
+            </p>
         </>,
         features: <ul>
-
+            <li>Drag and Drop array elements to simulate the steps of the specified sorting algorithm.</li>
+            <li>3 default algorithms: Bubble, insertion, and selection sort.</li>
+            <li>Practice mode to hone your skills in a non-competitive environment.</li>
+            <li>Detailed descriptions and examples of each sorting algorithm.</li>
         </ul>,
-        stack: ['react', 'express', 'mongo', 'socket'],
+        stack: ['react', 'express', 'mongo'],
         type: displayTypes.GROUP,
         link: "https://github.com/joshbernsteint/AlgoRacer",
         completedDate: Date.parse('12/11/2023'),
@@ -138,10 +151,19 @@ const projects : Project[] = [
         title: "Rhythm Game",
         subtitle: "Typing Rhythm Game",
         desc: <>
+            Rhythm games typically rely upon using a small subset of the available keyboard. 
+            However, this project aimed to create a game that utilized every possible key. Both for the aim of variety as well as learning how to type quickly and correctly. 
+            Users can play a level with a song playing, and they must type specific keys as specified to the beat.
 
+            <p>
+                On top of playing singleplayer, you can also play multiplayer, where multiple different players (on different devices) compete to see who can get the highest score. 
+                Moreover, there is a detailed level editor where you can create and edit your own levels, and upload them for others to see.
+            </p>
         </>,
         features: <ul>
-
+            <li>Singleplayer or multiplayer modes, where users can join or create lobbies of their favorite levels.</li>
+            <li>Detailed level creator to build your own levels from an uploaded song file.</li>
+            <li>Friend users to see their levels and lobbies more prominently.</li>
         </ul>,
         stack: ['react', 'express','docker', 'mongo', 'redis', 'clerk', 'socket', 'ffmpeg'],
         link: "https://github.com/ulrokx/cs554-rhythm",
@@ -163,10 +185,18 @@ const projects : Project[] = [
         title: "My Website",
         subtitle: "Well, the first version",
         desc: <>
+            It's function was simple: Be a place to showcase my portfolio and skills as a programmer. 
+            This was my first real foray into web development, and I used this project to learn the basics, as well as some more advanced techniques. 
+            It was built using React.js, with 3D elements from the Three.js library.
 
+            <p>
+                Unfortunately, because it was first real attempt at proper web development, it's a bit outdated. Thus, it has now been replaced by this website.
+            </p>
         </>,
         features: <ul>
-
+            <li>Extended version of my resume with more detailed information.</li>
+            <li>Really bad 3D model I made by myself and it shows.</li>
+            <li>List of all my relevant projects (like this).</li>
         </ul>,
         stack: ['react', 'three'],
         link: "https://github.com/joshbernsteint/joshbernsteint.github.io",
@@ -187,10 +217,18 @@ const projects : Project[] = [
         title: "A.N.G.E.L.",
         subtitle: "Video Downloader and Converter",
         desc: <>
+            I distrust a lot of those online converters, as I don't know what's going on in their backend, and what I am actually downloading.
+            Thus, I decided to make my own platform for downloading and converting videos. 
+            Ffmpeg allows you to convert video files between different types, either one at a time or as a group.
 
+            <p>
+                You can also download youtube videos to a MP4 file. When downloading, you can choose between different video and audio qualities. Using Electron, the project can be opened as an application on your desktop.   
+            </p>
         </>,
         features: <ul>
-
+            <li>Download YouTube videos at different video and audio quality levels.</li>
+            <li>Convert between different video file types.</li>
+            <li>Configure settings for a personalized experience.</li>
         </ul>,
         stack: ['electron', 'ffmpeg', 'react', 'express'],
         link: "https://github.com/joshbernsteint/ANGEL",
@@ -514,7 +552,7 @@ export default function Projects({scrollRef} : {scrollRef: React.MutableRefObjec
                                 </div>
                                 <hr/><br/>
 
-                                <Subheader>Description</Subheader>
+                                <Subheader>Description</Subheader><br/>
                                 {selectedProject.desc}
 
                                 <Subheader>Features</Subheader>
