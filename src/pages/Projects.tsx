@@ -23,6 +23,7 @@ import SortIcon from '@mui/icons-material/Sort';
 import SouthIcon from '@mui/icons-material/South';
 import NorthIcon from '@mui/icons-material/North';
 import { getMonthYear } from "../utils/Date.ts";
+import LinkButton from "../components/LinkButton.tsx";
 
 
 const stackMap : {[key: string]: {name: string, link: string}} = {
@@ -47,6 +48,7 @@ const stackMap : {[key: string]: {name: string, link: string}} = {
     typescript: {name: "Typescript", link: "https://www.typescriptlang.org/"},
     c: {name: "C", link: "https://en.wikipedia.org/wiki/C_(programming_language)"},
     vscode: {name: "VSCode API", link: "https://code.visualstudio.com/api/references/vscode-api"},
+    spring: {name: "React Spring", link: "https://www.react-spring.dev/"},
 };
 
 function url(src: string) : string {
@@ -309,13 +311,22 @@ const projects : Project[] = [
     {
         name: 'arm_helpers',
         type: displayTypes.SOLO,
-        title: "Armv8 Helpers",
+        title: "ARMv8 Helpers",
         subtitle: 'VSCode Extension for Armv8 Assembly',
         desc: <>
+            In my capacity as a course assistant, I found students often struggled with remembering the precise definitions of the <i>many</i> different assembly instructions.
+            Thus, I wanted to devise a method that would fill students in and aid them in understanding these instructions. 
+            By having instruction definitions, students can look at the description of any instruction they may not fully understand.
 
+            <p>
+                This extension also provides syntax highlighting, docstrings, macros, simple code completion, and more. 
+                For a more detailed look at all the extension's features, see the project's <LinkButton link="https://github.com/joshbernsteint/arm_helpers/blob/main/README.md">README</LinkButton>.
+            </p>
         </>,
         features: <ul>
-
+            <li>Syntax highlighting and custom snippets, as well as code completion for instructions and custom labels</li>
+            <li>Detailed definitions of numerous instructions.</li>
+            <li>Docstring support to annotate procedures. These annotations will appear in completion prompts.</li>
         </ul>,
         stack: ['vscode', 'javascript'],
         link: 'https://github.com/joshbernsteint/arm_helpers',
@@ -332,12 +343,21 @@ const projects : Project[] = [
         title: "This Website",
         subtitle: "The old one had some cracks showing",
         desc: <>
+            I simply needed a new place to showcase my skills and project portfolio. 
+            My old portfolio was no longer indicative of my skills, so I created this site to be more representative of my current ability.
+            The site is build with React.js, using the react-spring library for responsive and efficient animations. 
+            Also, it uses the Three.js library for 3D rendering of the background stars. For styled components and icons, I used the Material UI library.
 
+            <p>
+                I aim to update this website into the future, adding new pages and features.
+            </p>
         </>,
         features: <ul>
-
+            <li>Description of myself and my abilites. Including my experience, education, skills, and projects.</li>
+            <li>Custom 3D elements aimed to be as optimized as possible.</li>
+            <li>Pictures of my dogs and cat (easily the best part).</li>
         </ul>,
-        stack: ['react', 'three', 'mui', 'typescript'],
+        stack: ['react', 'spring', 'three', 'mui', 'typescript'],
         link: 'https://github.com/joshbernsteint/portfolio',
         completedDate: Date.now(),
         buttonProps: {
@@ -357,10 +377,19 @@ const projects : Project[] = [
         title: "CS Games",
         subtitle: "A Puzzle Competition Platform",
         desc: <>
-
+            CS Games is a bi-yearly event hosted by the Computer Science club at Stevens Institute of Technology. 
+            It's essentially a puzzle competition where teams of 3 compete to solve a series of puzzles first. To host the games, we needed a web platform to accomodate the puzzles themself (as many of them were programming-based).
+            
+            <p>
+                There was a previous website used by the club, however, it became unavailable to use shortly before the games were set to take place.
+                Thus, I took it upon myself to build a new website that was capable of handling 200+ concurrent users. 
+                Users are able to create and join teams, and different team members can play across different devices and their results will be shared.
+            </p>
         </>,
         features: <ul>
-
+            <li>Registered users can create and join teams (maximum of 3 members per team).</li>
+            <li>Administrators can modify the number of currently available puzzles.</li>
+            <li>Puzzles can be dynamically edited while the website is running by admins (in case there is an error in the question).</li>
         </ul>,
         stack: ['react', 'express', 'mongo'],
         buttonProps: {
@@ -380,7 +409,8 @@ const projects : Project[] = [
         subtitle: "Extended-Syntax SQL Compiler",
         desc: <>
             A compiler for converting relational algebraic expresions to an executable file that will give the result of the expression (or query).       
-            Compiler was specifically designed to compile a new &Phi; (Phi) operator that allows for a complete decoupling of aggregates and "group by" clauses. For more information on this, the you can check out <Button href="https://ieeexplore.ieee.org/abstract/document/787619" target="_blank" sx={{textTransform: 'none', padding: 0, fontSize: 'inherit'}}>this paper</Button>.
+            Compiler was specifically designed to compile a new &Phi; (Phi) operator that allows for a complete decoupling of aggregates and "group by" clauses. 
+            For more information on this, the you can check out <LinkButton link="https://ieeexplore.ieee.org/abstract/document/787619">this paper</LinkButton>.
             <p>
                 This project was written entirely in Vanilla C and is capable of running on any platform with a C compiler. 
                 For data entry, it uses csv files, and for query entry it can either read a file or there is a command line interface option. 
@@ -571,7 +601,8 @@ export default function Projects({scrollRef} : {scrollRef: React.MutableRefObjec
                                 </div>
                                 <hr/><br/>
 
-                                <Subheader>Description</Subheader><br/>
+                                <Subheader>Description</Subheader>
+                                <p />
                                 {selectedProject.desc}
 
                                 <Subheader>Features</Subheader>

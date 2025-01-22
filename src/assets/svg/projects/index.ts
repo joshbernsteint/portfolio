@@ -19,6 +19,7 @@ import mui from './mui.svg';
 import typescript from './typescript.svg';
 import c from './c.svg';
 import vscode from './vscode.svg';
+import spring from './spring.svg';
 
 
 
@@ -44,6 +45,7 @@ const svgs : {[k: string]: string} = {
     typescript,
     c,
     vscode,
+    spring,
 };
 
 export default svgs;
