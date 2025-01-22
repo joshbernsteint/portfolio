@@ -1,7 +1,7 @@
 import { Avatar, Button, Pagination, Paper, Tooltip, Typography } from "@mui/material";
 import Grid from '@mui/material/Grid2';
 import { useVisible, useWindow } from "../utils/Hooks";
-import React, { ReactNode, useState } from "react";
+import React, { useState } from "react";
 import {a, config, useSpring, useTrail} from '@react-spring/web';
 
 // Image imports
@@ -13,7 +13,6 @@ import AType from "../components/animated/AnimatedTypography.tsx";
 const activeImageList = imageMap.map(i => <img {...i} width={"80%"} style={{borderRadius: '10px', border: '.5px solid white', padding: '.25rem'}}/>);
 
 type AboutProps = {
-    // scrollRef: any,
     textWidth?: number,
     scrollRef: any,
     style?: React.CSSProperties,
