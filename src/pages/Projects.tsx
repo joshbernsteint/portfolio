@@ -23,7 +23,6 @@ import SortIcon from '@mui/icons-material/Sort';
 import SouthIcon from '@mui/icons-material/South';
 import NorthIcon from '@mui/icons-material/North';
 import { getMonthYear } from "../utils/Date.ts";
-import ESet from "../utils/ESet.ts";
 
 
 const stackMap : {[key: string]: {name: string, link: string}} = {
@@ -62,16 +61,15 @@ enum displayTypes{
 
 type Project = {
     name: string,
-    title?: string,
-    subtitle?: string,
+    title: string,
+    subtitle: string,
     desc?: string | ReactNode,
     features?: string | ReactNode,
-    stack?: string[],
+    stack: string[],
     type: displayTypes,
     link: string,
     buttonProps: ImageButtonProps,
     completedDate: number,
-    techs?: string[],
     description?: (string | ReactNode)[],
 }
 
@@ -364,7 +362,7 @@ const projects : Project[] = [
         subtitle: "Extended-Syntax SQL Compiler",
         desc: <>
             A compiler for converting relational algebraic expresions to an executable file that will give the result of the expression (or query).       
-            Compiler was specifically designed to compile a new &Phi; (Phi) operator that allows for a complete decoupling of aggregates and "group by" clauses. For more information on this, the you can check out <Button href="https://ieeexplore.ieee.org/abstract/document/787619" target="_blank" sx={{textTransform: 'none', padding: 0}}>this paper</Button>.
+            Compiler was specifically designed to compile a new &Phi; (Phi) operator that allows for a complete decoupling of aggregates and "group by" clauses. For more information on this, the you can check out <Button href="https://ieeexplore.ieee.org/abstract/document/787619" target="_blank" sx={{textTransform: 'none', padding: 0, fontSize: 'inherit'}}>this paper</Button>.
             <p>
                 This project was written entirely in Vanilla C and is capable of running on any platform with a C compiler. 
                 For data entry, it uses csv files, and for query entry it can either read a file or there is a command line interface option. 
@@ -391,19 +389,22 @@ const projects : Project[] = [
     }
 ];
 
-
-const uniqueStacks : ESet<string> = new ESet<string>();
-projects.forEach(e => uniqueStacks.addArray(e.stack || []));
-console.log(uniqueStacks.toArray());
+const svgMap = Object.fromEntries(
+    Object.keys(stackMap).map(s => 
+        ([s, <img src={svgs[s]} style={{display: 'inline', height: '75px', margin: '0rem 1rem'}}/>])
+));
 
 
 const projectMap : {[name: string] : Project} = (() => {
     const obj : {[name: string]: Project} = {};
     for(let i = 0; i < projects.length; i++) {
-        obj[projects[i].name] = projects[i];
+        const el = projects[i];
+        obj[el.name] = el;
     }
     return obj;
 })();
+
+
 
 
 const Subheader = ({children} : {children?: ReactNode}) => (
@@ -564,7 +565,7 @@ export default function Projects({scrollRef} : {scrollRef: React.MutableRefObjec
                                     {selectedProject.stack?.map((e: string, i: number) => (
                                         <Tooltip title={<span style={{fontSize: '14pt'}}>{stackMap[e].name}</span>} key={i}>
                                             <Button href={stackMap[e].link} target="_blank">
-                                                <img src={svgs[e]} style={{display: 'inline', height: '75px', margin: '0rem 1rem'}} key={i}/>
+                                                {svgMap[e]}
                                             </Button>
                                         </Tooltip>
                                     ))}
