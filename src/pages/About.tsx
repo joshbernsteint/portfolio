@@ -10,6 +10,8 @@ import githubImg from '../assets/images/about/gitHub.png';
 import linkedInImg from '../assets/images/about/linkedIn.png';
 import AType from "../components/animated/AnimatedTypography.tsx";
 
+const activeImageList = imageMap.map(i => <img {...i} width={"80%"} style={{borderRadius: '10px', border: '.5px solid white', padding: '.25rem'}}/>);
+
 type AboutProps = {
     // scrollRef: any,
     textWidth?: number,
@@ -125,7 +127,7 @@ export default function About({textWidth=0.6, scrollRef, style={}} : AboutProps)
                         <Grid size={imageSize}>
                             <a.div style={{marginTop: '5%', justifyContent: 'center', textAlign: 'center', alignContent: 'center', display: 'flex', flexFlow: 'wrap', ...imageSpring}}>
                                 <Tooltip title={<span style={{fontSize: '12pt'}}>{imageMap[activeImage].alt}</span>} followCursor>
-                                    <img {...imageMap[activeImage]} width={"80%"} style={{borderRadius: '10px', border: '.5px solid white', padding: '.25rem'}}/>
+                                    {activeImageList[activeImage]}
                                 </Tooltip>
                                 <Pagination 
                                     count={imageMap.length} 
