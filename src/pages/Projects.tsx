@@ -24,6 +24,10 @@ import SouthIcon from '@mui/icons-material/South';
 import NorthIcon from '@mui/icons-material/North';
 import { getMonthYear } from "../utils/Date.ts";
 import LinkButton from "../components/LinkButton.tsx";
+import AType from "../components/animated/AnimatedTypography.tsx";
+import { useVisible } from "../utils/Hooks.tsx";
+
+import { useSpring, a, useTrail, useSprings } from "@react-spring/web";
 
 
 const stackMap : {[key: string]: {name: string, link: string}} = {
@@ -385,6 +389,10 @@ const projects : Project[] = [
                 Thus, I took it upon myself to build a new website that was capable of handling 200+ concurrent users. 
                 Users are able to create and join teams, and different team members can play across different devices and their results will be shared.
             </p>
+
+            <p>
+                <b>Note: </b>this project is no longer being maintaned by myself as I handed it over to the current members of the computer science club.
+            </p>
         </>,
         features: <ul>
             <li>Registered users can create and join teams (maximum of 3 members per team).</li>
@@ -452,9 +460,6 @@ const projectMap : {[name: string] : Project} = (() => {
     return obj;
 })();
 
-
-
-
 const Subheader = ({children} : {children?: ReactNode}) => (
     <Typography variant="h4" sx={{fontWeight: 300, textUnderlineOffset: '.75rem', textDecoration: 'underline'}}>
         {children}
@@ -463,6 +468,7 @@ const Subheader = ({children} : {children?: ReactNode}) => (
 
 export default function Projects({scrollRef} : {scrollRef: React.MutableRefObject<HTMLDivElement | undefined>}){
 
+    const [inView, visRef] = useVisible(true, true);
     const [displayType, setDisplayType] = useState<displayTypes>(displayTypes.ALL);
     const [ascendingOrder, setAscendingOrder] = useState<boolean>(false);
     const [currentProject, setCurrentProject] = useState<string>('');
@@ -487,7 +493,6 @@ export default function Projects({scrollRef} : {scrollRef: React.MutableRefObjec
         return result;
     }, [ascendingOrder]);
     
-    
     const selectedProject = useMemo(() => {
         const p = projectMap[currentProject];
         if(!p) return null;
@@ -496,6 +501,24 @@ export default function Projects({scrollRef} : {scrollRef: React.MutableRefObjec
             date: getMonthYear(p.completedDate),
         };
     }, [currentProject]);
+
+    const titleSpring = useSpring({
+        opacity: inView ? 1 : 0,
+        x: inView ? 0 : -20,
+        config: {duration: 300}
+    });
+
+    const [buttonsTrail] = useSprings(3, i => ({
+        opacity: inView ? 1 : 0,
+        delay: 250 + (i*250),
+    }), [inView]);
+
+    const projectsTrail = useTrail(projects.length, ({
+        opacity: inView ? 1 : 0,
+        delay: 500,
+    }))
+    
+    
 
     return (
         <div 
@@ -507,13 +530,12 @@ export default function Projects({scrollRef} : {scrollRef: React.MutableRefObjec
                 <Grid size={4} sx={{height: '100%', display: 'flex', flexDirection: 'column', overflow: 'auto'}}>
                     <div 
                         style={{height: '100%', textAlign: 'center', display: 'flex', flexDirection: 'column', overflow: 'auto'}} 
-                        ref={scrollRef as React.MutableRefObject<HTMLDivElement>}
                     >
-                        <Typography variant="h1" sx={{height: 'auto', textAlign: 'center', marginTop: '2rem'}}>
+                        <AType variant="h1" style={{height: 'auto', textAlign: 'center', marginTop: '2rem', ...titleSpring}} opacity={titleSpring.opacity}>
                             Projects
-                        </Typography>
+                        </AType>
                         <div style={{height: 'auto', margin: '3rem 0rem', color: 'white', fontSize: '14pt', display: 'flex', flexDirection: 'column', overflow: 'auto'}}>
-                            <div style={{fontSize: '10pt', textAlign: 'left', width: '100%'}}>
+                            <a.div style={{fontSize: '10pt', textAlign: 'left', width: '100%', ...buttonsTrail[0]}}>
                                 <ToggleButtonGroup
                                     color="primary"
                                     value={displayType}
@@ -558,20 +580,20 @@ export default function Projects({scrollRef} : {scrollRef: React.MutableRefObjec
                                         </ToggleButton>
                                     </Tooltip>
                                 </ToggleButtonGroup>
-                            </div>
+                            </a.div>
                                     
-                            <div style={{overflow: 'auto', marginTop: '.5rem'}}>
+                            <a.div style={{overflow: 'auto', marginTop: '.5rem', ...titleSpring}}>
                             {
-                                sortedProjectsOrder.map((i) => displayedProjects[i] && projectButtons[i])
+                                sortedProjectsOrder.map((i, idx) => displayedProjects[i] && <a.span style={{...projectsTrail[idx]}} key={i}>{projectButtons[i]}</a.span>)
                             }
-                            </div>
+                            </a.div>
                         </div>
                     </div>
                 </Grid>
 
                 <Grid size={8}>
                     {
-                        selectedProject && (
+                        selectedProject ? (
                             <div style={{padding: '5rem', paddingTop: '8rem', paddingBottom: 0, height: '100%'}}>                                
                                 {/* Top Half of title*/}
                                 <div>
@@ -618,6 +640,21 @@ export default function Projects({scrollRef} : {scrollRef: React.MutableRefObjec
                                             </Button>
                                         </Tooltip>
                                     ))}
+                                </div>
+                            </div>
+                        ) : (
+                            <div style={{display: 'flex', alignItems: 'center', height: '100%', width: '100%'}} ref={scrollRef as React.MutableRefObject<HTMLDivElement>}>
+                                <div style={{verticalAlign: 'middle', textAlign: 'center', width: '50%', margin: 'auto'}} ref={visRef}>
+                                    <AType variant={'h4'} opacity={buttonsTrail[1].opacity}>
+                                        Select a Project from the list on the left to view a project.
+                                    </AType>
+                                    <br/>
+                                    <AType opacity={buttonsTrail[2].opacity}>
+                                        <span style={{fontSize: '14pt'}}>
+                                        You can also filter by projects done in a group, solo, or both. 
+                                        Additionally, you can sort projects by their completion date.
+                                        </span>
+                                    </AType>
                                 </div>
                             </div>
                         )
