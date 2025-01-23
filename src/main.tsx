@@ -12,12 +12,13 @@ import '@fontsource/roboto/700.css';
 
 const darkTheme = createTheme({
   colorSchemes: {
-    dark: true
+    dark: true,
+    light: false,
   },
 });
 
 createRoot(document.getElementById('root')!).render(
-  <ThemeProvider theme={darkTheme}>
+  <ThemeProvider theme={darkTheme} defaultMode='dark'>
     <CssBaseline />
     <StrictMode>
       <App />

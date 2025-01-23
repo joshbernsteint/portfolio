@@ -15,20 +15,22 @@ const activeImageList = imageMap.map(i => <img {...i} width={"80%"} style={{bord
 
 type AboutProps = {
     textWidth?: number,
-    scrollRef: any,
+    scrollRef?: any,
     style?: React.CSSProperties,
+    useSmall?: boolean,
     [prop: string]: any,
 };
 
 
-export default function About({textWidth=0.6, scrollRef, style={}} : AboutProps){
+export default function About({textWidth=0.6, scrollRef, style={}, useSmall=false} : AboutProps){
 
     const {width} = useWindow();
     const [activeImage, setActiveImage] = useState<number>(0);
-    const [inView, visRef] = useVisible(true, true);
+    let [inView, visRef] = useVisible(true, true);
+    inView = (inView || useSmall);
 
-    const profileVisible = width > 1200;
-    const isMiniVisible = !profileVisible && width > 875;
+    const profileVisible = width > 1200 && !useSmall;
+    const isMiniVisible = !profileVisible && width > 875 && !useSmall;
     const textSize : number = textWidth * 12;  
     const imageSize: number = 12 - textSize;
 
@@ -85,7 +87,7 @@ export default function About({textWidth=0.6, scrollRef, style={}} : AboutProps)
                         <br/>
 
                         <AType opacity={textSprings[0].opacity}>
-                            <span style={{fontSize: '24pt'}}>Hello! </span> 
+                            <span style={{fontSize: '24pt'}} ref={visRef}>Hello! </span> 
                             I'm Josh, currently a 21-year-old 4th year Computer Science major at Stevens Institute of Technology in Hoboken, NJ. 
                             I will be graduating with my Master's degree in May with a Master's in Computer Science. I have a particular interest in web development
                             with tools like React and Node.js,
@@ -112,7 +114,7 @@ export default function About({textWidth=0.6, scrollRef, style={}} : AboutProps)
                         
                         <a.hr style={{marginLeft: 0, ...textSprings[4]}}/>
                         <div style={{marginTop: '1rem'}}>
-                            <a.span style={{opacity: textSprings[5].opacity}} ref={visRef}>
+                            <a.span style={{opacity: textSprings[5].opacity}}>
                                 <Button variant="contained" color="primary" sx={{height: '42px', margin: '.1rem'}} href="https://github.com/joshbernsteint" target="_blank">
                                     Check me out on <img src={githubImg} width={50}/>
                                 </Button>

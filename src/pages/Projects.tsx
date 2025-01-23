@@ -79,7 +79,7 @@ type Project = {
     description?: (string | ReactNode)[],
 }
 
-const projects : Project[] = [
+export const projects : Project[] = [
     // coverai
     {
         name: "coverai",

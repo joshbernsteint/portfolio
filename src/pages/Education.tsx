@@ -215,7 +215,7 @@ function EducationRow({level, where, date, gpa, courses, timeCalcs, delay=0, inV
     );
 }
 
-const myEducation : EducationRowProps[] = [
+export const myEducation : EducationRowProps[] = [
     {
         timeCalcs: {startDate: '9/1/2024', endDate: '5/22/2025'},
         level: "Masters' Degree",
@@ -312,7 +312,7 @@ export default function Education({scrollRef} : any){
 
     return (
         <div id="education" className="sectionBlock" ref={scrollRef} style={{position: 'relative'}}>
-            <Grid container>
+            <Grid container spacing={5}>
                 <Grid size={5}>
                     <div>
                         <animated.div style={{textAlign: 'center', ...titleSpring}} ref={visRef}>
