@@ -27,7 +27,7 @@ function rePull(){
 //This is a comment
 function runServer(){
     spawnSync('cd ../ && npm run build', {shell: true});
-    spawnSync(`sudo cp -r ../dist/ ${dest_dir}`, {shell: true});
+    spawnSync(`sudo cp -rf ../dist/* ${dest_dir}`, {shell: true});
 }
 
 let activeTimeout : NodeJS.Timeout | undefined = undefined;
