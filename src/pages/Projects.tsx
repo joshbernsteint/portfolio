@@ -25,7 +25,7 @@ import NorthIcon from '@mui/icons-material/North';
 import { getMonthYear } from "../utils/Date.ts";
 import LinkButton from "../components/LinkButton.tsx";
 import AType from "../components/animated/AnimatedTypography.tsx";
-import { useVisible } from "../utils/Hooks.tsx";
+import { useVisible, useWindow } from "../utils/Hooks.tsx";
 
 import { useSpring, a, useTrail, useSprings } from "@react-spring/web";
 
@@ -282,7 +282,7 @@ export const projects : Project[] = [
     {
         name: 'ethel',
         type: displayTypes.SOLO,
-        title: "E.T.H.E.L. Architecture",
+        title: "E.T.H.E.L.",
         subtitle: "Simulated CPU & Assembler",
         desc: <>
             This project came in two parts: A simulated CPU and an assembly language to go with it. 
@@ -334,7 +334,7 @@ export const projects : Project[] = [
         </ul>,
         stack: ['vscode', 'javascript'],
         link: 'https://github.com/joshbernsteint/arm_helpers',
-        completedDate: Date.parse('9/28/2024'),
+        completedDate: Date.parse('8/28/2024'),
         buttonProps: {
             image: url(assemblyImage),
             children: "ARMv8 Helpers"
@@ -413,7 +413,7 @@ export const projects : Project[] = [
     {
         name: 'algebropiler',
         type: displayTypes.GROUP,
-        title: "Relational Algebropiler",
+        title: "Algebropiler",
         subtitle: "Extended-Syntax SQL Compiler",
         desc: <>
             A compiler for converting relational algebraic expresions to an executable file that will give the result of the expression (or query).       
@@ -527,7 +527,8 @@ export default function Projects({scrollRef} : {scrollRef: React.MutableRefObjec
         delay: 500,
     }))
     
-    
+    const {width} = useWindow();
+    const showRightSide = width >= 1280;
 
     return (
         <div 
@@ -611,7 +612,7 @@ export default function Projects({scrollRef} : {scrollRef: React.MutableRefObjec
                                             {selectedProject.title}
                                         </Typography>
                                         <Button 
-                                            sx={{fontSize: '20pt', padding: '0rem 1rem', float: 'right', marginTop: '1rem'}} 
+                                            sx={{fontSize: '20pt', padding: '0rem 1rem', float: 'right', marginTop: '1rem', display: showRightSide ? '' : 'none'}} 
                                             variant="outlined" 
                                             color="primary"
                                             endIcon={<span style={{fontSize: '20pt', lineHeight: '10pt'}}><OpenInNewIcon fontSize="inherit"/></span>}
@@ -627,7 +628,7 @@ export default function Projects({scrollRef} : {scrollRef: React.MutableRefObjec
                                     <Typography variant='h5' sx={{fontStyle: 'italic', display: 'inline', verticalAlign: 'middle'}}>
                                         {selectedProject.subtitle}
                                     </Typography>
-                                    <Typography sx={{fontWeight: '300', float: 'right', display: 'inline', verticalAlign: 'middle'}} variant="h4">
+                                    <Typography sx={{fontWeight: '300', float: 'right', display: showRightSide ? 'inline' : 'none', verticalAlign: 'middle'}} variant="h4">
                                         {selectedProject.date}
                                     </Typography>
                                 </div>
@@ -635,6 +636,26 @@ export default function Projects({scrollRef} : {scrollRef: React.MutableRefObjec
                                 </div>
 
                                 <div style={{flexGrow: 1, overflowY: 'auto'}} ref={projectRef}>
+                                    {!showRightSide && (
+                                        <>
+                                            <Subheader>When</Subheader>
+                                            <p>{selectedProject.date}</p>
+
+                                            <Subheader>Code</Subheader>
+                                            <Button 
+                                                sx={{fontSize: '14pt', padding: '0rem 1rem', margin: '1rem 0rem'}} 
+                                                variant="outlined" 
+                                                color="primary"
+                                                endIcon={<span style={{fontSize: '12pt', lineHeight: '10pt'}}><OpenInNewIcon fontSize="inherit"/></span>}
+                                                target="_blank"
+                                                href={selectedProject.link}
+                                            >
+                                                GitHub
+                                            </Button>
+                                        </>
+                                    )}
+
+
                                     <Subheader>Description</Subheader>
                                     <p />
                                     {selectedProject.desc}

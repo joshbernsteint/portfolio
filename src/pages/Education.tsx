@@ -153,7 +153,7 @@ function EducationRow({level, where, date, gpa, courses, timeCalcs, delay=0, inV
     });
 
     const hrSpring = useSpring({
-        width: inView ? '30%' : '0%',
+        width: inView ? '100%' : '0%',
         config: {duration: courses.length * 100},
         delay: delay + 100,
     })
@@ -193,11 +193,13 @@ function EducationRow({level, where, date, gpa, courses, timeCalcs, delay=0, inV
                     </Tooltip>
                 }
             />
-            <IconWithText 
-                icon={<SchoolIcon fontSize="inherit"/>}
-                text={<span style={{marginLeft: '1rem'}}>Relevant Coursework</span>}
-            />
-            <animated.hr style={{width: hrSpring.width, marginLeft: 0}}/>
+            <div style={{width: 'max-content'}}>
+                <IconWithText 
+                    icon={<SchoolIcon fontSize="inherit"/>}
+                    text={<span style={{marginLeft: '1rem'}}>Relevant Coursework</span>}
+                />
+                <animated.hr style={{width: hrSpring.width, marginLeft: 0}}/>
+            </div>
             <div style={{width: 'auto', padding: '0rem'}}>
                 <Grid container sx={{textAlign: 'center'}} gap={0}>
                     {
