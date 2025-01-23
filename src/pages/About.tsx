@@ -60,7 +60,7 @@ export default function About({textWidth=0.6, scrollRef, style={}} : AboutProps)
                             <Grid size={9}>
                                 <a.div style={{...titleSpring}}>
                                     <Typography variant="h1">
-                                        About Me
+                                        About Me (test)
                                     </Typography>
                                 </a.div>
                             </Grid>
