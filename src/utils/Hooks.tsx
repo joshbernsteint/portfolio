@@ -131,13 +131,13 @@ export function useVisible(oneShot: boolean = true, checkPast : boolean = true) 
                     setVisible(isVisible);
 
                     if(isVisible && oneShot){
-                        this.removeEventListener('scrollend', handler);
+                        this.removeEventListener('scroll', handler);
                     }
                 }
             }
             handler.call(window);
-            window.addEventListener('scrollend', handler);
-            return () => window.removeEventListener('scrollend', handler);
+            window.addEventListener('scroll', handler);
+            return () => window.removeEventListener('scroll', handler);
         }
     }, [objectRef, visible]);
 
