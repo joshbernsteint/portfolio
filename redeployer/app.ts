@@ -3,7 +3,7 @@ import { config } from 'dotenv';
 import { spawnSync } from 'child_process';
 
 function log(str: string){
-    console.log(`${new Date().toISOString()}: ${str}`);
+    console.log(`[${new Date().toISOString()}]: ${str}`);
 }
 
 config();
