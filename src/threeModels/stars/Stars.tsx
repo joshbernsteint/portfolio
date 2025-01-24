@@ -89,16 +89,17 @@ const Stars = React.forwardRef<any, StarsProps>((props: StarsProps, ref) => {
 
     const size = fixedSize || useViewport();
     const generated = useRef<Star[]>([]);
+    const previousSize = useRef<{width: number, height: number} | undefined>();
 
     const stars = useMemo<Star[]>(() => {
 
         console.log(size);
-        
+        const prev = previousSize.current as {width: number, height: number};
 
         if(size.width < 100){
             return [];
         }
-        else if(bake && (generated.current.length > 0)){
+        else if(bake && (generated.current.length > 0) && (size.width <= prev.width) && (size.height <= prev.height)){
             return generated.current;
         }
 
@@ -130,7 +131,7 @@ const Stars = React.forwardRef<any, StarsProps>((props: StarsProps, ref) => {
                 emissiveTo: bright + randFloat(...brightnessOffsetRange),
             }
         }));
-
+        previousSize.current = size;
         generated.current = result;
         return result;
 
