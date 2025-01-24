@@ -52,10 +52,13 @@ app.post('/github', async (req,res) => {
         
         const branchName = body.ref.split('/')[2];
         if(branchName === "main"){
+            console.log('|--------- Code Update Detected ---------|')
             log("Reloading Server...")
             runServer();
             res.send("Server reloaded!");
             log("Server reloaded");
+            console.log('|--------- Code Update Complete ---------|\n')
+
             
             activeTimeout = setTimeout(() => {activeTimeout = undefined}, DELAY);
         }
