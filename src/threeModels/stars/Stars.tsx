@@ -51,6 +51,7 @@ export type StarsProps = {
     boundMultiplier?: [xBound: number, yBound: number],
     zPos?: number,
     useColors?: boolean,
+    bake?: boolean,
     animate?: boolean,
     pointTransform?:(element: number | number[] | StarPoint) => StarPoint,
     fixedSize?: {height: number, width: number, aspect: number} | undefined
@@ -79,6 +80,7 @@ const Stars = React.forwardRef<any, StarsProps>((props: StarsProps, ref) => {
         boundMultiplier=[1,1],
         useColors=false,
         animate=false,
+        bake=false,
         zPos=0,
         pointTransform=undefined,
         fixedSize=undefined,
@@ -117,7 +119,7 @@ const Stars = React.forwardRef<any, StarsProps>((props: StarsProps, ref) => {
             }
         }));
 
-    }, [size])
+    }, bake ? [] : [size])
     
     const internalRef = useRef<any>();
     if(animate){

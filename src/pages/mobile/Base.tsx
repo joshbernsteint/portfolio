@@ -7,6 +7,7 @@ import Stars from "../../threeModels/stars/Stars.tsx";
 import MobileEducation from "./Education.tsx";
 import MobileExperience from "./Experience.tsx";
 import MobileSkills from "./Skills.tsx";
+import MobileProjects from "./Projects.tsx";
 
 
 export default function MobileBase({}){
@@ -32,7 +33,8 @@ export default function MobileBase({}){
                     <Canvas linear flat dpr={[1,2]}>
                         <PerspectiveCamera makeDefault position={[0,0,200]} fov={90}/>
                         <ambientLight intensity={.85} />
-                        <Stars 
+                        <Stars
+                            bake
                             zPos={-100} 
                             numStars={250}
                             brightnessRange={[0.5, 1]}
@@ -60,6 +62,7 @@ export default function MobileBase({}){
                 <MobileEducation scrollRef={educationRef}/>
                 <MobileExperience scrollRef={experienceRef}/>
                 <MobileSkills scrollRef={skillsRef}/>
+                <MobileProjects scrollRef={projectsRef}/>
             </div>
         </div>
     );
