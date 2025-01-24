@@ -92,8 +92,6 @@ const Stars = React.forwardRef<any, StarsProps>((props: StarsProps, ref) => {
     const previousSize = useRef<{width: number, height: number} | undefined>();
 
     const stars = useMemo<Star[]>(() => {
-
-        console.log(size);
         const prev = previousSize.current as {width: number, height: number};
 
         if(size.width < 100){

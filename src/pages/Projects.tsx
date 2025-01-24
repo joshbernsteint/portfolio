@@ -30,7 +30,7 @@ import { useVisible, useWindow } from "../utils/Hooks.tsx";
 import { useSpring, a, useTrail, useSprings } from "@react-spring/web";
 
 
-const stackMap : {[key: string]: {name: string, link: string}} = {
+export const stackMap : {[key: string]: {name: string, link: string}} = {
     openai: {name: "OpenAI", link: "https://openai.com/"},
     react: {name: "React.js", link: "https://react.dev/"},
     express: {name: "Express.js", link: "https://expressjs.com/"},
@@ -445,13 +445,13 @@ export const projects : Project[] = [
     }
 ];
 
-const svgMap = Object.fromEntries(
+export const svgMap = Object.fromEntries(
     Object.keys(stackMap).map(s => 
         ([s, <img src={svgs[s]} style={{display: 'inline', height: '75px', margin: '0rem 1rem'}}/>])
 ));
 
 
-const projectMap : {[name: string] : Project} = (() => {
+export const projectMap : {[name: string] : Project} = (() => {
     const obj : {[name: string]: Project} = {};
     for(let i = 0; i < projects.length; i++) {
         const el = projects[i];

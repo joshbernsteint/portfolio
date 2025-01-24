@@ -4,7 +4,6 @@ import { spokes as skillList } from "../Skills.tsx";
 export default function MobileSkills({scrollRef} : {scrollRef: any}){
     return (
         <div ref={scrollRef} id="skills">
-            <br/>
             <MobileSectionTitle title="Skills"/>
             <div>
                 {

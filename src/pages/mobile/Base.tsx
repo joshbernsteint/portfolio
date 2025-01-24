@@ -58,10 +58,10 @@ export default function MobileBase({}){
                         <Button variant="contained" sx={{width: '100%'}} onClick={() => scrollToElement(projectsRef)}>Projects</Button>
                     </Stack>
                 </div>
-                <About useSmall scrollRef={aboutRef} style={{padding: '2rem'}}/>
-                <MobileEducation scrollRef={educationRef}/>
-                <MobileExperience scrollRef={experienceRef}/>
-                <MobileSkills scrollRef={skillsRef}/>
+                <About useSmall scrollRef={aboutRef} style={{padding: '2rem'}}/><br/>
+                <MobileEducation scrollRef={educationRef}/><br/>
+                <MobileExperience scrollRef={experienceRef}/><br/>
+                <MobileSkills scrollRef={skillsRef}/><br/>
                 <MobileProjects scrollRef={projectsRef}/>
             </div>
         </div>
