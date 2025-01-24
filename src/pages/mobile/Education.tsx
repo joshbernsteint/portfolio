@@ -20,7 +20,7 @@ function MobileEducationRow({level, where, date, gpa, id, courses, timeCalcs}: E
     }, [timeCalcs]);
 
     return (
-        <div style={{maxWidth: '100%', overflowX: 'hidden'}}>
+        <div style={{maxWidth: '100%', overflowX: 'hidden'}} id="education">
             <h2 style={{display: 'inline'}}>{level}</h2>&mdash;
             <Button 
                 color={where.color} 

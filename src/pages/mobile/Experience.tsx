@@ -4,7 +4,7 @@ import MobileSectionTitle from "./SectionTitle.tsx";
 
 export default function MobileExperience({scrollRef}: {scrollRef: any}){
     return (
-        <div ref={scrollRef}>
+        <div ref={scrollRef} id="experience">
             <MobileSectionTitle title="Experience"/>
             <Timeline
                 sx={{

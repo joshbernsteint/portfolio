@@ -120,7 +120,7 @@ type PaletteColor = "primary" | "secondary" | "success" | "error" | "info" | "wa
 
 type SkillSpoke = {
     title: string | ReactNode,
-    element: string | ReactNode | ((idx: number, isVisible: boolean) => JSX.Element),
+    element: string | ReactNode | ((idx: number, isVisible: boolean, mobile?: boolean) => JSX.Element),
     color?: PaletteColor | string,
 };
 
@@ -135,7 +135,6 @@ export const spokes : SkillSpoke[] = [
 
             return (
                 <ADiv props={{style: {textAlign: 'center'}}} opacity={spring.opacity}>
-                    <br/>
                     Adept at Git-based software. Including managing GitHub/GitLab repositories, creating automations, and running tests.
                 </ADiv>
             )
@@ -152,7 +151,6 @@ export const spokes : SkillSpoke[] = [
 
             return (
                 <ADiv opacity={spring.opacity} props={{style: {textAlign: 'center', marginRight: '.1rem'}}}>
-                    <br/>
                     Well-versed with different cloud computing platforms. Such as Microsoft Azure, Oracle Cloud, Google Cloud, and Amazon Web Services.
                 </ADiv>
             )
@@ -169,7 +167,6 @@ export const spokes : SkillSpoke[] = [
 
             return (
                 <ADiv opacity={spring.opacity} props={{style: {textAlign: 'center', marginRight: '.1rem'}}}>
-                        <br/>
                         Experienced with both SQL and NoSQL databases, with particular expertise in PostgreSQL and MongoDB.
                         <br/><br/>
                         Capable with caching technologies such as Redis.
@@ -180,7 +177,7 @@ export const spokes : SkillSpoke[] = [
     },
     {
         title: 'Programming Languages',
-        element: (i, visible) => {
+        element: (i, visible, mobile=false) => {
             
             const langs : string[] = ["C", "C++", "Python", "Javascript", "Java", "Typescript", "C#", "Assembly", "Erlang", "Ocaml", "Bash"];
             const baseDelay = useMemo(() => i*500, [i]);
@@ -213,6 +210,7 @@ export const spokes : SkillSpoke[] = [
                                     {(idx > 0 && idx % 4 === 0) && <><br/><br/></>}
                                     <AnimatedChip 
                                         content={l}
+                                        styles={mobile ? {padding: '.5rem', borderRadius: '5px', margin: '.15rem'} : {}}
                                         opacity={chipSprings[idx].opacity}
                                     />
                                 </span>
@@ -234,7 +232,6 @@ export const spokes : SkillSpoke[] = [
 
             return (
                 <ADiv props={{style: {marginLeft: '.1rem', textAlign: 'center'}}} opacity={spring.opacity}>
-                    <br/>
                     Proficient with containerization and virtualization technologies such as Docker, VirtualBox, and WSL.
                 </ADiv>
             )
@@ -251,7 +248,6 @@ export const spokes : SkillSpoke[] = [
 
             return (
                 <ADiv props={{style: {textAlign: 'center'}}} opacity={spring.opacity}>
-                    <br/>
                     Highly accustomed and skilled at working in full-stack environments, principally in the MERN (Mongo, Express, React, Node) stack.
                 </ADiv>
             )
@@ -318,9 +314,10 @@ export default function Skills({scrollRef}: {scrollRef: any, [prop: string]: any
                                     </Typography>
                                 </ADiv>
                                 <div style={{fontSize: '1pt'}} hidden={!inView}>
+                                    <br/>
                                     {
                                         typeof spokes[i].element === "function" ? (
-                                            spokes[i].element(i, inView)
+                                            spokes[i].element(i, inView, false)
                                         ) : spokes[i].element
                                     }
                                 </div>
