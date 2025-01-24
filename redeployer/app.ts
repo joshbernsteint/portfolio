@@ -38,7 +38,7 @@ let activeTimeout : NodeJS.Timeout | undefined = undefined;
 const DELAY = 5000;
 
 app.get('/', async (req,res) => {
-    log("Server pinged");
+    timeLog("Server pinged");
     res.send("Ping route!");
 });
 
@@ -67,7 +67,10 @@ app.post('/github', async (req,res) => {
 });
 
 app.listen(PORT, () => {
-    log("Starting, rebuilding static files...")
+    console.log("|--------- Server startup ---------|")
+    timeLog("Rebuilding static files...")
     runServer();
-    log("Server Online!");
+    timeLog("Server Online!");
+    console.log("|--------- Server startup complete ---------|\n")
+
 });
