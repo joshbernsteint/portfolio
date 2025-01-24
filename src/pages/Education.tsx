@@ -18,7 +18,7 @@ import DeveloperModeIcon from '@mui/icons-material/DeveloperMode';
 
 
 
-type EducationRowProps = {
+export type EducationRowProps = {
     level: string,
     where: {name: string, link: string, color: "primary" | "inherit" | "secondary" | "success" | "error" | "info" | "warning"},
     date: string,
@@ -28,10 +28,10 @@ type EducationRowProps = {
     courses: {name: string, icon: ReactNode, link?: string}[]
 };
 
-function IconWithText({icon, text, fontSize="16pt", iconSize="30pt"} : {icon: ReactNode, text: string | ReactNode, fontSize?: string, iconSize?: string}){
+export function IconWithText({icon, text, fontSize="16pt", iconSize="30pt", space=0} : {icon: ReactNode, text: string | ReactNode, fontSize?: string, iconSize?: string, space?: number | string}){
     return (
-        <div style={{ fontSize: fontSize, display: 'flex', alignItems: 'center' }}>
-            <span style={{ fontSize: iconSize, display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}>
+        <div style={{ fontSize: fontSize, display: 'flex', alignItems: 'center'}}>
+            <span style={{ fontSize: iconSize, display: 'inline-flex', alignItems: 'center', justifyContent: 'center', marginRight: space}}>
                 {icon}
             </span>
             {text}
@@ -99,7 +99,7 @@ function RCourse({icon, name, link}: {icon: ReactNode, name: string | ReactNode,
     )
 }
 
-const AnimatedCalendarIcon = animated(({svgFill, fillColor, id} : {svgFill: number, fillColor: string, id: string}) => (
+export const AnimatedCalendarIcon = animated(({svgFill, fillColor, id} : {svgFill: number, fillColor: string, id: string}) => (
     <SvgIcon fontSize="inherit">
         <svg viewBox="0 0 24 24" enableBackground="new 0 0 24 24">
         <defs>
@@ -117,32 +117,38 @@ const AnimatedCalendarIcon = animated(({svgFill, fillColor, id} : {svgFill: numb
     </SvgIcon>
 ))
 
+export function getSVGFill(timeCalcs?: {startDate: string, endDate: string}) : number{
+    if(!timeCalcs){
+        return 100;
+    }
+
+    const startStamp = Date.parse(timeCalcs?.startDate || "");
+    const endStamp = Date.parse(timeCalcs?.endDate || "");
+    const now = Date.now();
+    if(now > endStamp){
+        return 100;
+    }
+    const wayThrough = (now - startStamp) / (endStamp - startStamp);
+    // fillAmount.current = wayThrough * 100
+    // return fillAmount.current;
+    return wayThrough * 100;
+}
+
 function EducationRow({level, where, date, gpa, courses, timeCalcs, delay=0, inView=false, id} : EducationRowProps & {delay: number, inView: boolean}){
     const theme = useTheme();    
     const fillAmount = useRef<number>(100);
     const [loadingIcon, setLoadingIcon] = useState(true);
 
-    function getSVGFill() : number{
-        if(!timeCalcs){
-            return 100;
-        }
 
-        const startStamp = Date.parse(timeCalcs?.startDate || "");
-        const endStamp = Date.parse(timeCalcs?.endDate || "");
-        const now = Date.now();
-        if(now > endStamp){
-            return 100;
-        }
-        const wayThrough = (now - startStamp) / (endStamp - startStamp);
-        fillAmount.current = wayThrough * 100
-        return fillAmount.current;
-    }
 
     
     const fillSpring = useSpring({
         config: {duration: 1000},
         from: {svgFill: 0},
-        svgFill: getSVGFill(),
+        svgFill: (() => {
+            fillAmount.current = getSVGFill(timeCalcs);
+            return fillAmount.current;
+        })(),
         pause: !inView,
         delay: delay,
         onRest: () => {            

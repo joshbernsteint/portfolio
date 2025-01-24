@@ -10,7 +10,7 @@ import { Button, Typography } from '@mui/material';
 
 
 
-type experience = {
+export type experience = {
     title: string, 
     company: string,
     location: string, 
@@ -23,7 +23,7 @@ type experience = {
 }
 
 // This should be in order of most recent first
-const myExperience : experience[] = [
+export const myExperience : experience[] = [
     {
         title: "Student Assistant",
         company: "Stevens Institute of Technology",

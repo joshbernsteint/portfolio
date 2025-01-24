@@ -124,7 +124,7 @@ type SkillSpoke = {
     color?: PaletteColor | string,
 };
 
-const spokes : SkillSpoke[] = [
+export const spokes : SkillSpoke[] = [
     {
         title: 'Git & Version Control',
         element: (idx, visible) => {

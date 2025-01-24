@@ -22,7 +22,7 @@ type AboutProps = {
 };
 
 
-export default function About({textWidth=0.6, scrollRef, style={}, useSmall=false} : AboutProps){
+export default function About({textWidth=0.6, scrollRef, style={padding: '4rem'}, useSmall=false} : AboutProps){
 
     const {width} = useWindow();
     const [activeImage, setActiveImage] = useState<number>(0);
@@ -30,7 +30,7 @@ export default function About({textWidth=0.6, scrollRef, style={}, useSmall=fals
     inView = (inView || useSmall);
 
     const profileVisible = width > 1200 && !useSmall;
-    const isMiniVisible = !profileVisible && width > 875 && !useSmall;
+    const isMiniVisible = (!profileVisible && width > 875) && !useSmall;
     const textSize : number = textWidth * 12;  
     const imageSize: number = 12 - textSize;
 
@@ -56,12 +56,12 @@ export default function About({textWidth=0.6, scrollRef, style={}, useSmall=fals
 
     return (
         <a.div className="sectionBlock" id="about" style={style} ref={scrollRef}>
-            <Grid container spacing={2} sx={{padding: '2rem'}}>
+            <Grid container spacing={2}>
                 <Grid size={profileVisible ? textSize : 12}>
                         <Grid container spacing={2}>
                             <Grid size={9}>
                                 <a.div style={{...titleSpring}}>
-                                    <Typography variant="h1">
+                                    <Typography variant="h1" sx={{fontSize: useSmall ? '4rem' : undefined}}>
                                         About Me
                                     </Typography>
                                 </a.div>
@@ -116,12 +116,20 @@ export default function About({textWidth=0.6, scrollRef, style={}, useSmall=fals
                         <div style={{marginTop: '1rem'}}>
                             <a.span style={{opacity: textSprings[5].opacity}}>
                                 <Button variant="contained" color="primary" sx={{height: '42px', margin: '.1rem'}} href="https://github.com/joshbernsteint" target="_blank">
-                                    Check me out on <img src={githubImg} width={50}/>
+                                    {
+                                        !useSmall ? (<>Check me out on <img src={githubImg} width={50}/></>) : (
+                                            <>GitHub</>
+                                        )
+                                    }
                                 </Button>
                             </a.span>{' '}
                             <a.span style={{opacity: textSprings[6].opacity}}>
                                 <Button variant="contained" color="primary" sx={{height: '42px', margin: '.1rem'}} href="https://www.linkedin.com/in/joshua-bernstein-9700261b0/" target="_blank">
-                                    Connect with me on <img src={linkedInImg} width={80} style={{marginLeft: '.5rem'}}/>
+                                    {
+                                        !useSmall ? (<>Connect with me on <img src={linkedInImg} width={80} style={{marginLeft: '.5rem'}}/></>) : (
+                                            <>LinkedIn</>
+                                        )
+                                    }
                                 </Button>
                             </a.span>
                         </div>
