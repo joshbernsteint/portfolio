@@ -2,7 +2,7 @@ import express from 'express';
 import { config } from 'dotenv';
 import { spawnSync } from 'child_process';
 
-function log(str: string){
+function timeLog(str: string){
     console.log(`[${new Date().toISOString()}]: ${str}`);
 }
 
@@ -53,10 +53,10 @@ app.post('/github', async (req,res) => {
         const branchName = body.ref.split('/')[2];
         if(branchName === "main"){
             console.log('|--------- Code Update Detected ---------|')
-            log("Reloading Server...")
+            timeLog("Reloading Server...")
             runServer();
             res.send("Server reloaded!");
-            log("Server reloaded");
+            timeLog("Server reloaded");
             console.log('|--------- Code Update Complete ---------|\n')
 
             
