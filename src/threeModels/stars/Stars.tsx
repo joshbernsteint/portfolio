@@ -88,8 +88,20 @@ const Stars = React.forwardRef<any, StarsProps>((props: StarsProps, ref) => {
 
 
     const size = fixedSize || useViewport();
+    const generated = useRef<Star[]>([]);
 
     const stars = useMemo<Star[]>(() => {
+
+        console.log(size);
+        
+
+        if(size.width < 100){
+            return [];
+        }
+        else if(bake && (generated.current.length > 0)){
+            return generated.current;
+        }
+
         let parsedPoints: StarPoint[] = [];
         
         const bounds = getBounds(size, boundMultiplier);
@@ -108,7 +120,7 @@ const Stars = React.forwardRef<any, StarsProps>((props: StarsProps, ref) => {
         }
         
 
-        return parsedPoints.map(([x,y, radius, colorIndex, bright]) => ({
+        const result : Star[] = parsedPoints.map(([x,y, radius, colorIndex, bright]) => ({
             position: [x,y, zPos],
             radius: radius,
             modifier: randInt(0, STAR_COLORS.length),
@@ -119,7 +131,10 @@ const Stars = React.forwardRef<any, StarsProps>((props: StarsProps, ref) => {
             }
         }));
 
-    }, bake ? [] : [size])
+        generated.current = result;
+        return result;
+
+    }, [size])
     
     const internalRef = useRef<any>();
     if(animate){
