@@ -74,7 +74,7 @@ export default function MobileProjects({scrollRef}: {scrollRef: any}){
                                 <>
                                     {
                                         currentProject.stack.map((t,i) => (
-                                            miniSVGMap[t]
+                                            <span key={i}>{miniSVGMap[t]}</span>
                                         ))
                                     }
                                 </>
