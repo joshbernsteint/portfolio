@@ -61,7 +61,7 @@ export function BaseShape(props: NoAnimateShapeArgs){
     
 
     return (
-        <group {...hover}>
+        <group {...hover} >
             {
                 pointGroups.map((e,i) => (
                     <Line 

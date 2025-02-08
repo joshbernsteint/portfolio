@@ -1,8 +1,8 @@
-import { Box, Button, FormControl, FormGroup, Menu, MenuItem, Tab, Tabs, TextField, Typography } from "@mui/material";
+import { Button, FormGroup, MenuItem, Tab, Tabs, TextField, Typography } from "@mui/material";
 import axios from 'axios';
 
 import AddIcon from '@mui/icons-material/Add';
-import { ChangeEvent, FormEvent, useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { responseSize, Timer } from "../../../utils/RequesterUtils.ts";
 import ConstrictedLabel from "../../../components/ConstrictedLabel.tsx";
 import { LocalStorage } from "../../../utils/Storage.ts";
@@ -75,7 +75,7 @@ export default function Requester(){
             });
             timer.end();
             console.log(result);
-            console.log(timer.deltaString(), responseSize(result));
+            console.log(Timer.deltaString(timer.delta), responseSize(result));
             
             setTabs(t => {
                 t[activeTabNumber].result = {

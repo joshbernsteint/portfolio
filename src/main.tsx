@@ -1,6 +1,6 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
-import {ThemeProvider, alpha, createTheme, getContrastRatio} from '@mui/material/styles';
+import {ThemeProvider, createTheme, getContrastRatio} from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import './index.css'
 import App from './App.tsx'
