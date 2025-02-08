@@ -69,9 +69,9 @@ export default function BasePage(){
         <div ref={galaxyView} style={{width: '100%', height: '100%'}}/>
       </div>
 
-        <div id='viewports_bg' style={{width: '100%', height: '100%', position: 'absolute', zIndex: 4, padding: 0, margin: 0, top: 0}}>
-          <div ref={starView} style={{width: '100%', height: '100%', position: 'fixed'}}/>
-        </div>
+      <div id='viewports_bg' style={{width: '100%', height: '100%', position: 'absolute', zIndex: 4, padding: 0, margin: 0, top: 0}}>
+        <div ref={starView} style={{width: '100%', height: '100%', position: 'fixed'}}/>
+      </div>
 
 
       {
@@ -111,7 +111,7 @@ export default function BasePage(){
         {
           !noThree && (
             <div id='canvas_container' style={{top: 0, left: 0, width: '100%', height: '100%', position: 'fixed', zIndex: 0}}>
-            <Canvas eventSource={containerRef} linear flat dpr={[1,2]}>
+            <Canvas linear flat dpr={[1,2]}>
               <FPSCounter onFail={() => {
                 setVersion(pageVersion.noThree);
               }}/>
@@ -136,7 +136,7 @@ export default function BasePage(){
             </Canvas>
             </div>
           )
-        }
+      }
     </div>
   )
 }

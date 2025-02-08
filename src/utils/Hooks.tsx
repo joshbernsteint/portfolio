@@ -67,17 +67,17 @@ export function useViewport(){
     return size;
 }
 
-export function useHover(cursorType: string, onHoverStart: () => void = ()=>{}, onHoverEnd: () => void = () => {}): {
-    onPointerEnter?: () => void,
-    onPointerLeave?: () => void,
+export function useHover<T=Element>(cursorType: string, onHoverStart: (event?: React.PointerEvent<T>) => void = ()=>{}, onHoverEnd: (event?: React.PointerEvent<T>) => void = () => {}): {
+    onPointerEnter?: (event: React.PointerEvent<T>) => void,
+    onPointerLeave?: (event: React.PointerEvent<T>) => void,
 }{
     const [_cursor, setCusor] = useCursor();
     if(cursorType === "disabled"){
         return {};
     }
     return {
-        onPointerEnter: () => {setCusor(cursorType); onHoverStart()},
-        onPointerLeave: () => {setCusor('default'); onHoverEnd()},
+        onPointerEnter: (event: React.PointerEvent<T>) => {setCusor(cursorType); onHoverStart(event)},
+        onPointerLeave: (event: React.PointerEvent<T>) => {setCusor('default'); onHoverEnd(event)},
     };
 }
 
