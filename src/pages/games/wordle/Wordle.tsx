@@ -1,12 +1,14 @@
 import { FormEvent, ReactNode, useEffect, useMemo, useRef, useState } from "react";
 import axios from 'axios';
 import { Canvas } from "@react-three/fiber";
-import Line, { ColorMap, LetterColors, parseGuess, WordleLine } from "./Line.tsx";
+import Line, { ColorMap, LetterColors, parseGuess, TextSize, WordleLine } from "./Line.tsx";
 import { Box, Button, Modal, Stack, TextField, Typography } from "@mui/material";
 import BackspaceOutlinedIcon from '@mui/icons-material/BackspaceOutlined';
+import PublishOutlinedIcon from '@mui/icons-material/PublishOutlined';
 import { Timer } from "../../../utils/RequesterUtils.ts";
 import { LocalStorage } from "../../../utils/Storage.ts";
 import { useNavigate } from "react-router";
+import { useWindow } from "../../../utils/Hooks.tsx";
 
 
 async function checkWord(word: string): Promise<boolean> {
@@ -31,15 +33,19 @@ async function getWord(length: number) : Promise<string> {
 
 
 
-function Letter({l, add, proxyKey=undefined, color="info"}: {
+function Letter({l, add, proxyKey=undefined, color="info", small=false}: {
         l: string | ReactNode, 
-        add(k: string): void, proxyKey?: string, color?: LetterColors
+        add(k: string): void, proxyKey?: string, color?: LetterColors,
+        small?: boolean,
     }){
+
+    const width = small ? 5 : 10;
+
     return (
         <Button 
             color={color as any} variant={"contained"} 
             onClick={() => add(proxyKey || l as string)} 
-            style={{width: 10, height: 50, fontSize: '14pt', color: 'white'}}
+            style={{maxWidth: width, minWidth: small ? 5 : undefined, maxHeight: small ? 25 : 50, fontSize: small ? '10pt' : '14pt', color: 'white'}}
         >
             {l}
         </Button>
@@ -84,6 +90,13 @@ function Content(){
     const triesArray = useMemo<number[]>(() => new Array(game?.maxTries || 6).fill(0), [game]);
     const [currentGuess, setCurrentGuess] = useState<string[]>([]);
     const [gameStats, setStats] = useState<CurrentStats>({streak: 0, time: "", tries: 0});
+    const {width} = useWindow();
+    const [smallLetters, lineSize] = useMemo<[small: boolean, lineSize: TextSize]>(() => {
+        const small = width < 730;
+        const extraSmall = width < 400;
+        return [small, extraSmall ? 'xsmall' : (small ? 'small' : 'normal')];
+    }, [width]);
+
 
     async function appendToGuess(key: string): Promise<boolean> {
         if(game){
@@ -172,8 +185,8 @@ function Content(){
     
 
     return (
-        <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%'}}>
-            <div style={{backgroundColor: "#23282b", padding: '1rem', width: 'min-content', borderRadius: '5px', display: 'inline'}}>
+        <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%', overflowX: 'scroll'}}>
+            <div style={{backgroundColor: "#23282b", padding: '1rem', width: 'min-content', borderRadius: '5px'}}>
                 {
                     triesArray.map((_,i) => (
                         <Line 
@@ -182,6 +195,7 @@ function Content(){
                             currentInput={game.tries== i ? currentGuess : (game.tries > i) ? game.guessHistory[i] : undefined}
                             flip={(game?.tries || 0) > i ? game?.history[i] : undefined}
                             lastLine={(i+1) === game.maxTries}
+                            textSize={lineSize}
                             onRest={() => {
                                 const isOver = game.won || (game.tries === game.maxTries) || false;
                                 if(!gameRef.current && isOver){
@@ -195,38 +209,38 @@ function Content(){
             </div>
             <div style={{marginTop: 25, display: 'flex', alignItems: 'center', flexDirection: 'column'}} id="keyboard">
                 <Stack direction={'row'} gap={1}>
-                    <Letter l="Q" add={appendToGuess} color={game.colorMap.Q} />
-                    <Letter l="W" add={appendToGuess} color={game.colorMap.W}/>
-                    <Letter l="E" add={appendToGuess} color={game.colorMap.E}/>
-                    <Letter l="R" add={appendToGuess} color={game.colorMap.R}/>
-                    <Letter l="T" add={appendToGuess} color={game.colorMap.T}/>
-                    <Letter l="Y" add={appendToGuess} color={game.colorMap.Y}/>
-                    <Letter l="U" add={appendToGuess} color={game.colorMap.U}/>
-                    <Letter l="I" add={appendToGuess} color={game.colorMap.I}/>
-                    <Letter l="O" add={appendToGuess} color={game.colorMap.O}/>
-                    <Letter l="P" add={appendToGuess} color={game.colorMap.P}/>
+                    <Letter l="Q" add={appendToGuess} small={smallLetters} color={game.colorMap.Q} />
+                    <Letter l="W" add={appendToGuess} small={smallLetters} color={game.colorMap.W}/>
+                    <Letter l="E" add={appendToGuess} small={smallLetters} color={game.colorMap.E}/>
+                    <Letter l="R" add={appendToGuess} small={smallLetters} color={game.colorMap.R}/>
+                    <Letter l="T" add={appendToGuess} small={smallLetters} color={game.colorMap.T}/>
+                    <Letter l="Y" add={appendToGuess} small={smallLetters} color={game.colorMap.Y}/>
+                    <Letter l="U" add={appendToGuess} small={smallLetters} color={game.colorMap.U}/>
+                    <Letter l="I" add={appendToGuess} small={smallLetters} color={game.colorMap.I}/>
+                    <Letter l="O" add={appendToGuess} small={smallLetters} color={game.colorMap.O}/>
+                    <Letter l="P" add={appendToGuess} small={smallLetters} color={game.colorMap.P}/>
                 </Stack>
                 <Stack direction={'row'} gap={1} sx={{marginTop: 1}}>
-                    <Letter l="A" add={appendToGuess} color={game.colorMap.A}/>
-                    <Letter l="S" add={appendToGuess} color={game.colorMap.S}/>
-                    <Letter l="D" add={appendToGuess} color={game.colorMap.D}/>
-                    <Letter l="F" add={appendToGuess} color={game.colorMap.F}/>
-                    <Letter l="G" add={appendToGuess} color={game.colorMap.G}/>
-                    <Letter l="H" add={appendToGuess} color={game.colorMap.H}/>
-                    <Letter l="I" add={appendToGuess} color={game.colorMap.I}/>
-                    <Letter l="K" add={appendToGuess} color={game.colorMap.K}/>
-                    <Letter l="L" add={appendToGuess} color={game.colorMap.L}/>
+                    <Letter l="A" add={appendToGuess} small={smallLetters} color={game.colorMap.A}/>
+                    <Letter l="S" add={appendToGuess} small={smallLetters} color={game.colorMap.S}/>
+                    <Letter l="D" add={appendToGuess} small={smallLetters} color={game.colorMap.D}/>
+                    <Letter l="F" add={appendToGuess} small={smallLetters} color={game.colorMap.F}/>
+                    <Letter l="G" add={appendToGuess} small={smallLetters} color={game.colorMap.G}/>
+                    <Letter l="H" add={appendToGuess} small={smallLetters} color={game.colorMap.H}/>
+                    <Letter l="I" add={appendToGuess} small={smallLetters} color={game.colorMap.I}/>
+                    <Letter l="K" add={appendToGuess} small={smallLetters} color={game.colorMap.K}/>
+                    <Letter l="L" add={appendToGuess} small={smallLetters} color={game.colorMap.L}/>
                 </Stack>
                 <Stack direction={'row'} gap={1} sx={{marginTop: 1}}>
-                    <Letter l="Enter" add={appendToGuess}/>
-                    <Letter l="Z" add={appendToGuess} color={game.colorMap.Z}/>
-                    <Letter l="X" add={appendToGuess} color={game.colorMap.X}/>
-                    <Letter l="C" add={appendToGuess} color={game.colorMap.C}/>
-                    <Letter l="V" add={appendToGuess} color={game.colorMap.V}/>
-                    <Letter l="B" add={appendToGuess} color={game.colorMap.B}/>
-                    <Letter l="N" add={appendToGuess} color={game.colorMap.N}/>
-                    <Letter l="M" add={appendToGuess} color={game.colorMap.M}/>
-                    <Letter l={<BackspaceOutlinedIcon />} add={appendToGuess} proxyKey="Backspace"/>
+                    <Letter l={<PublishOutlinedIcon/>} add={appendToGuess} small={smallLetters}/>
+                    <Letter l="Z" add={appendToGuess} small={smallLetters} color={game.colorMap.Z}/>
+                    <Letter l="X" add={appendToGuess} small={smallLetters} color={game.colorMap.X}/>
+                    <Letter l="C" add={appendToGuess} small={smallLetters} color={game.colorMap.C}/>
+                    <Letter l="V" add={appendToGuess} small={smallLetters} color={game.colorMap.V}/>
+                    <Letter l="B" add={appendToGuess} small={smallLetters} color={game.colorMap.B}/>
+                    <Letter l="N" add={appendToGuess} small={smallLetters} color={game.colorMap.N}/>
+                    <Letter l="M" add={appendToGuess} small={smallLetters} color={game.colorMap.M}/>
+                    <Letter l={<BackspaceOutlinedIcon />} add={appendToGuess} small={smallLetters} proxyKey="Backspace"/>
                 </Stack>
             </div>
             <Modal

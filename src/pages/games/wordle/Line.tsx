@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import { useTrail, animated } from '@react-spring/web'
 import { styled } from '@stitches/react'
 
@@ -10,25 +10,6 @@ export enum Guess{
 
 export type WordleLine = {l: string, g: Guess}[]
 
-
-
-const AppContainer = styled('div', {
-  display: 'flex',
-  justifyContent: 'center',
-  alignItems: 'center',
-  fontSize: '20pt',
-})
-
-const Container = styled('div', {
-  display: 'flex',
-  gap: 5,
-})
-
-const Box = styled('div', {
-  position: 'relative',
-  height: 75,
-  width: 75,
-})
 
 const SharedStyles : React.CSSProperties = {
   width: '100%',
@@ -89,26 +70,59 @@ export function parseGuess(guess: string, correct: string, colorMap: ColorMap) :
     return [won, result, colorMap];
 }
 
+export type TextSize = 'xsmall' | 'small' | 'normal'
+function getTextSizeTyle(size : TextSize) : {fontSize: string, height: number | string} {
+    switch (size) {
+        case 'xsmall':
+            return {
+                fontSize: '14pt',
+                height: 50
+            }
+        case 'small':
+            return {
+                fontSize: '16pt',
+                height: 60,
+            }
+        default:
+            return {
+                fontSize: '20pt',
+                height: 75,
+            }
+    }
+}
+
 type LineProps = {
     currentInput?: string[],
     lastLine?: boolean,
     flip?: WordleLine,
     size?: number,
     onRest?(): void,
+    textSize?: TextSize
 };
 
-export default function Line({lastLine=false, currentInput=[], flip=undefined, size=5, onRest}: LineProps) {
+export default function Line({lastLine=false, currentInput=[], flip=undefined, size=5, onRest, textSize='normal'}: LineProps) {
     const [trail] = useTrail(size, () => ({
         rotateX: flip ? -180 : 0,
         onRest: onRest,
     }), [flip])
 
+    const textStyles = useMemo(() => getTextSizeTyle(textSize), [textSize]);
 
     return (
-    <AppContainer style={{marginBottom: lastLine ? 0 : 5}}>
-        <Container >
+    <div style={{
+        marginBottom: lastLine ? 0 : 5,
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        fontSize: textStyles.fontSize,
+    }}>
+        <div style={{display: 'flex', gap: 1}}>
         {trail.map(({ rotateX }, i) => (
-            <Box key={i}>
+            <div key={i} style={{
+                position: 'relative',
+                height: textStyles.height,
+                aspectRatio: 1,
+            }}>
                 <FrontBox
                     style={{
                     transform: rotateX.to(val => `perspective(600px) rotateX(${val}deg)`),
@@ -126,10 +140,10 @@ export default function Line({lastLine=false, currentInput=[], flip=undefined, s
                     }}>
                     {flip && flip[i].l}
                 </BackBox>
-            </Box>
+            </div>
         ))}
-        </Container>
-    </AppContainer>
+        </div>
+    </div>
     )
 }
 
