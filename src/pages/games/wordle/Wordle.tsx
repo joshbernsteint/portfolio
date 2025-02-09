@@ -232,7 +232,7 @@ function Content(){
                     <Letter l="L" add={appendToGuess} small={smallLetters} color={game.colorMap.L}/>
                 </Stack>
                 <Stack direction={'row'} gap={1} sx={{marginTop: 1}}>
-                    <Letter l={<PublishOutlinedIcon/>} add={appendToGuess} small={smallLetters}/>
+                    <Letter l={<PublishOutlinedIcon/>} add={appendToGuess} small={smallLetters} proxyKey="Enter"/>
                     <Letter l="Z" add={appendToGuess} small={smallLetters} color={game.colorMap.Z}/>
                     <Letter l="X" add={appendToGuess} small={smallLetters} color={game.colorMap.X}/>
                     <Letter l="C" add={appendToGuess} small={smallLetters} color={game.colorMap.C}/>
