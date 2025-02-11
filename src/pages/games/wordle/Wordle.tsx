@@ -5,10 +5,13 @@ import Line, { ColorMap, LetterColors, parseGuess, TextSize, WordleLine } from "
 import { Box, Button, Modal, Stack, TextField, Typography } from "@mui/material";
 import BackspaceOutlinedIcon from '@mui/icons-material/BackspaceOutlined';
 import PublishOutlinedIcon from '@mui/icons-material/PublishOutlined';
+import HomeIcon from '@mui/icons-material/Home';
+import ReplayIcon from '@mui/icons-material/Replay';
 import { Timer } from "../../../utils/RequesterUtils.ts";
 import { LocalStorage } from "../../../utils/Storage.ts";
 import { useNavigate } from "react-router";
 import { useWindow } from "../../../utils/Hooks.tsx";
+import OutlinedFab from "../../../components/buttons/OutlinedFab.tsx";
 
 
 async function checkWord(word: string): Promise<boolean> {
@@ -164,7 +167,8 @@ function Content(){
 
     useEffect(() => {
         function keystrokeHandler(event: KeyboardEvent){
-            appendToGuess(event.key);
+            if(!event.ctrlKey && !event.shiftKey)
+                appendToGuess(event.key);
         }
         document.addEventListener('keydown', keystrokeHandler);
         return () => document.removeEventListener('keydown', keystrokeHandler);
@@ -186,26 +190,49 @@ function Content(){
 
     return (
         <div style={{display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%', overflowX: 'scroll'}}>
-            <div style={{backgroundColor: "#23282b", padding: '1rem', width: 'min-content', borderRadius: '5px'}}>
-                {
-                    triesArray.map((_,i) => (
-                        <Line 
-                            key={i} 
-                            size={game?.length}
-                            currentInput={game.tries== i ? currentGuess : (game.tries > i) ? game.guessHistory[i] : undefined}
-                            flip={(game?.tries || 0) > i ? game?.history[i] : undefined}
-                            lastLine={(i+1) === game.maxTries}
-                            textSize={lineSize}
-                            onRest={() => {
-                                const isOver = game.won || (game.tries === game.maxTries) || false;
-                                if(!gameRef.current && isOver){
-                                    gameRef.current = true;
-                                    setGameOver(true);
-                                }
-                            }}
-                        />
-                    ))
-                }
+            <div style={{position: 'relative'}}>
+                <div style={{backgroundColor: "#23282b", padding: '1rem', width: 'min-content', borderRadius: '5px'}}>
+                    {
+                        triesArray.map((_,i) => (
+                            <Line 
+                                key={i} 
+                                size={game?.length}
+                                currentInput={game.tries== i ? currentGuess : (game.tries > i) ? game.guessHistory[i] : undefined}
+                                flip={(game?.tries || 0) > i ? game?.history[i] : undefined}
+                                lastLine={(i+1) === game.maxTries}
+                                textSize={lineSize}
+                                onRest={() => {
+                                    const isOver = game.won || (game.tries === game.maxTries) || false;
+                                    if(!gameRef.current && isOver){
+                                        gameRef.current = true;
+                                        setGameOver(true);
+                                    }
+                                }}
+                            />
+                        ))
+                    }
+                </div>
+                <div style={{position: 'absolute', right: -65, top: 10}}>
+                    <OutlinedFab
+                        color="warning"
+                        icon={<ReplayIcon />}
+                        onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
+                            e.currentTarget.blur();
+                            startGame(game.length, game.maxTries)
+                        }}
+                        tooltip="Reset the game with a new word."
+                    />
+                    <p/>
+                    <OutlinedFab
+                        tooltip="Return to the Main Menu screen."
+                        color="info"
+                        icon={<HomeIcon />}
+                        onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
+                            e.currentTarget.blur();
+                            resetGame();
+                        }}
+                    />
+                </div>
             </div>
             <div style={{marginTop: 25, display: 'flex', alignItems: 'center', flexDirection: 'column'}} id="keyboard">
                 <Stack direction={'row'} gap={1}>

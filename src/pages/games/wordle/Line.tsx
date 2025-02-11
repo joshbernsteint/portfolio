@@ -116,7 +116,7 @@ export default function Line({lastLine=false, currentInput=[], flip=undefined, s
         alignItems: 'center',
         fontSize: textStyles.fontSize,
     }}>
-        <div style={{display: 'flex', gap: 1}}>
+        <div style={{display: 'flex', gap: 5}}>
         {trail.map(({ rotateX }, i) => (
             <div key={i} style={{
                 position: 'relative',
